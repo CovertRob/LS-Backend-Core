@@ -16,7 +16,7 @@ number1 = input()
 print("What's the second number?")
 number2 = input()
 
-print(f'{number1} {number2}')
+#print(f'{number1} {number2}')
 
 print('''What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide''')
 operation = input()
@@ -28,6 +28,6 @@ elif operation == '2': # '1' represents subtraction
 elif operation == '3': # '3' represents multiply
     output = int(number1) * int(number2)
 elif operation == '4': # '4' represents division
-    outpput = int(number1) / int(number2)
+    output = int(number1) / int(number2)
 
 print(f'The result is: {output}')
