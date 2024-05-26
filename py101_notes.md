@@ -52,3 +52,9 @@ Used to determine logic flow in a program
 - F: (Fatal) for errors which prevented further processing
 
 - Use a .pylintrc file for configurations to modify how strict it is on grading. Create this in your project directory
+
+# Refactoring calcualtor program
+
+- Use helper functions to wrap up repetetive code
+- Use try and except statement and a while loop to evaluate if 
+something is true to validate waht the user inputs
