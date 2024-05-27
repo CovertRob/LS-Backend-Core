@@ -1,5 +1,9 @@
 """Small calculator program. """
 
+import json
+
+with open('calculator_messages.json', 'r') as file:
+    MESSAGES = json.load(file)
 
 # PSEUDOCODE ->
 # This is the first small program in lesson 2 of launch school PY101
@@ -30,54 +34,51 @@ execution_tracker = True
 # Function to ask user if they want to conntinue for another calculation or exit the program.
 def continue_yes_no():
     
-    prompt("""Would you like to perform another calculation?
-          Please input yes or no.""")
+    prompt(MESSAGES['continue_prompt'])
     
     user_continue = input()
     
     while user_continue not in ['yes', 'no']:
-        prompt("That is not a valid input. Please input yes or no")
+        prompt(MESSAGES['invalid_yes_no'])
         user_continue = input()
     
     if user_continue == 'yes':
-        return prompt('Continuing with next calculation')
+        return prompt(MESSAGES['continue'])
     elif user_continue == 'no':
         global execution_tracker
         execution_tracker = False
-        return prompt("Exiting calculator")
+        return prompt(MESSAGES['exit'])
     
 # Operator prompt to ask user what calculation they want to perform 
 def operator_prompt():
-    return prompt("""What operation would you like to perform? 
-       1) Add 2) Subtract 3) Multiply 4) Divide""")
-
+    return prompt(MESSAGES['operator_prompt'])
 
 def main():
 
-    prompt('Welcome to Calculator!')
+    prompt(MESSAGES['welcome'])
     
     while execution_tracker:
         # Ask the user for the first number.
-        prompt("What's the first number?")
+        prompt(MESSAGES['number1'])
         number1 = input()
 
         while invalid_number(number1):
-            prompt("Hmm.. that doesn't look like a valid number.")
+            prompt(MESSAGES['invalid_number'])
             number1 = input()
         
         # Ask user for the second number.
-        prompt("What's the second number?")
+        prompt(MESSAGES['number2'])
         number2 = input()
 
         while invalid_number(number2):
-            prompt("Hmm.. that doesn't look like a valid number.")
+            prompt(MESSAGES['invalid_number'])
             number2 = input()
 
         operator_prompt() # prints out the operator prompt
         operation = input()
 
         while operation not in ['1', '2', '3', '4']:
-            prompt('You must choose 1, 2, 3, or 4')
+            prompt(MESSAGES['invalid_operator'])
             operation = input()
 
         match operation:
