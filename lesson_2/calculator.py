@@ -15,7 +15,6 @@ def prompt(message):
 
 def invalid_number(number_str):
     """Number checker for user input. """
-
     try:
         int(number_str)
     except ValueError:
@@ -58,4 +57,4 @@ match operation:
     case '4': # '4' represents division
         output = int(number1) / int(number2)
 
-prompt(f'The result is: {output}')
+prompt(f"The result is: {output}")
