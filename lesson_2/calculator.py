@@ -25,7 +25,7 @@ def prompt(message):
 def invalid_number(number_str):
     """Number checker for user input. """
     try:
-        int(number_str)
+        float(number_str)
     except ValueError:
         return True
     return False
@@ -99,16 +99,16 @@ def main():
 
         match operation:
             case '1': # '1' represents addition
-                output = int(number1) + int(number2)
+                output = float(number1) + float(number2)
             case '2': # '1' represents subtraction
-                output = int(number1) - int(number2)
+                output = float(number1) - float(number2)
             case '3': # '3' represents multiply
-                output = int(number1) * int(number2)
+                output = float(number1) * float(number2)
             case '4': # '4' represents division
-                output = int(number1) / int(number2)
+                output = float(number1) / float(number2)
 
         prompt(f"The result is: {output}")
-        
+
         continue_yes_no()
 
 
