@@ -5,6 +5,8 @@ import json
 with open('calculator_messages.json', 'r') as file:
     MESSAGES = json.load(file)
 
+LANGUAGE = 'en'
+
 # PSEUDOCODE ->
 # This is the first small program in lesson 2 of launch school PY101
 # Command line calculator
@@ -28,57 +30,71 @@ def invalid_number(number_str):
         return True
     return False
 
+
+def messages(message, lang='en'):
+    return MESSAGES[lang][message]
+
+def set_language():
+    global LANGUAGE
+    print("For Spanish, please enter 'es', otherwise hit enter.")
+    lang = input()
+    if lang == 'es':
+        LANGUAGE = lang
+    else:
+        print("Continuing program in English")
+
 # Global variable that will server as tracker for status of user wanting to continue with another calculation or not.
 execution_tracker = True
 
 # Function to ask user if they want to conntinue for another calculation or exit the program.
 def continue_yes_no():
     
-    prompt(MESSAGES['continue_prompt'])
+    prompt(messages('continue_prompt', LANGUAGE))
     
     user_continue = input()
     
     while user_continue not in ['yes', 'no']:
-        prompt(MESSAGES['invalid_yes_no'])
+        prompt(messages('invalid_yes_no', LANGUAGE))
         user_continue = input()
     
     if user_continue == 'yes':
-        return prompt(MESSAGES['continue'])
+        return prompt(messages('continue', LANGUAGE))
     elif user_continue == 'no':
         global execution_tracker
         execution_tracker = False
-        return prompt(MESSAGES['exit'])
+        return prompt(messages('exit', LANGUAGE))
     
 # Operator prompt to ask user what calculation they want to perform 
 def operator_prompt():
-    return prompt(MESSAGES['operator_prompt'])
+    return prompt(messages('operator_prompt', LANGUAGE))
 
 def main():
 
-    prompt(MESSAGES['welcome'])
-    
+    prompt(messages('welcome', LANGUAGE))
+    set_language()
+
     while execution_tracker:
         # Ask the user for the first number.
-        prompt(MESSAGES['number1'])
+        prompt(messages('number1', LANGUAGE))
         number1 = input()
 
         while invalid_number(number1):
-            prompt(MESSAGES['invalid_number'])
+            prompt(messages('invalid_number', LANGUAGE))
             number1 = input()
         
         # Ask user for the second number.
-        prompt(MESSAGES['number2'])
+        prompt(messages('number2', LANGUAGE))
         number2 = input()
 
         while invalid_number(number2):
-            prompt(MESSAGES['invalid_number'])
+            prompt(messages('invalid_number', LANGUAGE))
             number2 = input()
 
         operator_prompt() # prints out the operator prompt
         operation = input()
 
         while operation not in ['1', '2', '3', '4']:
-            prompt(MESSAGES['invalid_operator'])
+            prompt(messages('invalid_operator', LANGUAGE))
             operation = input()
 
         match operation:
@@ -92,6 +108,7 @@ def main():
                 output = int(number1) / int(number2)
 
         prompt(f"The result is: {output}")
+        
         continue_yes_no()
 
 
