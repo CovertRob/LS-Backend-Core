@@ -1,0 +1,43 @@
+#Github CLI commands
+
+git remote add 'HTTPS:'
+
+#Ubuntu virtual environments
+Tested on Ubuntu 20.04
+
+Install another version of Python
+Safer than downgrading or upgrading is installing other versions of Python on the same system.
+
+For example, to install Python 3.9:
+
+# Add the deadsnakes repository
+me@mydevice:~$ sudo add-apt-repository ppa:deadsnakes/ppa
+
+# Update package lists
+me@mydevice:~$ sudo apt update
+
+# Install Python 3.9
+me@mydevice:~$ sudo apt install python3.9
+Install the venv package and create a venv virtual environment
+# Install the venv package for Python 3.9
+me@mydevice:~$ sudo apt install python3.9-venv
+
+# Make a folder for venv virtual environments
+me@mydevice:~$ mkdir ~/.venvs
+
+# Create a new venv virtual environment with Python 3.9 in it
+me@mydevice:~$ python3.9 -m venv ~/.venvs/my-venv-name
+
+# Activate the new venv
+me@mydevice:~$ source ~/.venvs/my-venv-name/bin/activate
+(my-venv-name) me@mydevice:~$
+
+# Check the Python version inside the venv:
+(my-venv-name) me@mydevice:~$ python -V
+Python 3.9.9
+
+# Check the Pip version inside the venv:
+(my-venv-name) me@mydevice:~$ pip3 --version
+pip 21.2.4 from /home/me/
+.venvs/my-venv-name/lib/python3.9/
+site-packages/pip (python 3.9)
