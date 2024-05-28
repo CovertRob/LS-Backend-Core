@@ -116,5 +116,3 @@ def main():
 # Execution control function
 if __name__ == "__main__":
     main()
-
-# JSON implementation ___
