@@ -30,8 +30,6 @@ def display_winner(player, computer):
     else:
         prompt("It's a tie!")
 
-
-
 def track_winner(user_or_comp):
     global player_count
     global computer_count
