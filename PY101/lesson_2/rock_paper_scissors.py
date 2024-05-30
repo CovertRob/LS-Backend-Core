@@ -2,6 +2,17 @@ import random
 
 VALID_CHOICES = ['rock', 'paper', 'scissors']
 
+WINNING_COMBOS = {
+    'rock':     ['scissors', 'lizard'],
+    'paper':    ['rock',     'spock'],
+    'scissors': ['paper',    'lizard'],
+    'lizard':   ['paper',    'spock'],
+    'spock':    ['rock',     'scissors'],
+}
+
+def player_wins(player_choice, computer_choice):
+    return computer_choice in WINNING_COMBOS[player_choice]
+
 def prompt(message):
     print(f'==> {message}')
 
