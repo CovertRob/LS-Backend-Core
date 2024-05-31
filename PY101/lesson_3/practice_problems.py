@@ -19,3 +19,6 @@ def prepend_one(word, famous):
 # or
 
 print("{} {}".format(famous_words, test))
+
+munsters_description = "the Munsters are CREEPY and Spooky."
+# => 'The munsters are creepy and spooky.'
