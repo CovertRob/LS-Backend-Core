@@ -213,7 +213,42 @@ Naming conventions: legal vs. idiomatic, illegal vs. non-idiomatic
 
 ## type coercions: explicit (e.g., using int(), str()) and implicit
 
+- Explicit type coercioin occurs when a programmer intentionally employs built in functions to convert a value of one type to another.
+    - For example, using int() to convert a string from input() if we are asking for an int input
+    - Trying to convert a non-numberic string to an integer using int() will raise a ValueError
+    - int() will accept also a real number (floating point), bytes-like object, and also boolean values (because they can evaluate to 1 and 0)
+    - any other data type passed to int(), for example a list, will raise a TypeError
+    - floats have a special "Not-a-number" value
+    - print() automatically will call the str() function. str() works with all buiilt in python data types and most non-built in types
+    - Note: repr() will print a string representation of an object. For example, printing the list [1, 2, 3] with print() will print the values,
+    however repr of that will print '[1, 2, 3]'. This can be used to recreate the object later on
+
+- Implicit type conversion (automatic data type conversation), when python automatically transofmrs one dat typoe into another without the programers
+direct instruction. Typically occurs when mixing distinct data types
+    - For example: calculations between an int and a float, python will convert the int to a float
+    - print() will implicitly convert any non-string arguments to a string
+
 ## numbers, including handling exceptions (ValueError, ZeroDivisionError)
+- Numeric values represent numbers. Numbers can be added, subtracted, multiplied, and divided and can be used in a wide variety of mathematical operations. 
+- Int represents integers, aka whole numbers, to include negative whole numbers
+- Python also supports other numeric types, such as complex, decimal, and fractional numbers.
+- You can break up numbers with underscores: 123_456_789. Commas and decimals are not valid seperators
+- Floats represent real numbers: includes integers and numbers with digits after the decimal point
+- scientific notation is: 10**n, where n is positive, represents a 1 followed by n zeroes
+- Python will print large and small floats w/ scientific notation
+print(3.14 * (10**20))        # 3.14e+20
+print(3.14 * (10**-20))       # 3.14e-20
+
+- Can also do this:
+print(3.14e+20 / 2.72e-15)    # 1.1544117647058823e+35
+
+- Integers DO NOT get printed with scientific notation
+- Must do this:
+print(int(3e+20))             # 300000000000000000000
+
+- If python interpreter cannot continue executing a program: creates an Exception Object that describes problem and stops the program
+    - This is called "raising an exception"
+
 
 ## strings
 
@@ -228,30 +263,30 @@ list and dictionary syntax
 list methods: len(list), list.append(), list.pop(), list.reverse()
 dictionary methods: dict.keys(), dict.values(), dict.items(), dict.get()
 operators
-Arithmetic: +, -, *, /, //, %, **
-String operators: +
-List operators: +
-Comparison: ==, !=, <, >, <=, >=
-Logical: and, or, not
-Identity: is, is not
-operator precedence
+    Arithmetic: +, -, *, /, //, %, **
+    String operators: +
+    List operators: +
+    Comparison: ==, !=, <, >, <=, >=
+    Logical: and, or, not
+    Identity: is, is not
+    operator precedence
 mutability and immutability
 variables
-naming conventions
-initialization, assignment, and reassignment
-scope
-global keyword
-variables as pointers
-variable shadowing
+    naming conventions
+    initialization, assignment, and reassignment
+    scope
+    global keyword
+    variables as pointers
+    variable shadowing
 conditionals and loops
-for
-while
+    for
+    while
 print() and input()
 Functions:
-definitions and calls
-return values
-parameters vs. arguments
-nested functions
-output vs. return values, side effects
+    definitions and calls
+    return values
+    parameters vs. arguments
+    nested functions
+    output vs. return values, side effects
 expressions and statements
 discuss a function's use and purpose (a "user-level" description) instead of its implementation
