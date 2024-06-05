@@ -75,6 +75,7 @@ Operators	Meaning
 not	Logical NOT
 and	Logical AND
 or	Logical OR
+![alt text](image-1.png)
 
 # Important String methods
 
@@ -125,9 +126,10 @@ translate()     Returns a translated string
 upper()	        Converts a string into upper case
 zfill()	        Fills the string with a specified number of 0 values at the beginning
 
-- and and or do not have precedence, in an expression it goes left to right
+- and and or do not have precedence, in an expression it goes left to right. **All 8 comparison operations have same priority (but higher than boolean operations)** in and not in have same priorities as comparison operations
 - For short circuting, or statements return the first truthy element or they return the last falsy element
 - the and statement returns teh last truthy element and the first falsy one
+**Note that neither and nor or restrict the value and type they return to False and True, but rather return the last evaluated argument. This is sometimes useful, e.g., if s is a string that should be replaced by a default value if it is empty, the expression s or 'foo' yields the desired value. Because not has to create a new value, it returns a boolean value regardless of the type of its argument (for example, not 'foo' produces False rather than ''.)**
 - python will print the last element in an expression to the terminal
 - remember [none] is actually 
 
@@ -248,13 +250,56 @@ print(int(3e+20))             # 300000000000000000000
 
 - If python interpreter cannot continue executing a program: creates an Exception Object that describes problem and stops the program
     - This is called "raising an exception"
-
+    - Example, trying to cast a string to a float creates a **value error**
+    - zero division error is when denom is zero
 
 ## strings
+Examples: 
+'Hello!'
+"He's pining for the fjords!"
+'1969-07-20'
+f'{greeting}! My name is {my_name}'
+r'\w+\d+'
+
+- Also includes byte string sequences
+- text sequence vs ordinary sequence: text sequence (string) does not contain any objects, only the characters (bytes) that make up the text. These are not objects, simply part of the value
+- Escaping quotations:
+    print("""My nickname is "Wolfy". What's yours?""")
+    print('My nickname is "Wolfy". What\'s yours?')
+    print("My nickname is \"Wolfy\". What's yours?")
+- Both of these print C:\Users\Xyzzy
+print("C:\\Users\\Xyzzy")  # Each \\ produces a literal \
+print(r"C:\Users\Xyzzy")  # raw string literal
 
 ## f-strings
+- primarily used for string interpolation
+- can be used instead of the format method
+- can also escape {} by doing {{}} in f strings
+- f strings for numbers:
+    print(f'{123456789:_}')       # 123_456_789
+    print(f'{123456789:,}')       # 123,456,789
+- f strings for floats:
+    print(f'{123456.7890123:_}')  # 123_456.7890123
+    print(f'{123456.7890123:,}')  # 123,456.7890123
 
-## string methods capitalize, swapcase, upper, lower isalpha, isdigit, isalnum, islower, isupper, isspace strip, rstrip, lstrip, replace split, find, rfind
+### string methods 
+1. capitalize - return a copy of the string w/ first character capitalized and the rest lowercased
+2. swapcase, 
+3. upper, 
+4. lower 
+5. isalpha, 
+6. isdigit, 
+7. isalnum, 
+8. islower, 
+9. isupper, 
+10. isspace 
+11. strip, 
+12. rstrip, 
+13. lstrip, 
+14. replace 
+15. split, 
+16. find, 
+17. rfind
 
 ## boolean vs. truthiness
 ## None
