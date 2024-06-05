@@ -284,20 +284,40 @@ print(r"C:\Users\Xyzzy")  # raw string literal
 
 ### string methods 
 1. capitalize - return a copy of the string w/ first character capitalized and the rest lowercased
-2. swapcase, 
-3. upper, 
-4. lower 
-5. isalpha, 
-6. isdigit, 
-7. isalnum, 
-8. islower, 
-9. isupper, 
-10. isspace 
-11. strip, 
-12. rstrip, 
-13. lstrip, 
-14. replace 
-15. split, 
+    str.capitalize()
+2. swapcase - return a copy of string w/ uppercase characters to lowercase and vice versa. Note not necessarily true that
+str.swapcase().swapcase() == str (because of non ASCII chars)
+str.swapcase()
+3. upper - return copy of string w/ all cased chars converted to uppercase. Note str.upper().isupper() might be flase if str 
+contains uncased characters or if the unicode catergory of the resulting char is not "Lu" (letter, uppercase) but "Lt" (letter, titlecase)
+    \p{Lu} or \p{Uppercase_Letter}: an uppercase letter that has a lowercase variant.
+    \p{Lt} or \p{Titlecase_Letter}: a letter that appears at the start of a word when only the first letter of the word is capitalized.
+str.upper()
+4. lower - return copy of string w/ all cased chars converted to lowercase.  Used 'default case folding' from unicode standard
+str.lower()
+5. isalpha - return **True** if all chars in str are alphabetic and there is at least one char, **False** otherwise. 
+    Defined by uncode char database as "Letter": “Lm”, “Lt”, “Lu”, “Ll”, or “Lo”
+str.isalpha()
+6. isdigit - return **True** if all chars in str are digits and there is at least one char, **False** otherwise. 
+    Digits include: decimal chars and digits that need special handling such as compatability superscript digits
+    Formally: digit has property value Numeric_Type=Digit or Numeric_Type =Decimal.
+7. isalnum - return **True** if all char in str are alphanumeric and there is at least one char, **False** otherwise.
+    Char 'c' is alphanumeric if one of the following returns **True**: c.isalpha(), c.isdecimal(), c.isdigit(), or c.isnumeric()
+8. islower - return **True** if all cased chars in str are lowercase and there is at least one cased character, **False** otherwise
+9. isupper - return **True** if all cased chars in str are uppercase and there is at least one cased character, **False** otherwise
+10. isspace - Return **True** if there are only whitespace chars in str and there is at least one char, **False** otherwise
+11. strip - str.strip([chars]) - return copy of str w/ leading and trailing characters removed. Chars argu ment is a string
+    specifying set of chars to be removed. If ommitted or **None**, chars arg defualts to removing whitespace.
+    Chars arg not a prefix or suffic, all combos are stripped.
+    Exampe: '   spacious   '.strip()
+                'spacious'
+            'www.example.com'.strip('cmowz.')
+            'example'
+12. rstrip - str.rstrip([chars]) -return copy of str w/ trailing chars removed. Same specifications for argument as strip, not a suffix.
+13. lstrip - str.lstrip([chars]) - return copy of string w/ leading chars removed. Same specifications for argument as strip, not a prefix.
+14. replace - str.replace(old, new[, count]) - return copy of str w/ all occurrences of substring *old* replaced by *new*.
+    If optional argu ment *count* is given, only the first *count* occurrernces are replaced
+15. split - 
 16. find, 
 17. rfind
 
