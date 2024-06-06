@@ -436,48 +436,104 @@ str.isalpha()
 
 ## list/dict methods
 
-- len(list)
-- list.append()
-- list.pop()
-- list.reverse()
+- len(list) - return the length (number of items) of the list
 
-## dictionary methods: dict.keys(), dict.values(), dict.items(), dict.get()
+- list.append() - add an item to the end of the list. Equivalent to `a[len(a):] = [x]` **RETURNS NONE**
+
+Think back to how slices work: a[beginning:end]. If you do not supply one of them, then you get all the list from beginning or all the way to end.
+What that means is if I ask for a[2:], I will get the list from the index 2 all the way to the end of the list and len(a) is an index right after the last element of the array...
+so `a[len(a):]` is basically an empty array positioned right after the last element of the array
+**Using slice notation in lists creates a shallow copy**
+
+- list.pop() - remove the item at the given position in the list, and return it. If no index is specified, pop() removes and returns the
+last item in the list. **Raises an IndexError if list is empty or index is outside the list range**
+
+- list.reverse() - reverse the elements of the list in place. This mutates the original object. **RETURNS NONE**
+
+## dictionary methods
+
+- keys(), values(), and items() all **Return a dictionary view object** - provides a dynamic view on the dict's entries. When dict changes, the view reflects it
+- dict.keys() - returns a new view of the dictionary's keys
+- dict.values() - return a new view of the dictionary's values. **Equality comparisons between one dict.values() view and another will always return false, including comparing to itself**
+- dict.items() - return a new view of the dictionary's keys
+- dict.get() - `dict.get(key, default=None)` - return the value for _key_ if it is in the dictionary, else _default_.
+If default not given, it defaults to **None**, so that this method never raises a KeyError.
 
 ## operators
 
+~~~Python
     Arithmetic: +, -, *, /, //, %, **
     String operators: +
     List operators: +
     Comparison: ==, !=, <, >, <=, >=
     Logical: and, or, not
     Identity: is, is not
-    operator precedence
+    operator precedence - use list below
+~~~
+
+- `==` operator compares the value or equality of two objects, whereas `is` operator checks two variables point to same object in memory
 
 ## mutability and immutability
 
+- Mutable - refers to the capability of an object to be changed or modified after its creation
+    1. lists
+    2. dicts
+    3. sets
+    4. functions
+- Immutable - cannot be changed after it is created
+    1. int
+    2. float
+    3. boolean
+    4. strings
+    5. ranges
+    6. tuples
+
 ## variables
 
-    naming conventions
-    initialization, assignment, and reassignment
-    scope
-    global keyword
-    variables as pointers
-    variable shadowing
+naming conventions - covered above
+
+- Function names should reflect whether side effects occur. Ex: display_total as name of function that displays a total on the console
+- comput_total would imply it just returns the value of a computation. **AKA no side effect**
+
+Initialization, assignment, and reassignment - self-explanatory
+Scope - global, function scope aka local scope. Inner function scope
+Global keyword
+Variables as pointers
+
+- Pass by reference
+- Pass by value
+
+variable shadowing
 
 ## conditionals and loops
 
-    for
-    while
+for
+while
 
 ## print() and input()
 
 ## Functions
 
-    definitions and calls
-    return values
-    parameters vs. arguments
-    nested functions
-    output vs. return values, side effects
+definitions and calls
+return values
+parameters vs. arguments
+
+- Arguments are data you pass from outside the function's scope into the function so it can access that data **actual values**
+- Names between parentheses in the function definition are called parameters - **placeholders for potential arguments**
+
+nested functions - does variable scope apply to nested functions? - Yes
+
+output vs. return values, side effects
+
+- output is not the same thing as returning a value. Return values can be used elsewhere in the program and are not always written to output
+- Side effects: these are when a function modifies something outside of the functions definition. Ex: modifying a list with the reverse() method
+    1. Reassigns any non-local variable
+    2. Modifies the value of any data structure passed as an argument, or acessed directly from the outer scope. Mutating an object, such as appending
+    an element to a list argument.
+    3. Reads from or writes to a file, network connection, browser, or system hardware. **Side effects like this include printing and reading from terminal**
+    4. Raises an exception without handling it
+    5. It calls another function that has side effects
+**Functions should return a useful value or should have a side effect, NOT BOTH**
 
 ## expressions and statements
 
