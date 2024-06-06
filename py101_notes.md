@@ -1,6 +1,9 @@
-# False values in Python
+# Course Notes
+
+## False values in Python
 
 There are 12 in total
+
 - False
 - None
 - 0
@@ -14,36 +17,36 @@ There are 12 in total
 - frozenset() an empty frozen set
 - range(0) an empty range
 
-# Pseudocode
+## Pseudocode
 
 Before we can take our pseudocode and translate it to program code, we must formalize the pseudocode a little more. We'll still use English, but we'll use some keywords to help us break down the program logic into concrete commands, which makes translating to code more natural.
 
 We'll use the below keywords to assist us, along with their meaning.
 
-Keyword	Meaning
-START	start of the program
-SET	set a variable that we can use for later
-GET	retrieve input from user
-PRINT	display output to user
-READ	retrieve a value from a variable
-IF/ELSE IF/ELSE	show conditional branches in logic
-WHILE	show looping logic
-END	end of the program
+Keyword Meaning
+START start of the program
+SET set a variable that we can use for later
+GET retrieve input from user
+PRINT display output to user
+READ retrieve a value from a variable
+IF/ELSE IF/ELSE show conditional branches in logic
+WHILE show looping logic
+END end of the program
 
-# Flowchart Components
+## Flowchart Components
 
 Used to determine logic flow in a program
 
 -![alt text](image.png)
+
 - oval: start/stop
 - rectangle: processing step - define variables here
-- rhombus: input/output 
+- rhombus: input/output
 - Diamond: decision, only has two branches
-    - If decision w/ > 3 branches, user seperate diamonds
+  - If decision w/ > 3 branches, user seperate diamonds
 - Circle: connector
 
-
-# Pylint
+## Pylint
 
 - C: (Convention) for programming standard       violation
 - R: (Refactor) for bad code smell
@@ -53,87 +56,88 @@ Used to determine logic flow in a program
 
 - Use a .pylintrc file for configurations to modify how strict it is on grading. Create this in your project directory
 
-# Refactoring calcualtor program
+## Refactoring calcualtor program
 
 - Use helper functions to wrap up repetetive code
-- Use try and except statement and a while loop to evaluate if 
+- Use try and except statement and a while loop to evaluate if
 something is true to validate waht the user inputs
 
-# Precedance rules - top to bottom
+## Precedance rules - top to bottom
 
-Operators	Meaning
-()	Parentheses
-**	Exponent
-+x, -x, ~x	Unary plus, Unary minus, Bitwise NOT
-*, /, //, %	Multiplication, Division, Floor division, Modulus
-+, -	Addition, Subtraction
-<<, >>	Bitwise shift operators
-&	Bitwise AND
-^	Bitwise XOR
-|	Bitwise OR
-==, !=, >, >=, <, <=, is, is not, in, not in	Comparisons, Identity, Membership operators
-not	Logical NOT
-and	Logical AND
-or	Logical OR
+Operators Meaning
+() Parentheses
+** Exponent
++x, -x, ~x Unary plus, Unary minus, Bitwise NOT
+*, /, //, % Multiplication, Division, Floor division, Modulus
++, - Addition, Subtraction
+<<, >> Bitwise shift operators
+& Bitwise AND
+^ Bitwise XOR
+| Bitwise OR
+==, !=, >, >=, <, <=, is, is not, in, not in Comparisons, Identity, Membership operators
+not Logical NOT
+and Logical AND
+or Logical OR
 ![alt text](image-1.png)
 
-# Important String methods
+## Important String methods
 
-### Method	        Description
-- capitalize()	Converts the first character to upper case
-- casefold()	    Converts string into lower case
-- center()	    Returns a centered string
-- count()	        Returns the number of times a specified value occurs in a string
-- encode()	    Returns an encoded version of the string
-- endswith()	    Returns true if the string ends with the specified value
-- expandtabs()	Sets the tab size of the string
-- find()	        Searches the string for a specified value and returns the position of where it was found
-- format()	    Formats specified values in a string
-- format_map()	Formats specified values in a string
-- index()	        Searches the string for a specified value and returns the position of where it was found
-- isalnum()	    Returns True if all characters in the string are alphanumeric
-- isalpha()	    Returns True if all characters in the string are in the alphabet
-- isascii()	    Returns True if all characters in the string are ascii characters
-- isdecimal()	    Returns True if all characters in the string are decimals
-- isdigit()	    Returns True if all characters in the string are digits
-- isidentifier()	Returns True if the string is an identifier
-- islower()	    Returns True if all characters in the string are lower case
-- isnumeric()	    Returns True if all characters in the string are numeric
-- isprintable()	Returns True if all characters in the string are printable
-- isspace()	    Returns True if all characters in the string are whitespaces
-- istitle()	    Returns True if the string follows the rules of a title
-- isupper()	    Returns True if all characters in the string are upper case
-- join()	        Converts the elements of an iterable into a string
-- ljust()	        Returns a left justified version of the string
-- lower()	        Converts a string into lower case
-- lstrip()	    Returns a left trim version of the string
-- maketrans()	    Returns a translation table to be used in translations
-- partition()	    Returns a tuple where the string is parted into three parts
-- replace()	    Returns a string where a specified value is replaced with a specified value
-- rfind()	        Searches the string for a specified value and returns the last position of where it was found
-- rindex()	    Searches the string for a specified value and returns the last position of where it was found
-- rjust()	        Returns a right justified version of the string
-- rpartition()	Returns a tuple where the string is parted into three parts
-- rsplit()	    Splits the string at the specified separator, and returns a list
-- rstrip()	    Returns a right trim version of the string
-- split()	S       plits the string at the specified separator, and returns a list
-- splitlines()	Splits the string at line breaks and returns a list
-- startswith()	Returns true if the string starts with the specified value
-- strip()	        Returns a trimmed version of the string
-- swapcase()	    Swaps cases, lower case becomes upper case and vice versa
-- title()	        Converts the first character of each word to upper case
+### Method         Description
+
+- capitalize() Converts the first character to upper case
+- casefold()     Converts string into lower case
+- center()     Returns a centered string
+- count()         Returns the number of times a specified value occurs in a string
+- encode()     Returns an encoded version of the string
+- endswith()     Returns true if the string ends with the specified value
+- expandtabs() Sets the tab size of the string
+- find()         Searches the string for a specified value and returns the position of where it was found
+- format()     Formats specified values in a string
+- format_map() Formats specified values in a string
+- index()         Searches the string for a specified value and returns the position of where it was found
+- isalnum()     Returns True if all characters in the string are alphanumeric
+- isalpha()     Returns True if all characters in the string are in the alphabet
+- isascii()     Returns True if all characters in the string are ascii characters
+- isdecimal()     Returns True if all characters in the string are decimals
+- isdigit()     Returns True if all characters in the string are digits
+- isidentifier() Returns True if the string is an identifier
+- islower()     Returns True if all characters in the string are lower case
+- isnumeric()     Returns True if all characters in the string are numeric
+- isprintable() Returns True if all characters in the string are printable
+- isspace()     Returns True if all characters in the string are whitespaces
+- istitle()     Returns True if the string follows the rules of a title
+- isupper()     Returns True if all characters in the string are upper case
+- join()         Converts the elements of an iterable into a string
+- ljust()         Returns a left justified version of the string
+- lower()         Converts a string into lower case
+- lstrip()     Returns a left trim version of the string
+- maketrans()     Returns a translation table to be used in translations
+- partition()     Returns a tuple where the string is parted into three parts
+- replace()     Returns a string where a specified value is replaced with a specified value
+- rfind()         Searches the string for a specified value and returns the last position of where it was found
+- rindex()     Searches the string for a specified value and returns the last position of where it was found
+- rjust()         Returns a right justified version of the string
+- rpartition() Returns a tuple where the string is parted into three parts
+- rsplit()     Splits the string at the specified separator, and returns a list
+- rstrip()     Returns a right trim version of the string
+- split() S       plits the string at the specified separator, and returns a list
+- splitlines() Splits the string at line breaks and returns a list
+- startswith() Returns true if the string starts with the specified value
+- strip()         Returns a trimmed version of the string
+- swapcase()     Swaps cases, lower case becomes upper case and vice versa
+- title()         Converts the first character of each word to upper case
 - translate()     Returns a translated string
-- upper()	        Converts a string into upper case
-- zfill()	        Fills the string with a specified number of 0 values at the beginning
+- upper()         Converts a string into upper case
+- zfill()         Fills the string with a specified number of 0 values at the beginning
 
 - and and or do not have precedence, in an expression it goes left to right. **All 8 comparison operations have same priority (but higher than boolean operations)** in and not in have same priorities as comparison operations
 - For short circuting, or statements return the first truthy element or they return the last falsy element
 - the and statement returns teh last truthy element and the first falsy one
 **Note that neither and nor or restrict the value and type they return to False and True, but rather return the last evaluated argument. This is sometimes useful, e.g., if s is a string that should be replaced by a default value if it is empty, the expression s or 'foo' yields the desired value. Because not has to create a new value, it returns a boolean value regardless of the type of its argument (for example, not 'foo' produces False rather than ''.)**
 - python will print the last element in an expression to the terminal
-- remember [none] is actually 
+- remember [none] is actually
 
-# Dict view objects
+## Dict view objects
 
 - the .keys() method returns a dictionary view object and not an actual list. If you print it it will print with ([]) which shows its not an actual list
 - dict view objects are dynamic, so changes to the dict will show in all of them
@@ -141,7 +145,9 @@ or	Logical OR
 # PY101 study guide - all topics
 
 ## Naming Conventions
+
 Naming conventions: legal vs. idiomatic, illegal vs. non-idiomatic
+
 - Closely related to the stylistic conventions discussed in the Using Python chapter are the Python naming conventions. Names that follow these conventions are idiomatic. In contrast, those that do not are non-idiomatic (valid but not idiomatic) or illegal (your code will either raise a syntax error or do something unexpected).
 
 - Naming conventions for most identifiers (excluding constant and class names):
@@ -193,45 +199,46 @@ Naming conventions: legal vs. idiomatic, illegal vs. non-idiomatic
     You may not start identifiers with a digit.
     You may not use Python's reserved words such as if, def, while, return, and pass as names.
 
-- Non-Idiomatic Names	Explanation
-    fourWayIntersection:	camelCase
-    Schön:	Extended ASCII
+- Non-Idiomatic Names Explanation
+    fourWayIntersection: camelCase
+    Schön: Extended ASCII
 
-    Illegal Names	Explanation
-    pass:	        Reserved word
-    3xy:	        Starts with digit
-    ultimate-question:	Hyphen
-    one two three:	Whitespace
-    is_lowercase?:	Punctuation
-    is+lowercase:	Special character
+    Illegal Names Explanation
+    pass:         Reserved word
+    3xy:         Starts with digit
+    ultimate-question: Hyphen
+    one two three: Whitespace
+    is_lowercase?: Punctuation
+    is+lowercase: Special character
 
 - Most illegal names will raise an error. However, if the illegal name looks like valid Python, you won't get an error.
 
 - Variable names are often referred to by the broader term identifiers. In Python, identifiers refer to several things:
-    - Variable and constant names
-    - Function and method names
-    - Function and method parameter names
-    - Class and module names
+  - Variable and constant names
+  - Function and method names
+  - Function and method parameter names
+  - Class and module names
 
 ## type coercions: explicit (e.g., using int(), str()) and implicit
 
 - Explicit type coercioin occurs when a programmer intentionally employs built in functions to convert a value of one type to another.
-    - For example, using int() to convert a string from input() if we are asking for an int input
-    - Trying to convert a non-numberic string to an integer using int() will raise a ValueError
-    - int() will accept also a real number (floating point), bytes-like object, and also boolean values (because they can evaluate to 1 and 0)
-    - any other data type passed to int(), for example a list, will raise a TypeError
-    - floats have a special "Not-a-number" value
-    - print() automatically will call the str() function. str() works with all buiilt in python data types and most non-built in types
-    - Note: repr() will print a string representation of an object. For example, printing the list [1, 2, 3] with print() will print the values,
+  - For example, using int() to convert a string from input() if we are asking for an int input
+  - Trying to convert a non-numberic string to an integer using int() will raise a ValueError
+  - int() will accept also a real number (floating point), bytes-like object, and also boolean values (because they can evaluate to 1 and 0)
+  - any other data type passed to int(), for example a list, will raise a TypeError
+  - floats have a special "Not-a-number" value
+  - print() automatically will call the str() function. str() works with all buiilt in python data types and most non-built in types
+  - Note: repr() will print a string representation of an object. For example, printing the list [1, 2, 3] with print() will print the values,
     however repr of that will print '[1, 2, 3]'. This can be used to recreate the object later on
 
 - Implicit type conversion (automatic data type conversation), when python automatically transofmrs one dat typoe into another without the programers
 direct instruction. Typically occurs when mixing distinct data types
-    - For example: calculations between an int and a float, python will convert the int to a float
-    - print() will implicitly convert any non-string arguments to a string
+  - For example: calculations between an int and a float, python will convert the int to a float
+  - print() will implicitly convert any non-string arguments to a string
 
 ## numbers, including handling exceptions (ValueError, ZeroDivisionError)
-- Numeric values represent numbers. Numbers can be added, subtracted, multiplied, and divided and can be used in a wide variety of mathematical operations. 
+
+- Numeric values represent numbers. Numbers can be added, subtracted, multiplied, and divided and can be used in a wide variety of mathematical operations.
 - Int represents integers, aka whole numbers, to include negative whole numbers
 - Python also supports other numeric types, such as complex, decimal, and fractional numbers.
 - You can break up numbers with underscores: 123_456_789. Commas and decimals are not valid seperators
@@ -249,12 +256,13 @@ print(3.14e+20 / 2.72e-15)    # 1.1544117647058823e+35
 print(int(3e+20))             # 300000000000000000000
 
 - If python interpreter cannot continue executing a program: creates an Exception Object that describes problem and stops the program
-    - This is called "raising an exception"
-    - Example, trying to cast a string to a float creates a **value error**
-    - zero division error is when denom is zero
+  - This is called "raising an exception"
+  - Example, trying to cast a string to a float creates a **value error**
+  - zero division error is when denom is zero
 
 ## strings
-Examples: 
+
+Examples:
 'Hello!'
 "He's pining for the fjords!"
 '1969-07-20'
@@ -272,6 +280,7 @@ print("C:\\Users\\Xyzzy")  # Each \\ produces a literal \
 print(r"C:\Users\Xyzzy")  # raw string literal
 
 ## f-strings
+
 - primarily used for string interpolation
 - can be used instead of the format method
 - can also escape {} by doing {{}} in f strings
@@ -282,23 +291,24 @@ print(r"C:\Users\Xyzzy")  # raw string literal
     print(f'{123456.7890123:_}')  # 123_456.7890123
     print(f'{123456.7890123:,}')  # 123,456.7890123
 
-### string methods 
+### string methods
+
 1. capitalize - return a copy of the string w/ first character capitalized and the rest lowercased
     str.capitalize()
 2. swapcase - return a copy of string w/ uppercase characters to lowercase and vice versa. Note not necessarily true that
 str.swapcase().swapcase() == str (because of non ASCII chars)
 str.swapcase()
-3. upper - return copy of string w/ all cased chars converted to uppercase. Note str.upper().isupper() might be flase if str 
+3. upper - return copy of string w/ all cased chars converted to uppercase. Note str.upper().isupper() might be flase if str
 contains uncased characters or if the unicode catergory of the resulting char is not "Lu" (letter, uppercase) but "Lt" (letter, titlecase)
     \p{Lu} or \p{Uppercase_Letter}: an uppercase letter that has a lowercase variant.
     \p{Lt} or \p{Titlecase_Letter}: a letter that appears at the start of a word when only the first letter of the word is capitalized.
 str.upper()
 4. lower - return copy of string w/ all cased chars converted to lowercase.  Used 'default case folding' from unicode standard
 str.lower()
-5. isalpha - return **True** if all chars in str are alphabetic and there is at least one char, **False** otherwise. 
+5. isalpha - return **True** if all chars in str are alphabetic and there is at least one char, **False** otherwise.
     Defined by uncode char database as "Letter": “Lm”, “Lt”, “Lu”, “Ll”, or “Lo”
 str.isalpha()
-6. isdigit - return **True** if all chars in str are digits and there is at least one char, **False** otherwise. 
+6. isdigit - return **True** if all chars in str are digits and there is at least one char, **False** otherwise.
     Digits include: decimal chars and digits that need special handling such as compatability superscript digits
     Formally: digit has property value Numeric_Type=Digit or Numeric_Type =Decimal.
 7. isalnum - return **True** if all char in str are alphanumeric and there is at least one char, **False** otherwise.
@@ -309,27 +319,28 @@ str.isalpha()
 11. strip - str.strip([chars]) - return copy of str w/ leading and trailing characters removed. Chars argu ment is a string
     specifying set of chars to be removed. If ommitted or **None**, chars arg defualts to removing whitespace.
     Chars arg not a prefix or suffic, all combos are stripped.
-    Exampe: 
+    Exampe:
     `'   spacious   '.strip()`
-               ` 'spacious'`
-    ` 'www.example.com'.strip('cmowz.')`
-           ` 'example'`
+               `'spacious'`
+    `'www.example.com'.strip('cmowz.')`
+           `'example'`
 12. rstrip - str.rstrip([chars]) -return copy of str w/ trailing chars removed. Same specifications for argument as strip, not a suffix.
 13. lstrip - str.lstrip([chars]) - return copy of string w/ leading chars removed. Same specifications for argument as strip, not a prefix.
-14. replace - str.replace(old, new[, count]) - return copy of str w/ all occurrences of substring *old* replaced by *new*.
-    If optional argu ment *count* is given, only the first *count* occurrernces are replaced
-15. split - `str.split(sep=None, maxsplit=-1)` - Return a list of the words in the string, using *sep* as the delimiter string. 
-    If *maxsplit* is given, at most *maxsplit* splits are done (therefore will have at most maxsplit+1 elements). 
-    If *maxsplit* not specified or -1, the no limit on number of splits (all possible are made)
+14. replace - str.replace(old, new[, count]) - return copy of str w/ all occurrences of substring _old_ replaced by _new_.
+    If optional argu ment _count_ is given, only the first _count_ occurrernces are replaced
+15. split - `str.split(sep=None, maxsplit=-1)` - Return a list of the words in the string, using _sep_ as the delimiter string.
+    If _maxsplit_ is given, at most _maxsplit_ splits are done (therefore will have at most maxsplit+1 elements).
+    If _maxsplit_ not specified or -1, the no limit on number of splits (all possible are made)
 
-16. find - `str.find(sub[, start[, end]]) ` - Return lowest index in str where substring *sub* is found w/in slice s[start:end]. 
+16. find - `str.find(sub[, start[, end]])` - Return lowest index in str where substring _sub_ is found w/in slice s[start:end].
     Optional arguments start and end are interpreted as in slice notation
     **Return -1 if sub not found**
-17. rfind - `str.rfind(sub[, start[, en]]) ` - Return highest index in str where substring *sub* is found, such that *sub* is contained
-    w/in s[start:end]. Opt args interpreted in slice notation. 
+17. rfind - `str.rfind(sub[, start[, en]])` - Return highest index in str where substring _sub_ is found, such that _sub_ is contained
+    w/in s[start:end]. Opt args interpreted in slice notation.
     **Return -1 on failure**
 
 ## boolean vs. truthiness
+
 - True or false is not the same as saying something returns truthy or false ( aka evaluates as true or evaluates as false)
 - True and False refer to the boolean values True and False - other phrases refer to truthiness, that is a truthy or false value
 `num = 5`
@@ -341,15 +352,17 @@ str.isalpha()
 - However, print(num == True) is False because num is still not equal to the boolean value of True
 
 ## None
-- A literal value whole value is the lone representative of the *NoneType* class
+
+- A literal value whole value is the lone representative of the _NoneType_ class
 - Used to indicate missing, unset, or unavailable data and may sometimes be an error indication
 
-** Side note: *Literals* in python definition: literal types indicate that a var has a specific and concrete value.
+** Side note: _Literals_ in python definition: literal types indicate that a var has a specific and concrete value.
     - Also m eans all methods from the parent type will be directly inherited by the literal type.
     - Lets you directly represent an object in source code
     - Literals: strings, numeric, booleans, collections (list, dict, tuple, set), special (None)
 
 ## ranges
+
 - Sequence of integers between two endpoints
 - Commonly used to iterate over an increasing or decreasing range of integers
 - Range starts from 0 and ends just before argument
@@ -373,8 +386,9 @@ str.isalpha()
 `[0, -1, -2, -3, -4]`
 
 ## list and dictionary syntax
-- List literals use square brackets [] surrounding a comma-delimited list of values, while tuples use parentheses (). 
-- The comma-delimited list values are known as elements. 
+
+- List literals use square brackets [] surrounding a comma-delimited list of values, while tuples use parentheses ().
+- The comma-delimited list values are known as elements.
 `>>> my_list = [1, 'xyz', True, [2, 3, 4]]`
 `>>> my_list`
 `[1, 'xyz', True, [2, 3, 4]]`
@@ -382,8 +396,10 @@ str.isalpha()
 `>>> tup = ('xyz', [2, 3, 4], 1, True)`
 `>>> tup`
 `('xyz', [2, 3, 4], 1, True)`
+
 - Multi-line:
-~~~
+
+~~~Python
 [ # Begin multi-line list literal`
     "Monty Python's Flying Circus",
     ( # Begin multi-line tuple literal
@@ -396,6 +412,7 @@ str.isalpha()
     ), # End multi-line tuple literal
 ] # End multi-line list literal
 ~~~
+
 - The most important facts to remember about lists and tuples are:
 
     The order of the elements is significant.
@@ -404,7 +421,8 @@ str.isalpha()
     Use indexing syntax to reassign specific list elements.
     Index numbers are non-negative integers starting from 0 and ending at the sequence's length minus 1.
 - Dictionary syntax(type of map):
-~~~
+
+~~~Python
 >>> my_dict = {
 ...     'dog': 'barks',
 ...     'cat': 'meows',
@@ -412,16 +430,21 @@ str.isalpha()
 ... }
 {'dog': 'barks', 'cat': 'meows', 'pig': 'oinks'}
 ~~~
+
 - Use [] key access syntax, value between the brackets must be one of the keys in the dict
 - **Dictionairies are unordered collections in which insertion order is preserved**
 
 ## list/dict methods
+
 - len(list)
 - list.append()
 - list.pop()
 - list.reverse()
+
 ## dictionary methods: dict.keys(), dict.values(), dict.items(), dict.get()
+
 ## operators
+
     Arithmetic: +, -, *, /, //, %, **
     String operators: +
     List operators: +
@@ -429,25 +452,104 @@ str.isalpha()
     Logical: and, or, not
     Identity: is, is not
     operator precedence
+
 ## mutability and immutability
+
 ## variables
+
     naming conventions
     initialization, assignment, and reassignment
     scope
     global keyword
     variables as pointers
     variable shadowing
+
 ## conditionals and loops
+
     for
     while
+
 ## print() and input()
-## Functions:
+
+## Functions
+
     definitions and calls
     return values
     parameters vs. arguments
     nested functions
     output vs. return values, side effects
+
 ## expressions and statements
+
 ## discuss a function's use and purpose (a "user-level" description) instead of its implementation
 
 ![alt text](image-2.png)
+
+# PY109 TA Session
+
+## Questions for Antonina
+
+1. How well should we know list comprehensions since they are in the book
+2. Go over precedence for 'or' and 'and' operators
+
+~~~Python
+greeting = "Hello"
+# initalize variable greeting
+
+def greet(greeting): # define greet function w/ 1 parameter
+    greeting += " world" # 
+    print(greeting) # does not mutate global bc uses local var
+
+greet(greeting) >>> Hello world
+print(greeting) >>> Hello
+
+# Overall concepts: variable shadowing, string immutability
+
+greeting = "Hello"
+
+def greet():
+    global greeting
+    greeting += " world"
+    print(greeting)
+
+greet() >>> Hello world
+print(greeting) >>> Hello world
+~~~
+
+## Truthiness questions
+
+~~~ Python
+# print('a' and 2 < 3) # True
+print(None or 1 > -2.5) # True
+# print('' or []) # []
+# print(2 < 3 and '' or 'c' > 'a')
+        (True and Falsy) or True
+~~~
+
+~~~ Python
+lst1 = [0, 1, 2, 3]
+lst2 = lst1.pop(1)
+
+if lst2:
+    print(lst2) # returns 1 b/c pop method returns the element
+else:
+    print(lst1)
+
+~~~
+
+~~~Python
+letters = ['b', 'a', 'c', 'f']
+
+def reverse_list1(lst):
+    return lst[::-1]
+
+def reverse_list2(lst):
+    return lst.reverse()
+
+print(reverse_list1(letters)) # ? # makes copy, doesn't mutate original list
+print(reverse_list2(letters)) # ? # returns none, reverse mutates original list
+print(letters) # will print the reversed list due to mutation by reverse in above function call
+
+#Concepts: mutate by object pass reference
+#Note: the is operator uses the id() functions behind the scenes
+~~~
