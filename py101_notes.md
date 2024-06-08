@@ -501,8 +501,11 @@ Global keyword
 
 ## Variables as pointers
 
-- Pass by reference
-- Pass by value - tra
+- Pass by reference - means it is passing a pointer to the original object, allowing you to change the original object
+- Pass by value - traditionally, it means the function has a copy of the original object. Operations performed on this object
+    within the function have no effectg on the oriignal object outside the function.
+- **Python is described as a pass by object reference as you are actually passing a reference to the object (value) rather than a copy of the object itself**
+- **Whether the function can modify the object depends on whether the object is mutable or immutable.
 
 variable shadowing
 
@@ -537,6 +540,31 @@ output vs. return values, side effects
 **Functions should return a useful value or should have a side effect, NOT BOTH**
 
 ## expressions and statements
+
+- Expression - combines values, variables, operators, and calls to functions to produce a new object. They must be evaluated to determine
+    the expression's value. Ex's include:
+    1. Literals: `5, 'Karl', 3.141592, True, None`
+    2. Variable references: foo or name when these variables have been previously defined.
+    3. Arithmetic operations: `x + y or a * b - 5.`
+    4. Comparison operations: `'x' == 'x' or 'x' < 'y'.`
+    5. String operations: `'x' + 'y' or 'x' * 32.`
+    6. Function calls: `print('Hello') or len('Python').`
+    7. Any valid combination of the above that evaluates to a single object.
+
+- Statement - an instruction that tells python to perform an action of some kind. **Unlike expressions, statements don't return values**. They do
+    something but don't produce a value as expressions do. Ex's:
+    1. Assignment: like x = 5. This doesn't evaluate as a value; it assigns a value to a variable.
+    2. Control flow: such as if, else, while, for, and so on. These determine the flow of your program but don't evaluate as a value themselves.
+    3. Function and class definitions: using def or class.
+    4. Return statements: like return x, which tells a function to exit and return a value. return itself doesn't return a value; it informs the function what value it should return.
+    5. Import statements: such as import math.
+    6. stand-alone expression are considered both expressions and statements:
+
+~~~Python
+3 + 4            # Simple expression
+print('Hello')   # Function call; returns None
+my_list.sort()   # Method call; returns None
+~~~
 
 ## discuss a function's use and purpose (a "user-level" description) instead of its implementation
 
