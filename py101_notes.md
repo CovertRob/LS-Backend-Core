@@ -498,10 +498,11 @@ naming conventions - covered above
 Initialization, assignment, and reassignment - self-explanatory
 Scope - global, function scope aka local scope. Inner function scope
 Global keyword
-Variables as pointers
+
+## Variables as pointers
 
 - Pass by reference
-- Pass by value
+- Pass by value - tra
 
 variable shadowing
 
