@@ -551,7 +551,7 @@ output vs. return values, side effects
     6. Function calls: `print('Hello') or len('Python').`
     7. Any valid combination of the above that evaluates to a single object.
 
-- Statement - an instruction that tells python to perform an action of some kind. **Unlike expressions, statements don't return values**. They do
+- Statement - an instructionthat tells python to perform an action of some kind. **Unlike expressions, statements don't return values**. They do
     something but don't produce a value as expressions do. Ex's:
     1. Assignment: like x = 5. This doesn't evaluate as a value; it assigns a value to a variable.
     2. Control flow: such as if, else, while, for, and so on. These determine the flow of your program but don't evaluate as a value themselves.
