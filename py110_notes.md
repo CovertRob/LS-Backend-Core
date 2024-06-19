@@ -112,3 +112,136 @@ e
 ## Working with Strings and Ranges
 
 ### Ranges
+
+- The `enumerate()` function uses tuple unpacking with for loops
+- Notice that count always returns either 0 or 1. If the argument is present in the range, it returns 1. Otherwise, it returns 0. The count method is roughly equivalent to value in my_range. It differs only in the specific return values; in returns either True or False.
+
+~~~Python
+>>> my_range = range(3, 10)
+>>> my_range.count(5)
+1
+
+>>> my_range.count(15)
+0
+
+>>> my_range.index(5)
+2
+
+>>> my_range.index(15)
+ValueError: 15 is not in range
+~~~
+
+### Working with Strings
+
+- str.index method searches a string for a specified substring and returns the index where the substring first appears. **If it doesn't locate the substring, it raises a ValueError**
+
+- str.find also searches for substring, **if not found returns -1**
+- str.count returns # of times substring in a string object
+- All 3 accept optional arguments of start and end
+- `str.replace(old, new, count) - if leave out optional count or -1 will replace all instances
+- casefold() method better than lower for international strings with weird characters
+- swapcase() is internationalized like casefold
+- To use join method, elements must already be strings
+- work around:
+
+~~~Python
+>>> numbers = [1, 2, 3, 4, 5]
+>>> '-'.join([str(number) for number in numbers])
+'1-2-3-4-5'
+~~~
+
+- the split function if you provide it `' '` it will split the string at all white spaces
+- If try to split with empty string, raises ValueError
+- If trying to split into individual chars, convert it into a list
+- isalpha, isalnum, isdigit are all internationalized
+- collections like lists, tuples, sets, frozen sets, and dicts can also be convertd to strings
+
+## Working with Lists and Tuples
+
+### Lists
+
+- list.append adds object to end of list, list.insert inserts object prior to specific index position
+- if index greater than list length, it inserts it at the end
+
+~~~Python
+>>> numbers = [1, 2, 3]
+>>> numbers.append(4)
+>>> numbers
+[1, 2, 3, 4]
+
+>>> numbers.insert(2, 'two-point-five')
+>>> numbers
+[1, 2, 'two-point-five', 3, 4]
+~~~
+
+- To insert another iterable, use list.extend
+- remove() removes the first occurrence, pop() removes at specified index or last item in list
+- list.reverse mutates the orignal list in place
+- list.sort sorts the elements in place as well
+list.sort is smart enough to deal with lists of strings and other types. As long as a < b is a valid expression for any two elements in the list, a and b, the method can sort the list. Thus, we can sort a list of strings as strings, even when they contain numeric values
+- use sort(reverse=True) to perform a reverse sort
+- can also do sort(key=str.casefold) to do case-insensitive sort
+- also:
+
+~~~Python
+>>> numbers = ['61', '103', '525', '10100', '25', '3']
+>>> numbers.sort(key=int)
+>>> numbers
+['3', '25', '61', '103', '525', '10100']
+~~~
+
+- You can pass sort any function or method that takes a single argument and returns a value as long as compatible with elements in the list
+
+### Tuples
+
+- Tuples unpacking: spreads out values from a tuples, assigning it to its respective variable in one clean sweep
+- Unpacking works w/ all iterables but best with tuples b/c left and right need to match
+
+### Merging Dictionaries
+
+- With two dictionaries and wish to merge - use update. If keys in dictionary being updated overlap w/ keys in dict pased to update, their values get overwritten
+- Python 3.9 introduced the merge (|) and update (|=) operators. The | operator combines two dictionaries in much the same was as does dict.update. However, instead of mutating one of the dictionaries, the merge operation returns a new dictionary. The |= operator does mutate one of the dictionaries; unlike most augmented assignment operators, it mutates rather than reassigns the object to the left of the operator
+
+### Conversion to Dictionaries
+
+- You can convert iterables containing key-value pairs into dicts
+
+~~~Python
+>>> list_data = [['name', 'Srdjan'], ['city', 'Belgrade']]
+>>> dict_from_list = dict(list_data)
+>>> dict_from_list
+{'name': 'Srdjan', 'city': 'Belgrade'}
+
+>>> tuple_data = (('name', 'Srdjan'), ('city', 'Belgrade'))
+>>> dict_from_tuple = dict(tuple_data)
+>>> dict_from_tuple
+{'name': 'Srdjan', 'city': 'Belgrade'}
+~~~
+
+### Working with Sets
+
+- sets are unordered collections of objects where every object is unique
+- Ideal for situations where you want to avoid duplicates and don't care about the order of the objects
+- subset: all elements of first set are in second set - `<= or issubset`
+- superset: all elements of second set are in first set - `>= or issuperset`
+- < and > check whether one subset or superset but not equal to other set
+- union - combines two sets, collects all unique elements from both
+    Use the union method or | operator: both don't mutate either set
+- intersection - identifies common elements between two sets: use intersection method or & operator: don't mutate either set
+- difference - determines what is in one set but not in another: use difference method or - operator: doesn't mutate either set
+- isdisjoint - determines if no common elements aka intersection is empty
+
+Methods
+
+- add: adds single new member to existing set, if alrady exists won't do anyting
+- remove: removes a single specified element from set, if isn't in set it raises a KeyError
+- discard - if don't care whether element is in the set, use discard
+- pop - removes and returns an arbitrary element from the set, raises KeyError if set is empty
+- clear - discards all elements in a set, leaving empty set behind
+**Converting a dictionary to a set only stores the dictionary keys in the new set***
+**Frozen sets can be useful for dict keys when you need a set-like behavior for hashable objects**
+
+## Unpacking Iterables
+
+### Unary * Operator
+
