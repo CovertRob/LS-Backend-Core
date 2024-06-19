@@ -245,3 +245,125 @@ Methods
 
 ### Unary * Operator
 
+- Serves as a tool that "unpacks" contents of an iterable:
+
+~~~Python
+>>> numbers = [1, 2, 3, 4]
+>>> tup1 = (5, 6)
+>>> tup2 = (7, 8)
+>>> joined_list = [*numbers, *tup1, *tup2]
+>>> joined_list
+[1, 2, 3, 4, 5, 6, 7, 8]
+~~~
+
+- Can be used with lists, tuples, sets, even dicts (slight mod)
+- can use to unpack arguments being passed to function:
+
+~~~Python
+def test(num1, num2, num3):
+    # do something
+
+numbers = [1, 2, 3]
+test(numbers[0], numbers[1], numbers[2])
+# now this:
+test(*numbers)
+~~~
+
+- Python 3.8 came nested unpacking as well
+
+~~~Python
+numbers = [1, [2, 3, 4], 5]
+a, (b, c, d), e = numbers
+print(a, b, c, d, e)  # Outputs: 1 2 3 4 5
+~~~
+
+- use ** to unpack dictionaries - especially helpful in keyword arguments:
+
+~~~Python
+def profile(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+user_profile = {
+    "name": "Srdjan",
+    "age": 38,
+    "profession": "software engineer",
+}
+
+profile(**user_profile)
+
+# Output:
+# name: Srdjan
+# age: 38
+# profession: software engineer
+~~~
+
+## PEDAC
+
+- P: understand the problem
+: Establish rules and define the boundaries of the problem
+: Restate the problem in your own words
+- E: examples / test cases
+- D: data structures
+- A: algorithm
+- C: code
+
+~~~Python
+"""
+PROBLEM:
+
+Given a string, write a function `palindrome_substrings` which returns
+all the palindromic substrings of the string. Palindrome detection
+should be case-sensitive.
+"""
+
+# Test cases:
+
+# Comments show expected return values
+palindrome_substrings("abcddcbA")   # ["bcddcb", "cddc", "dd"]
+palindrome_substrings("palindrome") # []
+palindrome_substrings("")           # []
+palindrome_substrings("repaper")    # ['repaper', 'epape', 'pap']
+palindrome_substrings("supercalifragilisticexpialidocious") # ["ili"]
+
+def substrings(string):
+    result = []
+    start_index = 0
+
+    while start_index <= len(string) - 2:
+        num_chars = 2
+        while num_chars <= len(string) - start_index:
+            substring = string[start_index:start_index + num_chars]
+            result.append(substring)
+            num_chars += 1
+
+        start_index += 1
+
+    return result
+
+def is_palindrome(string):
+    reversed_string = string[::-1]
+    if reversed_string == string:
+        return True
+    else:
+        return False
+
+def palindrome_substrings(s):
+    result = []
+    substrings_list = substrings(s)
+
+    for substring in substrings_list:
+        if is_palindrome(substring):
+            result.append(substring)
+
+    return result
+
+print(palindrome_substrings("abcddcbA"))   # ["bcddcb", "cddc", "dd"]
+print(palindrome_substrings("palindrome")) # []
+print(palindrome_substrings(""))           # []
+print(palindrome_substrings("repaper"))
+# ['repaper', 'epape', 'pap']
+
+print(palindrome_substrings("supercalifragilisticexpialidocious"))
+# ["ili"]
+~~~
