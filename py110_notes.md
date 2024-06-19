@@ -300,13 +300,31 @@ profile(**user_profile)
 
 ## PEDAC
 
-- P: understand the problem
-: Establish rules and define the boundaries of the problem
-: Restate the problem in your own words
-- E: examples / test cases
-- D: data structures
-- A: algorithm
-- C: code
+- **P: understand the Problem**
+  - Establish rules and define the boundaries of the problem
+  - Restate the problem in your own words
+  - Identify problem requirements:
+    - Explicit
+    - Implicit
+  - Identify inputs and outputs
+  - Ask questions / identify unclear information
+- **E: examples / test cases**
+  - Confirm or provide confirmation initial assumptions
+  - Answer questions and provide implicit requirements
+  - Can be run
+  - Codify rules and boundaries of the problem
+- **D: data structures**
+  - Think in terms of data structures
+  - Helps reason with data logically
+  - Helps interact with data at the implementation stage
+  - Closely linked to the algorithm used for your solution
+- **A: algorithm**
+  - Logical sequence of steps for accomplishing a task or objective
+  - Closely related to data structures
+  - At first, keep your algorithm abstract and high level
+  - Break down stpes and fill in details as needed
+  - Don't worry about efficiency at this stage
+- **C: code** 
 
 ~~~Python
 """
