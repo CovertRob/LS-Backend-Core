@@ -324,7 +324,20 @@ profile(**user_profile)
   - At first, keep your algorithm abstract and high level
   - Break down stpes and fill in details as needed
   - Don't worry about efficiency at this stage
-- **C: code** 
+- **C: code**
+  - Translating your solution algorithm into code
+    - Think about our algorithm in the context of the programming language
+      - Features and constraints
+      - Characcteristics of data structures
+      - Built in methods or functions
+      - Syntax / general patterns
+    - Create any test cases
+  - Code with intent
+**Don't think of PEDAC as linear**
+- Move back and forth between steps
+- Refer back to your notes
+- Switch from implementation mode back to abstract problem solving mode when necessary
+- Don't try to problem solve at the code level
 
 ~~~Python
 """
