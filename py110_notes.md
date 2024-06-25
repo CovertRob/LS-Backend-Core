@@ -398,3 +398,28 @@ print(palindrome_substrings("repaper"))
 print(palindrome_substrings("supercalifragilisticexpialidocious"))
 # ["ili"]
 ~~~
+
+## Sorting
+
+### Custom Sorting
+
+- First class values / first class objects
+  - Can be assigned to a variable or an element of a data structure
+  - Can be passed as an argument to a function
+  - Can be returned as the return value of a function
+  - Ex: all data types and user defined classes
+  - Functions are also considered 'first class functions'
+- **Functions that accept function arguments or that return functions are known as higher order functions**
+- `sorted(), list.sort` are both higher-order functions
+- Can use tuple unpacking for custom sorting:
+
+~~~Python
+def person_key(person):
+    name, age = person
+    return (age, name)
+
+people = [("Jack", 30), ("John", 25), ("Betty", 25), ("Anna", 30)]
+sorted_people = sorted(people, key=person_key)
+print(sorted_people)
+# [('Betty', 25), ('John', 25), ('Anna', 30), ('Jack', 30)]
+~~~
