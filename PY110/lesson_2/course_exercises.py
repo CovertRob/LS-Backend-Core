@@ -248,9 +248,87 @@ def all_even(dictionary):
 result = [dictionary for dictionary in lst 
                         if all_even(dictionary)]
 
-print(result)
+# print(result)
+# create a uuid with given parameters
+import random
 
+def create_uuid():
+    hex_chars = '0123456789abcdef'
+    sections = [8, 4, 4, 4, 12]
+    uuid = []
 
+    for section in sections:
+        chars = [random.choice(hex_chars) for _ in range(section)]
+        uuid.append(''.join(chars))
 
+    return '-'.join(uuid)
 
+#print(create_uuid())
 
+# Create a list of every vowel (a, e, i, o, u) that appears in
+# the contained strings, then print it
+
+dict1 = {
+    'first':  ['the', 'quick'],
+    'second': ['brown', 'fox'],
+    'third':  ['jumped'],
+    'fourth': ['over', 'the', 'lazy', 'dog'],
+}
+
+# my solution: issue is when there is more than 1 vowel in the word
+def check_vowel(input_string):
+    vowels = 'aeiou'
+    string_vowels = [chars for chars in input_string 
+                                            if chars in vowels]
+    return string_vowels
+
+def list_of_vowels(input_dict):
+    vowels_list = [check_vowel(elements)
+                        for lists in input_dict.values()
+                        for elements in lists]
+    return vowels_list
+
+# LS solution: much more concise...abs
+
+vowels = 'aeiou'
+
+chars = [char for key in dict1
+                for word in dict1[key]
+                for char in word if char in vowels]
+#print(chars)
+    
+DATA = [
+    {'one': '1', 'two': 2},
+    [{'four': 5, 'three': 6}, 'three'],
+    'three',
+    {'2': 'two', '3': 'three'}
+]
+
+# print(DATA[1][0].get('three'))
+
+todo_lists = [
+    {
+        "id": 1,
+        "list_name": 'Groceries',
+        "todos": [
+            {"id": 1, "name": 'Bread', "completed": False},
+            {"id": 2, "name": 'Milk', "completed": False},
+            {"id": 3, "name": 'Apple Juice', "completed": False}
+        ]
+    }
+]
+
+todo_lists[0]["todos"][2].update({"name": 'Orange Juice'})
+# print(todo_lists)
+
+def even_values(lst):
+    evens = []
+
+    for value in lst:
+        if value % 2 == 0:
+            evens.append(value)
+        lst.pop(0)
+
+    return evens
+
+#print(even_values([1, 3, 4, 2, 4, 6, 5, 7, 9, 10, 12]))
