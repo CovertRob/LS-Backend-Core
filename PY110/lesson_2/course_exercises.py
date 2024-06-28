@@ -331,4 +331,4 @@ def even_values(lst):
 
     return evens
 
-#print(even_values([1, 3, 4, 2, 4, 6, 5, 7, 9, 10, 12]))
+print(even_values([1, 3, 4, 2, 4, 6, 5, 7, 9, 10, 12]))

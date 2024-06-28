@@ -423,5 +423,3 @@ sorted_people = sorted(people, key=person_key)
 print(sorted_people)
 # [('Betty', 25), ('John', 25), ('Anna', 30), ('Jack', 30)]
 ~~~
-
-**When using append() method it mutates the object you're appending the element from**
