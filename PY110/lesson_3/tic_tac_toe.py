@@ -20,8 +20,16 @@
 
 # Outer loop between steps 1 and 9
 # Inner loop between steps 2 an 7
+import random
+import os
+
+INITIAL_MARKER = ' '
+HUMAN_MARKER = 'X'
+COMPUTER_MARKER = 'O'
 
 def display_board(board):
+    os.system('clear')
+    
     print('')
     print('     |     |')
     print(f"  {board[1]}  |  {board[2]}  |  {board[3]}")
@@ -38,7 +46,48 @@ def display_board(board):
 
 
 def initialize_board():
-    return {square: ' ' for square in range(1, 10)}
+    return {square: INITIAL_MARKER for square in range(1, 10)}
 
-board = initialize_board()
-display_board(board)
+def prompt(message):
+    print(f'==> {message}')
+
+def empty_squares(board):
+    return [key for key, value in board.items() if value == INITIAL_MARKER]
+
+def player_chooses_square(board):
+    while True:
+        valid_choices = [str(num) for num in empty_squares(board)]
+        prompt(f"Choose a square ({', '.join(valid_choices)}):")
+        square = input().strip()
+        if square in valid_choices:
+            break # break if it is a valid square
+        prompt("Sorry, that's not a valid choice")
+        
+    
+    board[int(square)] = HUMAN_MARKER
+
+def computer_chooses_square(board):
+    if len(empty_squares(board)) == 0:
+        return
+    square = random.choice(empty_squares(board))
+    board[square] = COMPUTER_MARKER
+
+def board_full(board):
+    return len(empty_squares(board)) == 0
+
+def someone_won(board):
+    return False
+
+def main():
+    board = initialize_board()
+    display_board(board)
+    while True:
+        player_chooses_square(board)
+        computer_chooses_square(board)
+        display_board(board)
+        if someone_won(board) or board_full(board):
+            break
+
+# Execution control function
+if __name__ == "__main__":
+    main()
