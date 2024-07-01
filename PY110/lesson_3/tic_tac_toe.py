@@ -20,13 +20,21 @@
 
 # Outer loop between steps 1 and 9
 # Inner loop between steps 2 an 7
+
+# Bonus features:
+# 1. join_or() - implemented in seperate file, imported as module
+# 2. implemented score tracking logic into game loop
+# 3. Refactored main() loop to make game state control cleaner and more modular
+
 import random
 import os
 import ttt_bonus_pedac as BF
+import time
 
 INITIAL_MARKER = ' '
 HUMAN_MARKER = 'X'
 COMPUTER_MARKER = 'O'
+MATCH_WIN = 5
 
 def display_board(board):
     os.system('clear')
@@ -100,28 +108,74 @@ def detect_winner(board):
 def someone_won(board):
     return bool(detect_winner(board))
 
-def main():
+def check_match_win(player_count, computer_count):
+    if player_count >= 3 and computer_count < 3:
+        return 'Player'
+    if computer_count >= 3 and player_count < 3:
+        return 'Computer'
+    return None
+
+def play_rounds(board):
+    while True:
+        display_board(board)
+        player_chooses_square(board)
+        if someone_won(board) or board_full(board):
+            break
+        computer_chooses_square(board)
+        if someone_won(board) or board_full(board):
+            break
+
+def match_state(board, player_win_count, computer_win_count):
+    if someone_won(board):
+            winner = detect_winner(board)
+            prompt(f"{winner} won!")
+            if winner == 'Player':
+                player_win_count += 1
+            if winner == 'Computer':
+                computer_win_count += 1
+            # check if will update the count outside the funtion, I don't think it will
+            # will check if any player has majority wins and return winner if so
+            # Will return None if there is not a match winner yet
+            if check_match_win(player_win_count, computer_win_count) == None:
+                prompt(f'Current match score - you: {player_win_count} computer: {computer_win_count}. Still no match winner!')
+                return player_win_count, computer_win_count, False # continue with match flag
+            else:
+                prompt(f"Match winner is {check_match_win(player_win_count, computer_win_count)}")
+                # Set the match won flag to true so we know which prompts to use in outer game loop
+                # match_won = True
+                return player_win_count, computer_win_count, True # match is over flag
+    else:
+        prompt("It's a tie!")
+
+def play_match():
+    player_win_count = 0
+    computer_win_count = 0
+    match_won = False
+
     while True:
         board = initialize_board()
-        
-        while True:
-            display_board(board)
-            player_chooses_square(board)
-            if someone_won(board) or board_full(board):
-                break
-            computer_chooses_square(board)
-            if someone_won(board) or board_full(board):
-                break
+        play_rounds(board)
         display_board(board)
-        if someone_won(board):
-            prompt(f"{detect_winner(board)} won!")
+        player_win_count, computer_chooses_square, match_won = match_state(board, player_win_count, computer_win_count)
+        if not match_won:
+            prompt("Continue with match? (y or n)")
+            answer = input().lower()
+            if answer[0] != 'y':
+                break
         else:
-            prompt("It's a tie!")
-        prompt("Play again? (y or n)")
-        answer = input().lower()
+            prompt("Would you like to start another match? (y or n)")
+            anser = input().lower()
+            if anser[0] != 'y':
+                break
+            else:
+                player_win_count = 0
+                computer_win_count = 0
 
-        if answer[0] != 'y':
-            break
+def main():
+    prompt("Welcome to Tic Tac Toe. Best out of 5 wins the overall match! \n initiating game...")
+    time.sleep(5)
+    play_match()
+    # program will exit match function if match ends or player decides to end game at the end of a round/ the match
     prompt('Thanks for playing Tic Tac Toe!')
 
 # Execution control function

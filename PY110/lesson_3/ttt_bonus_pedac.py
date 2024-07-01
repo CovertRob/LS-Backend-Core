@@ -54,3 +54,10 @@ def join_or(input_list, delim=', ', last_word = 'or'):
             joined_string = f"{joined_string}{last_word} {string}"
         
     return joined_string
+
+# Keep score bonus feature
+
+# Need to keep score of computer and player wins, first to win majority
+# of 5 matches (3/5) wins the match. 
+
+# Implemented in the main game loop
