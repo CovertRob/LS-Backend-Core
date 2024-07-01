@@ -423,3 +423,33 @@ sorted_people = sorted(people, key=person_key)
 print(sorted_people)
 # [('Betty', 25), ('John', 25), ('Anna', 30), ('Jack', 30)]
 ~~~
+
+## PY119 TA session on 06/30
+
+'''
+AGENDA - ASSESSMENT PREP
+
+- Introductions
+- Overview of Assessment format:
+  => Written Assessment
+  - 1hr 45min time limit 
+  - Around 11 questions
+  - Use Markdown
+  - Clear, detailed, and precise answers
+  - Time management
+  => Interview Assessment
+    - 1 hour / 2 problems
+    - Focus: structured problem solving, Python fluency, and communication ability
+    - No documentation
+    - Be sure to complete PEDA before moving on to C
+    - Test code early and often
+    - Communicate! (and not just what you are typing)
+- Study Tips for Assessments:
+  => Practice problems
+  => Study with other students
+    - Try Gather.town (via #the-spot on Slack)
+- Questions?
+- Practice
+- Wrap up & feedback form
+
+'''
