@@ -22,6 +22,7 @@
 # Inner loop between steps 2 an 7
 import random
 import os
+import ttt_bonus_pedac as BF
 
 INITIAL_MARKER = ' '
 HUMAN_MARKER = 'X'
@@ -29,7 +30,7 @@ COMPUTER_MARKER = 'O'
 
 def display_board(board):
     os.system('clear')
-    
+
     prompt(f"You are {HUMAN_MARKER}. Computer is {COMPUTER_MARKER}.")
     print('')
     print('     |     |')
@@ -58,7 +59,8 @@ def empty_squares(board):
 def player_chooses_square(board):
     while True:
         valid_choices = [str(num) for num in empty_squares(board)]
-        prompt(f"Choose a square ({', '.join(valid_choices)}):")
+        # Implementation of join_or bonus feature 
+        prompt(f"Choose a square ({BF.join_or(valid_choices)}):")
         square = input().strip()
         if square in valid_choices:
             break # break if it is a valid square
