@@ -167,6 +167,7 @@ def match_state(board, player_win_count, computer_win_count):
                 return player_win_count, computer_win_count, True # match is over flag
     else:
         prompt("It's a tie!")
+        return player_win_count, computer_win_count, False # added line to fig bug throwing not able to unpack none in main game loop
 
 def play_match():
     player_win_count = 0
@@ -177,7 +178,7 @@ def play_match():
         board = initialize_board()
         play_rounds(board)
         display_board(board)
-        player_win_count, computer_chooses_square, match_won = match_state(board, player_win_count, computer_win_count)
+        player_win_count, computer_win_count, match_won = match_state (board, player_win_count, computer_win_count)
         if not match_won:
             prompt("Continue with match? (y or n)")
             answer = input().lower()
