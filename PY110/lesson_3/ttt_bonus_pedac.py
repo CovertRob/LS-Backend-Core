@@ -55,9 +55,48 @@ def join_or(input_list, delim=', ', last_word = 'or'):
         
     return joined_string
 
-# Keep score bonus feature
+# Defensive Computer
 
-# Need to keep score of computer and player wins, first to win majority
-# of 5 matches (3/5) wins the match. 
+# Problem
+# The computer currently picks a square at random. That's not very interesting. Let's make the computer defensive-minded so that, when an immediate threat exists, it will try to defend the 3rd square. An immediate threat occurs when the human player has 2 squares in a row with the 3rd square unoccupied. If there's no immediate threat, the computer can pick a random square.
+# Input: the current TTT board
+# Output: The move the computer is going to make (an open square on the TTT board)
+# Edge cases: player has more than one two in a row positions
 
-# Implemented in the main game loop
+# Examples / Test Cases
+# 1. If player has 2 squares in a row vertically, horizontally, or diaganolly the computer will block the third square
+# 2. Empty TTT board, computer chooses random
+# 3. Player does not have any in a row squares, computer chooses randomly
+
+# Data structures
+# The TTT board is represented by a dictionary with each key representing squares on the board
+# Will need to use a modified version of the empty_squares() function to get a list of all the currently filled spaces
+# Will need a function that finds about to win patterns on the board from that list (sub problem)
+    # input: the current TTT board (dictionary)
+    # output: a list of corresponding at risk squares (at risk square defined by being the third square needed to win) otherwise None
+
+    # examples / test cases: board with 1 & 2 filled, outputs 3, board with 1 and 5, outputs 9
+
+    # Data structure: lists representing corresponding squares
+
+    # Algorithm:
+        # define function find_at_risk_square(board)
+            # retrieve the current board positions showing which ones are filled and which ones are empty
+            # initializie the squares at risk to be returned
+            # Iterate through the board positions
+                # If the current board positions is filled by the player
+                    # check winnings combos from that spot - checking the following or preceding row spot, the following or preceeding column spot, and the following or preceeding diaganol
+                    # If there are two in a row in any of the matching winning patterns, add them to the at risk squares list
+            # return the list of at risk squares, otherwise return None
+
+    # Algorithm v2
+    #   pass in the winning lines constant and the board
+    #   for each winning line
+    #       iterate through the elements in that line and check how many of them are player markers
+    #   If there are at least 2 markers in that line, and if the 3rd square is available, return that square as the at risk square
+
+# Algorithm
+    # check if there are any at risk squares
+    # if there are, perform a defensive move by choosing the at risk square
+    # otherwise, perform a random square move
+

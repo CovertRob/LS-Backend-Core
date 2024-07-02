@@ -21,10 +21,12 @@
 # Outer loop between steps 1 and 9
 # Inner loop between steps 2 an 7
 
-# Bonus features:
+# Bonus features (change tracker):
 # 1. join_or() - implemented in seperate file, imported as module
 # 2. implemented score tracking logic into game loop
-# 3. Refactored main() loop to make game state control cleaner and more modular
+# 3. Refactored main() loop to make game state control cleaner and more modular because was getting messy from additional logic and program control
+# 4. Implemented defensive AI logic. Tried iterating through the whole board using a match case implementation first but too messy. Restarted w/ referencing LS solution. Created find_at_risk_squares and defensive_move functions. Still not the most readable, perhaps refactor. 
+# 5. 
 
 import random
 import os
@@ -34,7 +36,14 @@ import time
 INITIAL_MARKER = ' '
 HUMAN_MARKER = 'X'
 COMPUTER_MARKER = 'O'
-MATCH_WIN = 5
+
+# Current bug - doesn't handle None object return if it is a tie
+
+WINNING_LINES = [
+    [1, 2, 3], [4, 5, 6], [7, 8, 9],
+    [1, 4, 7], [2, 5, 8], [3, 6, 9],
+    [1, 5, 9], [3, 5, 7] 
+]
 
 def display_board(board):
     os.system('clear')
@@ -77,23 +86,36 @@ def player_chooses_square(board):
     
     board[int(square)] = HUMAN_MARKER
 
+def at_risk_squares(board):
+    danger_squares = []
+    for winning_combos in WINNING_LINES:
+        markers_in_line = [board[square] for square in winning_combos]
+        if markers_in_line.count(HUMAN_MARKER) == 2:
+            for marker in winning_combos:
+                if board[marker] == INITIAL_MARKER:
+                    danger_squares.append(marker)#need to return the index here...bug. not empty str)
+    return danger_squares
+
+def defensive_move(danger_squares):
+    # if more than one danger square doesn't really matter...just choose the first one
+    return danger_squares[0]
+
+
 def computer_chooses_square(board):
     if len(empty_squares(board)) == 0:
         return
-    square = random.choice(empty_squares(board))
-    board[square] = COMPUTER_MARKER
+    danger_squares = at_risk_squares(board)
+    if danger_squares:
+        board[defensive_move(danger_squares)] = COMPUTER_MARKER
+    else:
+        square = random.choice(empty_squares(board))
+        board[square] = COMPUTER_MARKER
 
 def board_full(board):
     return len(empty_squares(board)) == 0
 
 def detect_winner(board):
-    winning_lines = [
-        [1, 2, 3], [4, 5, 6], [7, 8, 9], # rows
-        [1, 4, 7], [2, 5, 8], [3, 6, 9], # columns
-        [1, 5, 9], [3, 5, 7] # diagonals
-    ]
-
-    for line in winning_lines:
+    for line in WINNING_LINES:
         sq1, sq2, sq3 = line
         if (board[sq1] == HUMAN_MARKER
                 and board[sq2] == HUMAN_MARKER
@@ -133,7 +155,6 @@ def match_state(board, player_win_count, computer_win_count):
                 player_win_count += 1
             if winner == 'Computer':
                 computer_win_count += 1
-            # check if will update the count outside the funtion, I don't think it will
             # will check if any player has majority wins and return winner if so
             # Will return None if there is not a match winner yet
             if check_match_win(player_win_count, computer_win_count) == None:
