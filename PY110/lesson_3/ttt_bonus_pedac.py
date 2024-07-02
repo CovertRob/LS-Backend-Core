@@ -100,3 +100,10 @@ def join_or(input_list, delim=', ', last_word = 'or'):
     # if there are, perform a defensive move by choosing the at risk square
     # otherwise, perform a random square move
 
+# Bonus feature Offensive AI
+
+    # Problem - The computer should attempt to find a winning move instead of always picking at random. The first choice should be random, but if it is available it should pick squares that are going to form a winning move. This is defined as fining an empty square in a line where the other two belong to the computer (could improve this more but not right now).
+
+    # Examples and test cases:
+        # - If has computer marker in 1 and 2, will choose 3, if available
+        # - If has computer marker in 1 and 9, will choose 5, if available

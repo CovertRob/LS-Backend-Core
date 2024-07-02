@@ -25,8 +25,13 @@
 # 1. join_or() - implemented in seperate file, imported as module
 # 2. implemented score tracking logic into game loop
 # 3. Refactored main() loop to make game state control cleaner and more modular because was getting messy from additional logic and program control
-# 4. Implemented defensive AI logic. Tried iterating through the whole board using a match case implementation first but too messy. Restarted w/ referencing LS solution. Created find_at_risk_squares and defensive_move functions. Still not the most readable, perhaps refactor. 
-# 5. 
+# 4. Implemented defensive AI logic. Tried iterating through the whole board using a match case implementation first but too messy. Restarted w/ referencing LS solution. Created find_find_almost_winning_combos and defensive_move functions. Still not the most readable, perhaps refactor in future.
+# 5. Implement offensive AI logic. Refactor at_risk_squares to find_almost_winning_combos and add arg so it can find both computer and player patterns to use in both defensive and offensive logics. Refactor computer_choose_square to implement modified functions.
+# 6. Refactor to check offensive move first, just flip if statements
+# 7. Computer turn refinements - offense, choose 5 first (this basically makes the game impossible to win if you go computer first lol), and turn choices - solved bug getting stuck in player_choose_square loop when board was fille due to lack of empty check
+# 8. Refactored the input handling for continuing match and rounds. Discovered bug 3.
+
+# Bug 3 (unsolved) - on player first turn, when player wins, computer still marks square and updates board to show it before the game is ended claiming player as winner
 
 import random
 import os
@@ -36,8 +41,7 @@ import time
 INITIAL_MARKER = ' '
 HUMAN_MARKER = 'X'
 COMPUTER_MARKER = 'O'
-
-# Current bug - doesn't handle None object return if it is a tie
+CHOOSE_TURN = None
 
 WINNING_LINES = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
@@ -74,6 +78,9 @@ def empty_squares(board):
     return [key for key, value in board.items() if value == INITIAL_MARKER]
 
 def player_chooses_square(board):
+    # Had to add check because getting stuck in loop when doing computer turn first when it reaches a full board
+    if len(empty_squares(board)) == 0:
+            return
     while True:
         valid_choices = [str(num) for num in empty_squares(board)]
         # Implementation of join_or bonus feature 
@@ -86,15 +93,18 @@ def player_chooses_square(board):
     
     board[int(square)] = HUMAN_MARKER
 
-def at_risk_squares(board):
+def find_almost_winning_combos(board, marker):
     danger_squares = []
     for winning_combos in WINNING_LINES:
         markers_in_line = [board[square] for square in winning_combos]
-        if markers_in_line.count(HUMAN_MARKER) == 2:
+        if markers_in_line.count(marker) == 2:
             for marker in winning_combos:
                 if board[marker] == INITIAL_MARKER:
                     danger_squares.append(marker)#need to return the index here...bug. not empty str)
     return danger_squares
+
+def offensive_move(attack_squares):
+    return attack_squares[0]
 
 def defensive_move(danger_squares):
     # if more than one danger square doesn't really matter...just choose the first one
@@ -104,9 +114,15 @@ def defensive_move(danger_squares):
 def computer_chooses_square(board):
     if len(empty_squares(board)) == 0:
         return
-    danger_squares = at_risk_squares(board)
-    if danger_squares:
-        board[defensive_move(danger_squares)] = COMPUTER_MARKER
+    
+    danger_squares = find_almost_winning_combos(board, HUMAN_MARKER)
+    winning_squares = find_almost_winning_combos(board, COMPUTER_MARKER)
+    if winning_squares:
+        board[offensive_move(winning_squares)] = COMPUTER_MARKER
+    elif danger_squares:
+        board[defensive_move(danger_squares)] = COMPUTER_MARKER   
+    elif board[5] == INITIAL_MARKER:
+        board[5] = COMPUTER_MARKER # fixed bug...= not ==...30 minutes later
     else:
         square = random.choice(empty_squares(board))
         board[square] = COMPUTER_MARKER
@@ -137,15 +153,40 @@ def check_match_win(player_count, computer_count):
         return 'Computer'
     return None
 
+def choose_player():
+    while True:
+        choice = input()
+        if choice.lower() == 'person' or choice.lower() == 'computer' or choice == '':
+            global CHOOSE_TURN 
+            CHOOSE_TURN = choice
+            break
+        else:
+            prompt("That's not a valid choice. Please try again.")
+
+# refactored to include match for player choosing who goes first
 def play_rounds(board):
     while True:
         display_board(board)
-        player_chooses_square(board)
-        if someone_won(board) or board_full(board):
-            break
-        computer_chooses_square(board)
-        if someone_won(board) or board_full(board):
-            break
+        match CHOOSE_TURN:
+            case 'player':
+                player_chooses_square(board)
+                computer_chooses_square(board)
+                if someone_won(board) or board_full(board):
+                    break
+            case 'computer':
+                computer_chooses_square(board)
+                display_board(board)
+                player_chooses_square(board) # current bug, does not end the game
+                if someone_won(board) or board_full(board):
+                    break
+            case _:
+                player_chooses_square(board)
+                computer_chooses_square(board)
+                if someone_won(board) or board_full(board):
+                    break
+        # if len(empty_squares(board)) == 0:
+        #     break
+
 
 def match_state(board, player_win_count, computer_win_count):
     if someone_won(board):
@@ -167,7 +208,13 @@ def match_state(board, player_win_count, computer_win_count):
                 return player_win_count, computer_win_count, True # match is over flag
     else:
         prompt("It's a tie!")
-        return player_win_count, computer_win_count, False # added line to fig bug throwing not able to unpack none in main game loop
+        return player_win_count, computer_win_count, False # added line to fix bug throwing not able to unpack none in main game loop
+
+# generic input() checker...besides at the beginning of the game, the only time we ask for text input is in the shape of a 'y' or 'n'
+def check_user_input(input):
+    if (input.lower() == 'y' or input.lower() == 'n') and len(input) == 1:
+        return True
+    return False
 
 def play_match():
     player_win_count = 0
@@ -182,19 +229,28 @@ def play_match():
         if not match_won:
             prompt("Continue with match? (y or n)")
             answer = input().lower()
-            if answer[0] != 'y':
+            while not check_user_input(answer):
+                prompt("Not a valid choice. Please choose 'n' or 'y'.")
+                answer = input().lower()
+            if answer[0] == 'n': # refactored to just test for 'n' instead of ! 'y' to make it more readable since we do the check above in the while loop
                 break
         else:
             prompt("Would you like to start another match? (y or n)")
             anser = input().lower()
-            if anser[0] != 'y':
+            while not check_user_input(anser):
+                prompt("Not a valid choice. Please choose 'n' or 'y'.")
+                answer = input().lower()
+            if anser[0] == 'n':
                 break
             else:
                 player_win_count = 0
                 computer_win_count = 0
 
 def main():
-    prompt("Welcome to Tic Tac Toe. Best out of 5 wins the overall match! \n initiating game...")
+    prompt("Welcome to Tic Tac Toe. Best out of 5 wins the overall match! \n")
+    prompt("Would you like the computer or you to go first? \n Please enter person or computer (hit enter for default - person)")
+    choose_player()
+    print("initiating game...")
     time.sleep(5)
     play_match()
     # program will exit match function if match ends or player decides to end game at the end of a round/ the match
