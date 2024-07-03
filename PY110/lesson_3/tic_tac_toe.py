@@ -30,8 +30,11 @@
 # 6. Refactor to check offensive move first, just flip if statements
 # 7. Computer turn refinements - offense, choose 5 first (this basically makes the game impossible to win if you go computer first lol), and turn choices - solved bug getting stuck in player_choose_square loop when board was fille due to lack of empty check
 # 8. Refactored the input handling for continuing match and rounds. Discovered bug 3.
+# 9. Improved the game loop by using generic functions. Broke the game. Fixed more hidden bugs. Refactored.
 
-# Bug 3 (unsolved) - on player first turn, when player wins, computer still marks square and updates board to show it before the game is ended claiming player as winner
+# Bug 3 (solved) - on player first turn, when player wins, computer still marks square and updates board to show it before the game is ended claiming player as winner
+# Bug 4 (danger squares not validating 3, 6, 9 correctly) - fixed
+
 
 import random
 import os
@@ -41,7 +44,7 @@ import time
 INITIAL_MARKER = ' '
 HUMAN_MARKER = 'X'
 COMPUTER_MARKER = 'O'
-CHOOSE_TURN = None
+CHOOSE_TURN = 'player'
 
 WINNING_LINES = [
     [1, 2, 3], [4, 5, 6], [7, 8, 9],
@@ -93,14 +96,15 @@ def player_chooses_square(board):
     
     board[int(square)] = HUMAN_MARKER
 
-def find_almost_winning_combos(board, marker):
+def find_almost_winning_combos(board, type_of_marker): # marker somehow getting set to int 3? 1 hour later...shadowing the argument. How PY101 of me.
     danger_squares = []
     for winning_combos in WINNING_LINES:
-        markers_in_line = [board[square] for square in winning_combos]
-        if markers_in_line.count(marker) == 2:
+        markers_in_line = [board[square] for square in winning_combos] 
+        
+        if markers_in_line.count(type_of_marker) == 2:
             for marker in winning_combos:
                 if board[marker] == INITIAL_MARKER:
-                    danger_squares.append(marker)#need to return the index here...bug. not empty str)
+                    danger_squares.append(marker)
     return danger_squares
 
 def offensive_move(attack_squares):
@@ -156,36 +160,41 @@ def check_match_win(player_count, computer_count):
 def choose_player():
     while True:
         choice = input()
-        if choice.lower() == 'person' or choice.lower() == 'computer' or choice == '':
+        if choice.lower() == 'computer' or choice.lower() == 'player':
             global CHOOSE_TURN 
             CHOOSE_TURN = choice
+            break
+        elif choice.lower() == '':
             break
         else:
             prompt("That's not a valid choice. Please try again.")
 
+def choose_square(board, current_player):
+    match current_player:
+        case 'player':
+            player_chooses_square(board)
+        case 'computer':
+            computer_chooses_square(board)
+    if someone_won(board) or board_full(board):
+        return True # put this check here so it checks after each square played
+    return False
+
+def alternate_player(current_player):
+    match current_player:
+        case 'player':
+            return 'computer'
+        case 'computer':
+            return 'player'
+
 # refactored to include match for player choosing who goes first
 def play_rounds(board):
+    current_player = CHOOSE_TURN
     while True:
         display_board(board)
-        match CHOOSE_TURN:
-            case 'player':
-                player_chooses_square(board)
-                computer_chooses_square(board)
-                if someone_won(board) or board_full(board):
-                    break
-            case 'computer':
-                computer_chooses_square(board)
-                display_board(board)
-                player_chooses_square(board) # current bug, does not end the game
-                if someone_won(board) or board_full(board):
-                    break
-            case _:
-                player_chooses_square(board)
-                computer_chooses_square(board)
-                if someone_won(board) or board_full(board):
-                    break
-        # if len(empty_squares(board)) == 0:
-        #     break
+        break_if_true = choose_square(board, current_player)
+        if break_if_true:
+            break
+        current_player = alternate_player(current_player)
 
 
 def match_state(board, player_win_count, computer_win_count):
@@ -204,7 +213,6 @@ def match_state(board, player_win_count, computer_win_count):
             else:
                 prompt(f"Match winner is {check_match_win(player_win_count, computer_win_count)}")
                 # Set the match won flag to true so we know which prompts to use in outer game loop
-                # match_won = True
                 return player_win_count, computer_win_count, True # match is over flag
     else:
         prompt("It's a tie!")
@@ -247,8 +255,8 @@ def play_match():
                 computer_win_count = 0
 
 def main():
-    prompt("Welcome to Tic Tac Toe. Best out of 5 wins the overall match! \n")
-    prompt("Would you like the computer or you to go first? \n Please enter person or computer (hit enter for default - person)")
+    prompt("Welcome to Tic Tac Toe. Best out of 5 wins the overall match!")
+    prompt("Would you like the computer or you to go first? \n Please enter player or computer (hit enter for default - player)")
     choose_player()
     print("initiating game...")
     time.sleep(5)
