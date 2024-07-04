@@ -136,18 +136,44 @@ You have: Jack and 6
   - return the deck of cards shuffled - use random.shuffle() method
 
 - **define deal_cards function** - takes in deck of cards and board arguments, deals cards upon start of game to dealer and player.
+  - *PRINT* dealing cards...
+  - pop 4 cards from the deck
+  - append first two cards to the player's hand
+  - appends last two cards to the dealer's hand
+
+- **define calculate_ace function** - performs the task of deciding whether an Ace card value needs to be 1 or 11
+
+- **define hit function** - this generic function performs the 'hit' function of the 21 game (deal another card)
+
+- **define stay function** - this generic function performs the 'stay' function of the 21 game (end your turn basically)
+
+- **define player_action function** - controls the player hitting or staying
+
+- **define dealer_action function** - controls the dealer hitting or staying
+
+- **define check_for_bust function** - checks if either player or dealer busted
+  - should return who busted so main game loop can display the winner
+
+- **define check_for_winner function** - checks if either player or dealer won aka got to 21
+  - should return who won so main game loop can display the winner
+
+- **define play_round function** - takes in deck and board arguments, controls the looping and functions governing dealer and player rules
+  - call to player_action function to execute their loop
+  - check for bust or winner - if bust or winner return
+  - call to dealer_action function to execute their loop
+  - check for bust or winner - if bust or winner return
 
 - **define play_21 function** - main game loop function
   - *START* Outer game loop starts here (so player can choose to play multiple rounds) $
     - *SET* the deck of cards with initialize_deck function $
     - *SET* the game board with initialize_game_board function $
     - shuffle the deck of cards with shuffle function (*PRINT* that we are shuffling so player knows what's happening) $
-    - deal cards to player and dealer with deal_cards function (*PRINT* that we are dealing the cards so player knows what's happening)
-    - *PRINT* display the current state of the game board showing what cards are in player's hand and the one visible from dealer, call to display board function
+    - deal cards to player and dealer with deal_cards function (*PRINT* that we are dealing the cards so player knows what's happening) $ 
+    - *PRINT* display the current state of the game board showing what cards are in player's hand and the one visible from dealer, call to display board function $
     - call to play_round function to handle player and dealer gameplay
-    - *PRINT* who won the round
-    - *PRINT* Ask player if they want to play another round
-    - IF no to another round, exit the loop
+    - *PRINT* who won the round - use check_for_winner function to *GET* the winner $
+    - *PRINT* Ask player if they want to play another round $
+    - IF no to another round, exit the loop $
 
 
 - **define main function call**:
