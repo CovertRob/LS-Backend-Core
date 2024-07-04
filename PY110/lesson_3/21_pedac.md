@@ -41,7 +41,7 @@
 
 ### Possible edge cases
 
-- 1. 
+- 1. TBD
 
 ## Examples / Test Cases
 
@@ -203,7 +203,6 @@ You have: Jack and 6
     - *PRINT* who won the round - use check_for_winner function to *GET* the winner $
     - *PRINT* Ask player if they want to play another round $
     - IF no to another round, exit the loop $
-
 
 - **define main function call**:
   - *PRINT* Greet player to 21 game and provide basic instructions
