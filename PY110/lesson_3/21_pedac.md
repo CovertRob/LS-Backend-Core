@@ -113,15 +113,26 @@ You have: Jack and 6
   - print the dealer's cards (all of them if arg flag is true)
   - print the player's cards
 
-
 - **define initialize_game_board function** - will hold the data structures that keep track of the cards on the table (in dealers and players hands)
   - *SET* the player's current hand of cards (starts off empty)
   - *SET* the dealer's current hand of cards (starts off empty, remember only shows 1 card upon initial deal, can be handled in the display_board function)
   - *SET* dictionary that will contain both the player's and dealer's hands of cards
   - return the dictionary containing the hands
+  
+- **define add_up_hand function** - takes in generic hand argument
+  - *GET* cards from hand argument
+  - *SET* total value to be returned
+    - for each card in the hand argument
+      - *IF* card face value is between 2 - 10, add the face value to the total value
+      - *IF* the face value is a royal, add 10 to the total value
+      - *IF* card is an ace:
+        - *IF* the potential total value is less than 21, add 11 to the value
+        - *ELSE* add 1 to the total value
+  - return the total value of the hand
 
 - **define update_game_board_with_cards function** - takes in board, card argument, and string argument specifying dealer or player and updates the board dict data structure with the card or cards
   - iterate through the card or cards
+    - *IF* card is an ace, use function determine_ace_value to determine the value
     - add them to the associated data structure (player or dealer) in the board data structure
 
 - **define initialize_deck function** - creates a deck of 52 cards, does NOT initially shuffle them
@@ -141,21 +152,39 @@ You have: Jack and 6
   - append first two cards to the player's hand
   - appends last two cards to the dealer's hand
 
-- **define calculate_ace function** - performs the task of deciding whether an Ace card value needs to be 1 or 11
-
-- **define hit function** - this generic function performs the 'hit' function of the 21 game (deal another card)
+- **define hit function** - this generic function performs the 'hit' function of the 21 game (deal another card), take in board, deck, and dealer/player argument
+  - pop a card from the deck
+  - add it to the dealer or player's hands in the board argument
 
 - **define stay function** - this generic function performs the 'stay' function of the 21 game (end your turn basically)
+  - might not need this
 
 - **define player_action function** - controls the player hitting or staying
+  - *WHILE* true:
+    - *PRINT* do you want to hit or stay?
+    - *IF* hit, go to hit function
+    - *ELSE* break
+    - Update the display of the game board
 
-- **define dealer_action function** - controls the dealer hitting or staying
+- **define dealer_action function** - controls the dealer hitting or staying, takes in deck and board arguments
+  - *WHILE* the total of the dealer's hand is less than 17
+    - hit
+    - display the updated game board
 
-- **define check_for_bust function** - checks if either player or dealer busted
+- **define check_for_bust function** - checks if either player or dealer busted, takes in game_board argument
   - should return who busted so main game loop can display the winner
+  - *SET* cards for player by *GET* cards from player hand from game board
+  - *SET* cards for dealer by *GET* cards from dealer hand from game board
+  - *IF* add_up_hand of player is greater than 21 return
+  - *IF* add_up_hand of dealer is greater than 21 return
+  - return none if neither busted
 
 - **define check_for_winner function** - checks if either player or dealer won aka got to 21
-  - should return who won so main game loop can display the winner
+  - on player hand, add_up_hand
+  - on dealer hand, add_up_hand
+  - If either is 21, they win
+  - If either not 21, return the highest one as winner
+  - If a tie, return tie
 
 - **define play_round function** - takes in deck and board arguments, controls the looping and functions governing dealer and player rules
   - call to player_action function to execute their loop
