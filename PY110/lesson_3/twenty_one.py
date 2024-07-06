@@ -1,6 +1,6 @@
 # Twenty One game program. Dumbed down version of blackjack.
 
-# Notes 
+# Notes
 # 1. Implementation detail - did not use any constants to determine who's turn it was because in 21 and blackjack, the player always goes first. No need to have flexibility to alternate beginning turns.
 # 2. Felt encapsulating add up aces in it's own function was not worth it so keopt the logic in the generic add up hand function.
 # 3. While doing PEDAC, found that the stay logic is easily placed in one line in the game loop so no need for seperate function.
@@ -20,8 +20,8 @@ import os
 # 5. Dealt ace and a 3, hit a 9, did not bust - *SOLVED - wasn't checking ace index correctly
 
 
-def prompt(input):
-    print(f"==> {input}")
+def prompt(text):
+    print(f"==> {text}")
 
 def create_card_for_display(card): # needs to return a string card, card argument is a tuple (face value, suite)
     spades = '\u2660'
@@ -62,13 +62,12 @@ def display_board(board, all=False): # still need to implement not displaying al
     if dealer == [] and player == []:
         prompt('The board is currently empty')
         return
-    
     dealer_hand = '' # use empty string to avoid list brackets when printing them below
-    if all == True: # used with all flag to display all cards at end of match
+    if all is True: # used with all flag to display all cards at end of match
         for card in dealer:
             dealer_hand += (create_card_for_display(card))
         prompt(f"Dealer's hand: {dealer_hand}")
-    if all == False:
+    if all is False:
         for index, card in enumerate(dealer):
             if index == 1: # This is the 2nd card, aka the card that is suppose to be face down in the dealers hand
                 dealer_hand += '''
@@ -85,17 +84,12 @@ def display_board(board, all=False): # still need to implement not displaying al
     for card in player:
         player_hand += (create_card_for_display(card))
     prompt(f"Player's hand: {player_hand}")
-        
 
 def initialize_game_board():
     return {
         'dealer': [],
         'player': [],
     }
-
-def add_up_hand(hand):
-    # might not need
-    pass
 
 def update_game_board_with_card(board, card, dealer_or_player):
     # for adding to data structure not displaying
@@ -139,8 +133,7 @@ def player_action(board, deck):
             hit_or_stay = input().lower()
             if hit_or_stay in ['h', 's']:
                 break
-            else:
-                prompt("That's not a valid input. Please enter 'h' or 's' for hit or stay")
+            prompt("That's not a valid input. Please enter 'h' or 's' for hit or stay")
         if hit_or_stay == 'h':
             hit(board, deck, 'player')
             display_board(board)
@@ -162,7 +155,7 @@ def check_for_bust(board, player_or_winner): # thing here, could make it check o
     for index, cards in enumerate(board[player_or_winner]):
         if cards[0] == 'ace':
             ace_indexes.append(index)
-    if ace_indexes == []: # logic if there are no aces in the hand
+    if not ace_indexes: # logic if there are no aces in the hand
         for cards in board[player_or_winner]:
             if cards[0] in ['jack', 'queen', 'king']:
                 value_counter += 10
@@ -192,15 +185,14 @@ def check_for_winner(board): # need to use check bust here too to check if winne
     dealer = check_for_bust(board, 'dealer')
     if player > 21: # check player first because they can bust without the dealer turn going
         return 'dealer'
-    elif dealer > 21:
+    if dealer > 21:
         return 'player'
-    elif player > dealer:
+    if player > dealer:
         return 'player'
-    elif dealer > player:
+    if dealer > player:
         return 'dealer'
-    else:
-        display_board(board, True)
-        return "nobody! It's a tie!"
+    display_board(board, True)
+    return "nobody! It's a tie!"
     
     
 
@@ -226,10 +218,9 @@ def play_21():
         prompt(f"The winner is {check_for_winner(board)}")
         play_again = (input('==> Do you want to play another round? (y or n)')).lower()
         while True:
-            if play_again == 'n' or play_again == 'y':
+            if play_again in ('n', 'y'):
                 break
-            else:
-                prompt('That is not a valid input. Please enter y or n')
+            prompt('That is not a valid input. Please enter y or n')
             play_again = input().lower()
         if play_again == 'n':
             break
