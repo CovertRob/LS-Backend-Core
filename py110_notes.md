@@ -426,13 +426,12 @@ print(sorted_people)
 
 ## PY119 TA session on 06/30
 
-'''
 AGENDA - ASSESSMENT PREP
 
 - Introductions
 - Overview of Assessment format:
   => Written Assessment
-  - 1hr 45min time limit 
+  - 1hr 45min time limit
   - Around 11 questions
   - Use Markdown
   - Clear, detailed, and precise answers
@@ -447,9 +446,27 @@ AGENDA - ASSESSMENT PREP
 - Study Tips for Assessments:
   => Practice problems
   => Study with other students
-    - Try Gather.town (via #the-spot on Slack)
+  - Try Gather.town (via #the-spot on Slack)
 - Questions?
 - Practice
 - Wrap up & feedback form
 
-'''
+## PY119 Study Guide Topics
+
+In general, you should be familiar with Python syntax and operators. You should also be able to clearly explain, talk about, or demonstrate the following topics:
+
+str methods: index, find, split, strip, join, replace, upper, lower, capitalize
+list methods : append, extend, insert, remove, pop, clear, index, count, sort, reverse, copy.
+dict methods : keys, values, items, get, setdefault, update, pop, popitem, clear.
+set methods: add, update, remove, clear, union, intersection, difference, issubset, issuperset, isdisjoint
+frozenset methods: union, intersection, difference, issubset, issuperset, isdisjoint
+tuple methods: count, index, unpacking
+range and enumerate - Understanding of how to create and use range objects and enumerate for indexing during iteration.
+The built-in functions sum and all.
+Conditional statements (if, elif, else)
+Iteration using for loops, break, continue
+sorting lists using the sorted function and list.sort method
+Custom sorting using the key parameter and reverse sorting using the reverse parameter
+Comprehensions
+nested data structures and nested iteration
+shallow and deep copy
