@@ -70,7 +70,7 @@ You have: Jack and 6
 
 ## Data Structures
 
-- Use a nested list to represent each card's value and suite: [[2, 'S'], [2, 'H'], etc...]
+- Use a nested list with tuples to represent each card's value and suite: [[2, 'S'], [2, 'H'], etc...]
 - Use dictionary to represent the game board
 
 ## Algorithm
@@ -131,9 +131,7 @@ You have: Jack and 6
   - return the total value of the hand
 
 - **define update_game_board_with_cards function** - takes in board, card argument, and string argument specifying dealer or player and updates the board dict data structure with the card or cards
-  - iterate through the card or cards
-    - *IF* card is an ace, use function determine_ace_value to determine the value
-    - add them to the associated data structure (player or dealer) in the board data structure
+  - add them to the associated data structure (player or dealer) in the board data structure
 
 - **define initialize_deck function** - creates a deck of 52 cards, does NOT initially shuffle them
   - *SET* an empty list
