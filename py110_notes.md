@@ -453,20 +453,225 @@ AGENDA - ASSESSMENT PREP
 
 ## PY119 Study Guide Topics
 
-In general, you should be familiar with Python syntax and operators. You should also be able to clearly explain, talk about, or demonstrate the following topics:
+In general, you should be familiar with Python syntax and operators.
+You should also be able to clearly explain, talk about, or demonstrate the following topics:
 
-str methods: index, find, split, strip, join, replace, upper, lower, capitalize
-list methods : append, extend, insert, remove, pop, clear, index, count, sort, reverse, copy.
-dict methods : keys, values, items, get, setdefault, update, pop, popitem, clear.
-set methods: add, update, remove, clear, union, intersection, difference, issubset, issuperset, isdisjoint
-frozenset methods: union, intersection, difference, issubset, issuperset, isdisjoint
-tuple methods: count, index, unpacking
-range and enumerate - Understanding of how to create and use range objects and enumerate for indexing during iteration.
-The built-in functions sum and all.
-Conditional statements (if, elif, else)
-Iteration using for loops, break, continue
-sorting lists using the sorted function and list.sort method
-Custom sorting using the key parameter and reverse sorting using the reverse parameter
-Comprehensions
-nested data structures and nested iteration
-shallow and deep copy
+### str methods
+
+- str.index(sub[, start[, end]]) - like find() but raises a *ValueError* when substring is not found.
+- str.find(sub[, start[, end]]) - return lowest index in the string where substring sub is found w/in the slide s[start:end]. Optional arguments start and end are interpreted in slice notation
+  - returns -1 if sub is not found
+- str.split(sep=None, maxsplit=-1) - return a list of the words in the string, using sep as the delimiter string. 
+  - If *maxsplit* given, at most maxsplit splits are done (at most maxsplit +1 elements). If maxspit not specified or -1, then there is no limit on number of splits (all possible are made)
+  - If *sep* is given, consecutive delimiters are not grouped together and are deemed to delimit empty strings
+  - If *sep* not specified or is None: runs of consecutive whitespace are regarded a single seperator and the result will contain no empty strings at the start or end if the string has leading or trailing whitespace
+
+~~~Python
+'1,2,3'.split(',')
+['1', '2', '3']
+'1,2,3'.split(',', maxsplit=1)
+['1', '2,3']
+'1,2,,3,'.split(',')
+['1', '2', '', '3', '']
+~~~
+
+~~~Python
+'1 2 3'.split()
+['1', '2', '3']
+'1 2 3'.split(maxsplit=1)
+['1', '2 3']
+'   1   2   3   '.split()
+['1', '2', '3']
+~~~
+
+- str.strip([chars]) - return a copy of the string with the leading and trailing characters removed. *Chars* arg is a string specifying the set of characters to be removed. If ommitted or None, the *chars* arg defaults to removing whitespace. 
+  - *Chars* arg is not a prefix or suffic, rather, all combinations of its values are stripped
+
+~~~Python
+'   spacious   '.strip()
+'spacious'
+'www.example.com'.strip('cmowz.')
+'example'
+~~~
+
+- str.join(iterable) - return a string which is the concatenation of the strings in *iterable*.
+  - TypeError raised if there are any non-string values in *iterable*, including bytes objects.
+  - str. is the seperator between elements
+- str.replace(old, new[, count]) -return a copy of the string with all occurrences of substring *old* replaced by *new*. If optional argument *count* is given, only the first *count* occurrences are replaced
+- str.upper() - return a copy of the string with all cased characters coverted to uppercase.
+  - remember str.upper().isupper() might be false
+- str.lower() - return a copy of the string with all cased characters converted to lowercase.
+- str.capitalize() - return a copy of the string with its first character capitalized and the rest lowercased.
+
+### list methods (mutable sequence common methods)
+
+- list.append(x) - appends to the end of the sequence
+  - same as s[len(s):len(s)] = [x]
+
+- list.extend(iterable) - extend the ist by appending all items from the iterable.
+  - Equivalentn to a[len(a):] = iterable
+
+- list.insert(i, x) - insert an item at a given position.
+  - First argument is the index of the element before which to insert, so `a.insert(0,x)` inserts at the front of the list, and `a.insert(len(a), x)` is equivalent to `a.append(x)`.
+
+- list.remove(x) - remove first item from list whose value is equal to x.
+  - raises a ValueError if there is no such item
+
+- list.pop([i]) - remove item at given position in the list **and return it**
+  - If no index specified, removes and returns the last item in the lsit
+  - Raises an IndexError if list is empty or index is outside the list range
+
+- list.clear() - remove all items from the list
+  - equivalent to del a[:].
+
+- list.index(x[, start[, end]]) - return zero-based index in the list of the first item whose value is equal to *x*.
+  - Raises a ValueError if there is no such item
+  - optional arguments are interpreted as in the slice notation are used to limit the search to a particular subsequence of the list. **The returned index is computed relative to the beginning of the full sequence rather than the *start* argument**
+  - test out slice uses
+
+- list.count(x) - return the number of times x appears in a list
+
+- list.sort(*, key=None, reverse=False) - sort the items of the list in place
+  - custom arguments folow same pattern as sorted() function
+  - uses only the < comparions between items - exceptions are not suppressed - if any comparison operation fails, the entire sort op fails and list will likely be left in a partially modified state
+  - must pass args as keywords
+  - *key* specified a function of one argument that is used to extract a comparison key from each list element. The key corresponding to each item in the list is calculated once and then used for the entire sorting process. Default of None means that list items are sorted directly without calculating a seperate key value.
+  - If reverse set to True, list elements are sorted as if each comparison were reversed - operates by side effect, does not return the sorted sequence.
+  - Is stable, does not change relative order of elements that compare equal
+
+- list.reverse() - reverse the elements of the list in place
+
+- list.copy() - return a shallow copy of the list
+  - equivalent to a[:] (slice notation for copy of whole array).
+
+- ***Not on official study guide** - use zip() to loop over two or more sequences at the same time
+
+~~~Python
+questions = ['name', 'quest', 'favorite color']
+answers = ['lancelot', 'the holy grail', 'blue']
+for q, a in zip(questions, answers):
+    print('What is your {0}?  It is {1}.'.format(q, a))
+
+# What is your name?  It is lancelot.
+# What is your quest?  It is the holy grail.
+# What is your favorite color?  It is blue.
+~~~
+
+### dict methods
+
+- keys() - return a new view of the dictionary's keys.
+  - keys views are set like since their entries are unique and hashable
+- values() - return a new view of the dictionary's values.
+  - equality comparison between one dict.values() and another will always reutrn false.
+- items() - return new view of the dictionary's items (key, value) pairs.
+  - set like since pairs are unique and keys are hashable. If all values in an items view are hashable as well,then items view can interoperate with other sets
+- get(key, default=None) - return the value for *key* if *key* is in the dictionary, else *default*. If *default* is not given, it defaults to None so that this method never raises a KeyError.
+- setdefault(key, default=None) - If *key* is in the dictionary, return its value. If not, insert *key* with a value of *defualt* and return *default*. *Default* is None.
+- update([other]) - update the dictionary with the key/value pairs from *other*, overwriting existing keys. Return None.
+  - accepts either another dictioary object or an iterable of key/value pairs (as tuples or other iterables of length two).
+  - If keyword arguments specified, the dictionary then updated with those key/value pairs: `d.update(red=1, blue=2)`.
+- pop(key[, default]) - If *key* is in the dictionary, remove it and return its value, else return default.
+  - If *default* is not given and *key* is not in the dictionary, a KeyError is raised.
+- popitem() - remove and return a (key, value) pair from the dictionary
+  - Pairs are returned in LIFO order
+  - If empty, raises a KeyError
+- clear() - removes all items from the dictionary
+
+### set methods
+
+- **The output of the list.sort() method is undefined for a list of sets**
+- **Instances of set are comopared to instances of frozenset based on their members** `set('abc') == frozenset('abc')` returns True.
+- add(elem) - add element to the set.
+
+- update(*others) - update the set, adding elements from all others
+  - equivalent to `set |= other |...`
+
+- remove(elem) - remove element *elem* from the set, 
+  - Raises a keyError if *elem* is not contained in the set.
+
+- clear() - remove all elements from the set
+
+- union(*others) - return a new set with elements from the set and all others.
+  - equivalent to `set | other |...`
+
+- intersection(*others) - return a new set with elements common to the set and all others.
+  - equivalent to `set & other & ...`
+
+- difference(*others) - return a new set with elements in the set that are not in the others
+  - equivalent to `set - other - ...`
+
+- issubset(other) - test whether every element in the set is in the other
+  - equivalent to `set <= other`
+
+- issuperset(other) - test whether every element in other is in the set
+  - equivalent to `set >= other`
+  - just `>` tests for *proper* super set. Meanining set also != other.
+
+- isdisjoint(other) - return true if the set has no elements in common with other.
+  - Sets are disjoint if and only if their intersection is the empty set.
+  - & operator for intersection
+
+### frozenset methods
+
+- union - same as set
+- intersection - same as set
+- difference - same as set
+- issubset - same as set
+- issuperset - same as set
+- isdisjoint - same as set
+
+### tuple methods
+
+- count(x) - total number of occurrences of x in s
+  - returns 0 if there are no occurrences
+- index(x[, i[, j]]) - index of the first occurrence of x in s (at or after indiex i and before index j)
+- unpacking - used to assign variables values from a tuple
+  - Ex: a, b, c = tuple([1, 2, 3])
+
+### range and enumerate
+
+Understanding of how to create and use range objects and enumerate for indexing during iteration.
+
+- Yes, I know how to do this.
+
+### The built-in functions sum and all
+
+- sum(iterable, /, start=0) - sums start and the items of an iterable from left to right and returns the total. The *iterable's* items are normally numbers, and the start value is not allowed to be a string.
+
+### Conditional statements (if, elif, else)
+
+- Yes, I know this.
+
+### Iteration using for loops, break, continue
+
+- Break is used to get out of the current loop
+- Continue is used to skip the remaining code inside the looop for the current iteration only
+
+### sorting lists using the sorted function and list.sort method
+
+- list.sort description above
+- sorted(iterable, /, *, key=None, reverse=False)
+  - returns a new sorted list from the items in *iterable*
+  - two optional args that must be keywords: key and reverse
+  - guaranteed to be stable
+
+### Custom sorting using the key parameter and reverse sorting using the reverse parameter
+
+- reviewed above
+
+### Comprehensions
+
+- Yes, I know this
+
+### nested data structures and nested iteration
+
+### shallow and deep copy
+
+### see article for better slice notation examples
+
+- <https://stackoverflow.com/questions/509211/how-slicing-in-python-works>
+
+## *args and **kwars
+
+- Using the *, the variable that we associate with the '*' becomes iterable - meaning you can do things like iterate over it, run some higher-order functions such as map and filter etc.
+- **kwargs receives arguments as a dictionary, so you can iterate over the pairs.

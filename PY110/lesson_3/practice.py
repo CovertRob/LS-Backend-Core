@@ -1,3 +1,7 @@
+import sys
+
+sys.set_int_max_str_digits(50_000)
+
 # lst = [14, 15, 16, 17, 18, 19, 20, 21]
 
 #print(lst)  # [5, 6, 7, 8, 9, 10, 2, 3]
@@ -134,7 +138,7 @@ my_words = ['foo', 'bar', 'baz']
 
 
 word = 'Sesquipedalianism'
-print(parts(word))  # ['S', 'Se', 'Ses', 'Sesq', 'Sesqu', 'Sesqui', 'Sesquip', 'Sesquipe', ...]
+# print(parts(word))  # ['S', 'Se', 'Ses', 'Sesq', 'Sesqu', 'Sesqui', 'Sesquip', 'Sesquipe', ...]
 
 
 # start w empty list
@@ -150,7 +154,7 @@ def parts(string):
 
 
 word = 'Sesquipedalianism'
-print(parts(word))  # ['S', 'Se', 'Ses', 'Sesq', 'Sesqu', 'Sesqui', 'Sesquip', 'Sesquipe', ...]
+# print(parts(word))  # ['S', 'Se', 'Ses', 'Sesq', 'Sesqu', 'Sesqui', 'Sesquip', 'Sesquipe', ...]
 
 # ADDITONAL Practice:
 
@@ -200,3 +204,745 @@ print(parts(word))  # ['S', 'Se', 'Ses', 'Sesq', 'Sesqu', 'Sesqui', 'Sesquip', '
 # print(alphabetized("The Holy Bible") == "BbeehHilloTy")
 # print(alphabetized("!@$%^&*()_+=-`,") == "")
 # print(alphabetized("CodeWars can't Load Today") == "aaaaCcdddeLnooorstTWy")
+
+# Given a dictionary where both keys and values are unique, invert this dictionary so that its keys become values and its values become keys.
+
+# problem - need to take an input of one dictionary. Both it's values and keys are unique, meaning they do not match. Need to invert it aka swap the keys and values.
+# inputs: a dictionary
+# outptu: an inverted dictionary
+# questions: I assume that all the values are also hashable and can be keys? (verify this).
+# Do we want to mutate or return a new dictionary?
+
+# Examples / test cases below
+
+# data structures : dictionary, key/value pairs
+
+# algorithm - 
+
+#   create a new dictionary that will be the one to return
+#   iterate through the dictionary's items
+#       access the tuple elements using element notation
+#       append the elements to the new dictionary in opposite order
+#   return the new dictionary
+
+def invert_dict(input_dict):
+    #inverted = {}
+    inverted = {pairs[1]: pairs[0] for pairs in input_dict.items()}
+    
+    # for pairs in input_dict.items():
+    #     inverted[pairs[1]] = pairs[0]
+    print(inverted)
+    return inverted
+
+# LS:
+def invert_dict(my_dict):
+    return {value: key for key, value in my_dict.items()}
+
+# print(invert_dict({
+#           'apple': 'fruit',
+#           'broccoli': 'vegetable',
+#           'salmon': 'fish',
+#       }) == {
+#           'fruit': 'apple',
+#           'vegetable': 'broccoli',
+#           'fish': 'salmon',
+#       })  # True
+
+# Given a dictionary and a list of keys, produce a new dictionary that only contains the key/value pairs for the specified keys.
+
+input_dict = {
+    'red': 1,
+    'green': 2,
+    'blue': 3,
+    'yellow': 4,
+}
+
+
+def keep_keys(input_dict, keys):
+    return {key: value for key, value in input_dict.items()
+                        if key in keys}
+
+keys = ['red', 'blue']
+expected_dict = {'red': 1, 'blue': 3}
+#print(keep_keys(input_dict, keys) == expected_dict) # True
+
+# LS
+def keep_keys(my_dict, key_list):
+    return {key: my_dict[key]
+            for key in key_list
+            if key in my_dict}
+# This is safer because it avoids potential KeyValue errors if the key is not in the list being checked
+
+# Write a function that takes a list of strings and returns a list of the same string values, but with all vowels (a, e, i, o, u) removed.
+
+def remove_vowels(input):
+    vowels = 'aeiouAEIOU'
+    new_list = []
+    append_string = ''
+    for word in input:
+        for char in word:
+            if char not in vowels:
+                append_string += char
+        new_list.append(append_string)
+        append_string = ''
+    print(new_list)
+    return new_list
+
+# All of these examples should print True
+# original = ['abcdefghijklmnopqrstuvwxyz']
+# expected = ['bcdfghjklmnpqrstvwxyz']
+# print(remove_vowels(original) == expected)        # True
+
+# original = ['green', 'YELLOW', 'black', 'white']
+# expected = ['grn', 'YLLW', 'blck', 'wht']
+# print(remove_vowels(original) == expected)        # True
+
+# original = ['ABC', 'AEIOU', 'XYZ']
+# expected = ['BC', '', 'XYZ']
+# print(remove_vowels(original) == expected)        # True
+
+# Write a function that takes a string as an argument and returns a list that contains every word from the string, with each word followed by a space and the word's length. If the argument is an empty string or if no argument is passed, the function should return an empty list.
+
+# You may assume that every pair of words in the string will be separated by a single space.
+
+def word_lengths(input=[]):
+    try:
+        split_word = input.split()
+    except AttributeError:
+        return []
+    return [f"{word} {str(len(word))}" for word in split_word]
+
+
+# All of these examples should print True
+# words = 'cow sheep chicken'
+# expected_result = ['cow 3', 'sheep 5', 'chicken 7']
+# print(word_lengths(words) == expected_result)        # True
+
+# words = 'baseball hot dogs and apple pie'
+# expected_result = ['baseball 8', 'hot 3', 'dogs 4',
+#                    'and 3', 'apple 5', 'pie 3']
+# print(word_lengths(words) == expected_result)        # True
+
+# words = "It ain't easy, is it?"
+# expected_result = ['It 2', "ain't 5", 'easy, 5',
+#                    'is 2', 'it? 3']
+# print(word_lengths(words) == expected_result)        # True
+
+# big_word = 'Supercalifragilisticexpialidocious'
+# print(word_lengths(big_word) == [f'{big_word} 34'])  # True
+
+# print(word_lengths('') == [])                        # True
+# print(word_lengths() == [])                          # True
+
+# Given two lists of integers of the same length, return a new list where each element is the product of the corresponding elements from the two lists.
+
+def multiply_items(list_a, list_b):
+    return [list_a[i] * list_b[i] for i in range(len(list_a))]
+# or using zip:
+def multiply_items(list1, list2):
+    return [num1 * num2 for num1, num2 in zip(list1, list2)]
+
+# list_a = [1, 2, 3]
+# list_b = [4, 5, 6]
+# print(multiply_items(list_a, list_b) == [4, 10, 18]) # True
+
+# Write a function that takes a list of numbers and returns the sum of the sums of each leading subsequence in that list. Examine the examples to see what we mean. You may assume that the list always contains at least one number.
+
+def sum_of_sums(input_list):
+    final_sum = 0
+    for i in range(len(input_list)):
+        final_sum += sum(input_list[:i+1])
+    print(final_sum)
+    return final_sum
+
+# print(sum_of_sums([3, 5, 2]) == 21)               # True
+# # (3) + (3 + 5) + (3 + 5 + 2) --> 21
+
+# print(sum_of_sums([1, 5, 7, 3]) == 36)            # True
+# # (1) + (1 + 5) + (1 + 5 + 7) + (1 + 5 + 7 + 3) --> 36
+
+# print(sum_of_sums([1, 2, 3, 4, 5]) == 35)         # True
+# # (1) + (1+2) + (1+2+3) + (1+2+3+4) + (1+2+3+4+5) --> 35
+
+# print(sum_of_sums([4]) == 4)                      # True
+
+# Write a function that takes one argument, a positive integer, and returns the sum of its digits.
+def sum_digits(input_int):
+    sum_all = 0
+    for char in str(input_int):
+        sum_all += int(char)
+    return sum_all
+
+# print(sum_digits(23) == 5)              # True
+# print(sum_digits(496) == 19)            # True
+# print(sum_digits(123456789) == 45)      # True
+
+# Write a function that takes a string as an argument and returns that string with a staggered capitalization scheme. Every other character, starting from the first, should be capitalized and should be followed by a lowercase or non-alphabetic character. Non-alphabetic characters should not be changed, but should be counted as characters for determining when to switch between upper and lower case.
+
+def staggered_case(input_str):
+    iter_string = ''
+    for index, char in enumerate(input_str):
+        if char.isalpha and index % 2 == 0:
+            iter_string += char.upper()
+        else:
+            iter_string += char.lower()
+    print(iter_string)
+    return iter_string
+
+# string = 'I Love Launch School!'
+# result = "I LoVe lAuNcH ScHoOl!"
+# print(staggered_case(string) == result)  # True
+
+# string = 'ALL_CAPS'
+# result = "AlL_CaPs"
+# print(staggered_case(string) == result)  # True
+
+# string = 'ignore 77 the 4444 numbers'
+# result = "IgNoRe 77 ThE 4444 nUmBeRs"
+# print(staggered_case(string) == result)  # True
+
+# print(staggered_case('') == "")          # True
+
+# Modify the function from the previous exercise so it ignores non-alphabetic characters when determining whether it should uppercase or lowercase each letter. The non-alphabetic characters should still be included in the return value; they just don't count when toggling the desired case.
+
+def staggered_case(input_str):
+    iter_string = ''
+    upper = True
+    for char in input_str:
+        if char.isalpha():
+            iter_string += char.upper() if upper else char.lower()
+            upper = not upper
+        else:
+            iter_string += char
+    print(iter_string)
+    return iter_string
+
+# string = 'I Love Launch School!'
+# result = "I lOvE lAuNcH sChOoL!"
+# print(staggered_case(string) == result)  # True
+
+# string = 'ALL_CAPS'
+# result = "AlL_cApS"
+# print(staggered_case(string) == result)  # True
+
+# string = 'ignore 77 the 4444 numbers'
+# result = "IgNoRe 77 ThE 4444 nUmBeRs"
+# print(staggered_case(string) == result)  # True
+
+# print(staggered_case('') == "")          # True
+
+# Given a sequence of integers, filter out instances where the same value occurs successively, retaining only the initial occurrence. Return the refined sequence.
+
+def unique_sequence(input):
+    return [elem for index, elem in enumerate(input) 
+                if input[index] != input[index-1]]
+
+# original = [1, 1, 2, 6, 6, 6, 5, 5, 3, 3, 3, 4]
+# expected = [1, 2, 6, 5, 3, 4]
+# print(unique_sequence(original) == expected)      # True
+
+# Write a function that rotates a list by moving the first element to the end of the list. Do not modify the original list; return a new list instead.
+
+# If the input is an empty list, return an empty list.
+# If the input is not a list, return None.
+# Review the test cases below, then implement the solution accordingly.
+
+# All of these examples should print True
+
+def rotate_list(input_list):
+    if type(input_list) != list:
+        return None
+    return input_list[1:] + input_list[0:1]
+
+# print(rotate_list([7, 3, 5, 2, 9, 1]) == [3, 5, 2, 9, 1, 7])
+# print(rotate_list(['a', 'b', 'c']) == ['b', 'c', 'a'])
+# print(rotate_list(['a']) == ['a'])
+# print(rotate_list([1, 'a', 3, 'c']) == ['a', 3, 'c', 1])
+# print(rotate_list([{'a': 2}, [1, 2], 3]) == [[1, 2], 3, {'a': 2}])
+# print(rotate_list([]) == [])
+
+# # return `None` if the argument is not a list
+# print(rotate_list(None) == None)
+# print(rotate_list(1) == None)
+
+# # the input list is not mutated
+# lst = [1, 2, 3, 4]
+# print(rotate_list(lst) == [2, 3, 4, 1])
+# print(lst == [1, 2, 3, 4])
+
+# Write a function that rotates the last count digits of a number. To perform the rotation, move the first of the digits that you want to rotate to the end and shift the remaining digits to the left.
+
+# problem: from the end of the number, flip the provided last digits and append it back to the whole number 
+# input: an integer and the amount of digits to rotate/flip
+# output: an integer that's been modified based on the digits argument
+# questions - do we have to allow floats? Seems not from test cases
+# can we always assume an input will be an integer, not None or other data types?
+
+# see test cases below
+
+# data structures - will need to use strings to manipulate the individual digits, possibly a list to split up all the indivdual digits while flipping the digits
+
+# algorithm
+
+# code
+
+def rotate_rightmost_digits(number, count):
+    number_str = str(number)
+    first_part = number_str[:-count]
+    second_part = number_str[-count:]
+    result_str = first_part + rotate_string(second_part)
+
+    return int(result_str)
+
+def rotate_string(string):
+    return string[1:] + string[0]
+
+# print(rotate_rightmost_digits(735291, 2) == 735219)  # True
+# print(rotate_rightmost_digits(735291, 3) == 735912)  # True
+# print(rotate_rightmost_digits(735291, 1) == 735291)  # True
+# print(rotate_rightmost_digits(735291, 4) == 732915)  # True
+# print(rotate_rightmost_digits(735291, 5) == 752913)  # True
+# print(rotate_rightmost_digits(735291, 6) == 352917)  # True
+# print(rotate_rightmost_digits(1200, 3) == 1002)      # True
+
+# Take the number 735291 and rotate it by one digit to the left, getting 352917. Next, keep the first digit fixed in place and rotate the remaining digits to get 329175. Keep the first two digits fixed in place and rotate again to get 321759. Keep the first three digits fixed in place and rotate again to get 321597. Finally, keep the first four digits fixed in place and rotate the final two digits to get 321579. The resulting number is called the maximum rotation of the original number.
+
+# Write a function that takes an integer as an argument and returns the maximum rotation of that integer. You can (and probably should) use the rotate_rightmost_digits function from the previous exercise.
+
+# problem - need to do a max rotation on an integer. max rotation is defined as the length of the integer - 2, since a rotation can only be done on 2 or more numbers. 
+
+# examples / test cases: see below, especially note the '0' and integer case
+
+# data structures - integers, not negative numbers
+
+# algorithm
+#   use the rotate_rightmost_digits function to assist
+#   iterate through the length of the integer
+#       This function wants us to start rotating from the left most digit which is (-len) 
+
+def max_rotation(input):
+    num_length = len(str(input))
+    rotated_int = input
+    while num_length > 1:
+        rotated_int = rotate_rightmost_digits(rotated_int, num_length)
+        num_length -= 1
+    return rotated_int
+
+#LS's solution:
+# need to remember can use ranges backwards with step counts like that
+def max_rotation(number):
+    number_digits = len(str(number))
+    for count in range(number_digits, 1, -1):
+        number = rotate_rightmost_digits(number, count)
+
+    return number
+
+# print(max_rotation(735291) == 321579)          # True
+# print(max_rotation(3) == 3)                    # True
+# print(max_rotation(35) == 53)                  # True
+# print(max_rotation(8703529146) == 7321609845)  # True
+
+# # Note that the final sequence here is `015`. The leading
+# # zero gets dropped, though, since we're working with
+# # an integer.
+# print(max_rotation(105) == 15)                 # True
+
+def minilang(program):
+    stack = []
+    register = 0
+
+    for token in program.split():
+        match token:
+            case "ADD":
+                register += stack.pop()
+            case "DIV":
+                register //= stack.pop()
+            case "MULT":
+                register *= stack.pop()
+            case "REMAINDER":
+                register %= stack.pop()
+            case "SUB":
+                register -= stack.pop()
+            case "PUSH":
+                stack.append(register)
+            case "POP":
+                register = stack.pop()
+            case "PRINT":
+                print(register)
+            case _:
+                register = int(token)
+
+    return register
+
+# minilang('PRINT')
+# # 0
+
+# minilang('5 PUSH 3 MULT PRINT')
+# # 15
+
+# minilang('5 PRINT PUSH 3 PRINT ADD PRINT')
+# # 5
+# # 3
+# # 8
+
+# minilang('5 PUSH POP PRINT')
+# # 5
+
+# minilang('3 PUSH 4 PUSH 5 PUSH PRINT ADD PRINT POP PRINT ADD PRINT')
+# # 5
+# # 10
+# # 4
+# # 7
+
+# minilang('3 PUSH PUSH 7 DIV MULT PRINT')
+# # 6
+
+# minilang('4 PUSH PUSH 7 REMAINDER MULT PRINT')
+# # 12
+
+# minilang('-3 PUSH 5 SUB PRINT')
+# # 8
+
+# minilang('6 PUSH')
+# # (nothing is printed)
+
+# Write a function that takes a string as an argument and returns that string with every occurrence of a "number word" -- 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine' -- converted to its corresponding digit character.
+
+# You may assume that the string does not contain any punctuation.
+
+def word_to_digit(input):
+    numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+
+    split_input = [str(numbers.index(word)) if word in numbers else word 
+                    for idx, word in enumerate(input.split())]
+    
+    return ' '.join(split_input)
+
+# message = 'Please call me at five five five one two three four'
+# print(word_to_digit(message) == "Please call me at 5 5 5 1 2 3 4")
+# Should print True
+
+# A prime number is a positive number that is evenly divisible only by itself and 1. Thus, 23 is prime since its only divisors are 1 and 23. However, 24 is not prime since it has divisors of 1, 2, 3, 4, 6, 8, 12, and 24. Note that the number 1 is not prime.
+
+# Write a function that takes a positive integer as an argument and returns true if the number is prime, false if it is not prime.
+
+# You may not use any of Python's add-on packages to solve this problem. Your task is to programmatically determine whether a number is prime without relying on functions that already do that for you.
+
+def is_prime(input):
+    if input == 1:
+        return False
+    for i in range(2, input):
+        if input % i == 0:
+            return False
+    return True
+
+import math
+# LS, fastest solution:
+def is_prime(number):
+    if number == 1:
+        return False
+
+    for divisor in range(2, int(math.sqrt(number)) + 1):
+        if number % divisor == 0:
+            return False
+
+    return True
+
+# print(is_prime(1) == False)              # True
+# print(is_prime(2) == True)               # True
+# print(is_prime(3) == True)               # True
+# print(is_prime(4) == False)              # True
+# print(is_prime(5) == True)               # True
+# print(is_prime(6) == False)              # True
+# print(is_prime(7) == True)               # True
+# print(is_prime(8) == False)              # True
+# print(is_prime(9) == False)              # True
+# print(is_prime(10) == False)             # True
+# print(is_prime(23) == True)              # True
+# print(is_prime(24) == False)             # True
+# print(is_prime(997) == True)             # True
+# print(is_prime(998) == False)            # True
+# print(is_prime(3_297_061) == True)       # True
+# print(is_prime(23_297_061) == False)     # True
+
+# The Fibonacci series is a sequence of numbers in which each number is the sum of the previous two numbers. The first two Fibonacci numbers are 1 and 1. The third number is 1 + 1 = 2, the fourth is 1 + 2 = 3, the fifth is 2 + 3 = 5, the sixth is 3 + 5 = 8, and so on. In mathematical terms, this can be represented as:
+
+# F(1) = 1
+# F(2) = 1
+# F(n) = F(n - 1) + F(n - 2)    (where n > 2)
+
+
+
+# def fibonacci(nth):
+#     if nth <= 2:
+#         return 1
+#     previous, current = 1, 1
+#     for _ in range(3, nth + 1):
+#         previous, current = current, previous + current
+#     return current
+
+# print(fibonacci(1) == 1)                  # True
+# print(fibonacci(2) == 1)                  # True
+# print(fibonacci(3) == 2)                  # True
+# print(fibonacci(4) == 3)                  # True
+# print(fibonacci(5) == 5)                  # True
+# print(fibonacci(6) == 8)                  # True
+# print(fibonacci(12) == 144)               # True
+# print(fibonacci(20) == 6765)              # True
+# print(fibonacci(50) == 12586269025)       # True
+# print(fibonacci(75) == 2111485077978050)  # True
+
+# Do a recursive implementation of fibonacci:
+
+# again, fibonacci is defined as the sum of the previous two fib numbers, starting with 1 and 1
+
+# def fibonacci(nth):
+#     if nth <= 2:
+#         return 1
+    
+#     return fibonacci(nth - 1) + fibonacci(nth - 2)
+
+# print(fibonacci(1) == 1)         # True
+# print(fibonacci(2) == 1)         # True
+# print(fibonacci(3) == 2)         # True
+# print(fibonacci(4) == 3)         # True
+# print(fibonacci(5) == 5)         # True
+# print(fibonacci(6) == 8)         # True
+# print(fibonacci(12) == 144)      # True
+# print(fibonacci(20) == 6765)     # True
+
+# Implementation with memoization below
+
+memo = {}
+def fibonacci(nth):
+    if nth <= 2:
+        return 1
+    elif nth in memo:
+        return memo[nth]
+    else:
+        memo[nth] = fibonacci(nth - 1) + fibonacci(nth - 2)
+        return memo[nth]
+
+# print(fibonacci(1) == 1)         # True
+# print(fibonacci(2) == 1)         # True
+# print(fibonacci(3) == 2)         # True
+# print(fibonacci(4) == 3)         # True
+# print(fibonacci(5) == 5)         # True
+# print(fibonacci(6) == 8)         # True
+# print(fibonacci(12) == 144)      # True
+# print(fibonacci(20) == 6765)     # True
+
+# Write a function that calculates and returns the index of the first Fibonacci number that has the number of digits specified by the argument. The first Fibonacci number has an index of 1. You may assume that the argument is always an integer greater than or equal to 2.
+
+def find_fibonacci_index_by_length(input):
+    fib_count = 2
+    current_len = 0
+    while current_len < input:
+        current_len = len(str(fibonacci(fib_count)))
+        if current_len < input:
+            fib_count += 1
+    print(fib_count)
+    return fib_count
+
+# LS's solution w/ iteration:
+import sys
+
+def find_fibonacci_index_by_length(length):
+    sys.set_int_max_str_digits(50_000)
+    first = 1
+    second = 1
+    count = 2
+
+    while len(str(second)) < length:
+        first, second = second, first + second
+        count += 1
+
+    return count
+
+# All of these examples should print True
+# The first 12 fibonacci numbers are: 1 1 2 3 5 8 13 21 34 55 89 144
+# print(find_fibonacci_index_by_length(2) == 7)
+# print(find_fibonacci_index_by_length(3) == 12)
+# print(find_fibonacci_index_by_length(10) == 45)
+# print(find_fibonacci_index_by_length(16) == 74)
+# print(find_fibonacci_index_by_length(100) == 476)
+# print(find_fibonacci_index_by_length(1000) == 4782)
+
+# Next example might take a little while on older systems
+#print(find_fibonacci_index_by_length(10000) == 47847)
+
+# Write a function that takes a string and returns a dictionary containing the following three properties:
+
+# the percentage of characters in the string that are lowercase letters
+# the percentage of characters that are uppercase letters
+# the percentage of characters that are neither
+# All three percentages should be returned as strings whose numeric values lie between "0.00" and "100.00", respectively. Each value should be rounded to two decimal points.
+
+# You may assume that the string will always contain at least one character.
+
+# problem: need to determine the percentages of types of characters in a string: lowercase, uppercase, and neither which would include punctuation and other non-alphabetical ascii characters. 
+#   input: a string that contains at least one character, so no empty strings or lists of strings etc. Can include whitespace
+#   outptut: a dictionary object that has the 3 requested keys/value pairs
+#               format is float values
+#               Needs to be expresssed in float as a percentage
+#   questions: Is there any order to the requested output of the values in the dictionary? - lowercase, uppercase, then neither percentages in that order
+#               Intertationalize it or just english ascii characters? - seems to be onlyh english
+# Data structures - strings - for the input
+#                 - dictionaries - for the output
+#                 - list - to assist in storing and calculating percentage when iterating through the string
+
+# examples and test cases below
+
+# algorithm
+
+# create dictionary object to hold values with default parameters of 0
+# iterate through the string character by character
+#   check if char is alpha and upper - if it is increment counter
+#   check if char is alpha and lower - if it is increment counter
+#   if neither of the above, increment the neither counter
+# calculate the counts based on length of string and append to the respective dictionary element
+
+# code
+
+def letter_percentages(ip_str):
+    percs = {'lowercase': 0,
+            'uppercase': 0,
+            'neither': 0}
+    for char in ip_str:
+        if char.isalpha():
+            if char.isupper():
+                percs['uppercase'] += 1
+            if char.islower():
+                percs['lowercase'] += 1
+        else:
+            percs['neither'] += 1
+    for key in percs:
+        percs[key] = format((percs[key] / len(ip_str)) * 100, ".2f")
+    return percs
+
+# LS's solution:
+
+def percentage(count, total_count):
+    return f'{(count / total_count) * 100:.2f}'
+
+def letter_percentages(string):
+    total_chars = len(string)
+    lowercase_count = 0
+    uppercase_count = 0
+    neither_count = 0
+
+    for char in string:
+        if char.islower():
+            lowercase_count += 1
+        elif char.isupper():
+            uppercase_count += 1
+        else:
+            neither_count += 1
+
+    return {
+        'lowercase': percentage(lowercase_count, total_chars),
+        'uppercase': percentage(uppercase_count, total_chars),
+        'neither':   percentage(neither_count, total_chars),
+    }
+        
+# expected_result = {
+#     'lowercase': "50.00",
+#     'uppercase': "10.00",
+#     'neither': "40.00",
+# }
+# print(letter_percentages('abCdef 123') == expected_result)
+
+# expected_result = {
+#     'lowercase': "37.50",
+#     'uppercase': "37.50",
+#     'neither': "25.00",
+# }
+# print(letter_percentages('AbCd +Ef') == expected_result)
+
+# expected_result = {
+#     'lowercase': "0.00",
+#     'uppercase': "0.00",
+#     'neither': "100.00",
+# }
+# print(letter_percentages('123') == expected_result)
+
+# A triangle is classified as follows:
+
+# Equilateral: All three sides have the same length.
+# Isosceles: Two sides have the same length, while the third is different.
+# Scalene: All three sides have different lengths.
+# To be a valid triangle, the sum of the lengths of the two shortest sides must be greater than the length of the longest side, and every side must have a length greater than 0. If either of these conditions is not satisfied, the triangle is invalid.
+
+# Write a function that takes the lengths of the three sides of a triangle as arguments and returns one of the following four strings representing the triangle's classification: 'equilateral', 'isosceles', 'scalene', or 'invalid'.
+
+# def triangle(a, b, c):
+#     values = [a, b, c]
+#     perimeter = a + b + c
+#     shortest = min(values)
+#     longest = max(values)
+#     middle = perimeter - longest - shortest
+
+#     if (0 in values) or (middle + shortest) < longest:
+#         return 'invalid'
+#     if a == b == c:
+#         return 'equilateral'
+#     elif a == b or b ==c or c == a:
+#         return 'isosceles'
+#     else:
+#         return 'scalene'
+
+# print(triangle(3, 3, 3) == "equilateral")  # True
+# print(triangle(3, 3, 1.5) == "isosceles")  # True
+# print(triangle(3, 4, 5) == "scalene")      # True
+# print(triangle(0, 3, 3) == "invalid")      # True
+# print(triangle(3, 1, 1) == "invalid")      # True
+
+# A triangle is classified as follows:
+
+# Right: One angle is a right angle (exactly 90 degrees).
+# Acute: All three angles are less than 90 degrees.
+# Obtuse: One angle is greater than 90 degrees.
+# To be a valid triangle, the sum of the angles must be exactly 180 degrees, and every angle must be greater than 0. If either of these conditions is not satisfied, the triangle is invalid.
+
+# Write a function that takes the three angles of a triangle as arguments and returns one of the following four strings representing the triangle's classification: 'right', 'acute', 'obtuse', or 'invalid'.
+
+# You may assume that all angles have integer values, so you do not have to worry about floating point errors. You may also assume that the arguments are in degrees.
+
+
+# input: integers that represent the triangle angles in degrees
+# output: a string representing the triangles classsification
+# use // floor division to maintain integers
+
+# test cases - must handle inputs of 0
+
+# data structures - 
+
+# algorithm - 
+#   find smallest angle
+#   find largest angle
+#   find middle angle based on previous two
+#   determine if any input angles are 0, if so return invalid
+#   determine if angles all add up to exactly 180, if not return invalid 
+#   **if all angles are equal - (acute and equilateral) - can get rid of since can be caught in else statement**
+#   if the smallest + middle is equal to the biggest - right 
+#   if largest greater than 90 - obtuse
+#   else acute
+def triangle(a, b, c):
+    smallest = min(a, b, c)
+    biggest = max(a, b, c)
+    middle = 180 - biggest - smallest
+    if 0 in (a, b, c) or (a + b + c) != 180:
+        return 'invalid'
+    elif smallest + middle == biggest:
+        return 'right'
+    elif biggest > 90:
+        return 'obtuse'
+    else:
+        return 'acute'
+    
+
+print(triangle(60, 70, 50) == "acute")      # True
+print(triangle(30, 90, 60) == "right")      # True
+print(triangle(120, 50, 10) == "obtuse")    # True
+print(triangle(0, 90, 90) == "invalid")     # True
+print(triangle(50, 50, 50) == "invalid")    # True
