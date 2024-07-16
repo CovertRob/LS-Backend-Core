@@ -941,8 +941,296 @@ def triangle(a, b, c):
         return 'acute'
     
 
-print(triangle(60, 70, 50) == "acute")      # True
-print(triangle(30, 90, 60) == "right")      # True
-print(triangle(120, 50, 10) == "obtuse")    # True
-print(triangle(0, 90, 90) == "invalid")     # True
-print(triangle(50, 50, 50) == "invalid")    # True
+# print(triangle(60, 70, 50) == "acute")      # True
+# print(triangle(30, 90, 60) == "right")      # True
+# print(triangle(120, 50, 10) == "obtuse")    # True
+# print(triangle(0, 90, 90) == "invalid")     # True
+# print(triangle(50, 50, 50) == "invalid")    # True
+
+# Some people believe that Fridays that fall on the 13th day of the month are unlucky days. Write a function that takes a year as an argument and returns the number of Friday the 13ths in that year. You may assume that the year is greater than 1752, which is when the United Kingdom adopted the modern Gregorian Calendar. You may also assume that the same calendar will remain in use for the foreseeable future.
+
+# Problem
+#   - Determine how many friday the 13th's there are in a given year
+#   - Assume year is greater than 1752 (input)
+#   - Number of Friday 13th's will depend on if it's a leap year or not
+#   - Gregorian calendar cycle is 400 years or 146, 097 days - 303 are regular years and 97 are leap years of 366 days. 
+#   - Every year that is exactly divisible by 4 is a leap year, except for years that are exactly divisible by 100. Ex - years 1700, 1800, 1900 not leap years but 2000 is. Centurial years are leap years unless they are divisible by 400, in which case they are leap years. 
+#   - Using the datetime module does all the work for us
+#   - The month days are as follows: 
+#       - 1: 31
+#       - 2: 28 (29 in leap years)
+#       - 3: 31
+#       - 4: 30
+#       - 5: 31
+#       - 6: 30
+#       - 7: 31
+#       - 8: 31
+#       - 9: 30
+#       - 10: 31
+#       - 11: 30
+#       - 12: 31
+
+#       - Every week is 7 days - M-F.
+# Examples - see test cases below
+
+# Data structures - use the date time date object to determine 13th's 
+
+# Algorithm
+#   loop through each month of the year
+#       check if that months 13th is a friday, if it is increment counter
+#   return 13th counter
+
+import datetime as dt 
+
+def determine_leap_year(year):
+    if year % 100 == 0:
+        if year % 400 == 0:
+            return True
+        return False
+    if year % 4 == 0:
+        return True
+    return False
+
+def friday_the_13ths(year):
+    counter = 0
+    for months in range(1, 13):
+        f13 = dt.date(year, months, 13)
+        if f13.weekday() == 4:
+            counter += 1
+    return counter
+    
+
+# print(friday_the_13ths(1986) == 1)      # True
+# print(friday_the_13ths(2015) == 3)      # True
+# print(friday_the_13ths(2017) == 2)      # True
+
+# A featured number (something unique to this exercise) is an odd number that is a multiple of 7, with all of its digits occurring exactly once each. For example, 49 is a featured number, but 98 is not (it is not odd), 97 is not (it is not a multiple of 7), and 133 is not (the digit 3 appears twice).
+
+# Write a function that takes an integer as an argument and returns the next featured number greater than the integer. Issue an error message if there is no next featured number.
+
+# NOTE: The largest possible featured number is 9876543201.
+
+# Problem
+#   - Featured number - odd number that is a multiple of 7 (% 7 = 0) and all digits occur exactly once each. 
+#   - Need to determine the next featured number after the given input integer
+
+# Examples / Test cases
+#   - 49 is a featured number
+#   - 98 is not a featured number - not odd
+#   - 97 is not - not a multiple of 7
+#   - 133 is not - the digit 3 appears twice
+
+# Data structures
+#   - Use a list containing numbers 0 - 9 since those are all the unique numbers
+
+# Algorithm
+#   starting from the input integer, find the next multiple of 7
+#       sub-problem - find multiple of a number
+#   if it is odd and if all numbers only occur once - return as featured number
+#       sub-problem - determining if all numbers only occur once
+#   else, continue to next multiple of 7
+
+def next_multiple_of_7(input):
+    current_factor = input // 7
+    next_multiple = (7 * (current_factor + 1))
+    return next_multiple
+
+def repeat_digits(input):
+    valid_digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    for digit in str(input):
+        try:
+            valid_digits.remove(int(digit))
+        except ValueError:
+            return True
+    return False
+
+def is_featured(starting_int):
+    max = 9876543201
+    multiple = starting_int
+    while True:
+        next_multiple = next_multiple_of_7(multiple)
+        #print(next_multiple)
+        if next_multiple > max:
+           return "There is no possible number that fulfills those requirements."
+        if next_multiple % 2 == 1 and not repeat_digits(next_multiple):
+            return next_multiple
+        multiple = next_multiple
+
+# LS's solution has their multiple function only go to the next odd multiple which speeds it up
+
+# print(is_featured(12) == 21)                  # True
+# print(is_featured(20) == 21)                  # True
+# print(is_featured(21) == 35)                  # True
+# print(is_featured(997) == 1029)               # True
+# print(is_featured(1029) == 1043)              # True
+# print(is_featured(999999) == 1023547)         # True
+# print(is_featured(999999987) == 1023456987)   # True
+# print(is_featured(9876543186) == 9876543201)  # True
+# print(is_featured(9876543200) == 9876543201)  # True
+
+# error = ("There is no possible number that fulfills those requirements.")
+# print(is_featured(9876543201) == error)       # True
+
+# Write a function that computes the difference between the square of the sum of the first count positive integers and the sum of the squares of the first count positive integers.
+
+# Problem
+#   - (sum of first count positive integers)**2 - (squares of first count positive integers and their sum)
+# test cases below
+
+# data structures
+#   - 
+
+#Algorithm
+#   - Create list with first n integers
+
+def sum_square_difference(input):
+    nums = [nums for nums in range(1,input+1)]
+    square_of_sums = (sum(nums)**2)
+    sum_of_squares = 0
+    for num in nums:
+        sum_of_squares += num**2
+    return square_of_sums - sum_of_squares
+
+# print(sum_square_difference(3) == 22)          # True
+# # 22 --> (1 + 2 + 3)**2 - (1**2 + 2**2 + 3**2)
+
+# print(sum_square_difference(10) == 2640)       # True
+# print(sum_square_difference(1) == 0)           # True
+# print(sum_square_difference(100) == 25164150)  # True
+
+# Write a function that takes a list as an argument and sorts that list using the bubble sort algorithm described above. The sorting should be done "in-place" -- that is, the function should mutate the list. You may assume that the list contains at least two elements.
+
+def bubble_sort(input_list):
+    
+    while True:
+        swapped = False
+        swaps = 0
+        for i in range(1, len(input_list)):
+            print(i)
+            if input_list[i-1] > input_list[i]:
+                input_list[i-1], input_list[i] = input_list[i], input_list[i-1]
+                swapped = True
+                swaps += 1
+        if not swapped or swaps == len(input_list) - 1:
+            break
+            
+    print(input_list)
+
+# lst1 = [5, 3]
+# bubble_sort(lst1)
+# print(lst1 == [3, 5])                   # True
+
+# lst2 = [6, 2, 7, 1, 4]
+# bubble_sort(lst2)
+# print(lst2 == [1, 2, 4, 6, 7])          # True
+
+# lst3 = ['Sue', 'Pete', 'Alice', 'Tyler', 'Rachel',
+#         'Kim', 'Bonnie']
+# bubble_sort(lst3)
+
+# expected = ["Alice", "Bonnie", "Kim", "Pete",
+#             "Rachel", "Sue", "Tyler"]
+# print(lst3 == expected)                 # True
+
+# Our countdown to launch isn't behaving as expected. Why? Change the code so that our program successfully counts down from 10 to 1 before launching.
+
+
+# counter = 10
+
+def decrease(counter):
+    return counter - 1
+
+# for _ in range(10):
+#     print(counter)   
+#     counter = decrease(counter)
+
+# print('LAUNCH!')
+
+# You have a function that is supposed to reverse a string passed as an argument. However, it's not producing the expected output. Explain the bug, and provide a solution.
+
+def reverse_string(string):
+    return string[::-1] # modified to be the solution
+
+#print(reverse_string("hello") == "olleh")
+
+# Bug here is that we are reassigning to the string argument and strings are immmutable in python so that re-assignment creates a new object each time the for loop executes. This results in appending the backwards string to the original string. Solution: use a slice to reverse the string. 
+
+# You want to multiply all elements of a list by 2. However, the function is not returning the expected result. Explain the bug, and provide a solution.
+
+def multiply_list(lst):
+    for idx, item in enumerate(lst):
+        lst[idx] = item * 2
+
+    return lst
+
+#print(multiply_list([1, 2, 3]) == [2, 4, 6])
+
+# When accessing each item, it is not performing re-assignment inside of the list, it is creating a new object because integers are immutable. You need to use the enumerate function to access the index for the list and perform re-assignment on that index with the mutated item value. 
+
+# Fix and explain why not working:
+
+def get_key_value(my_dict, key):
+    try:
+        return my_dict[key]
+    except KeyError:
+        return None
+
+#print(get_key_value({"a": 1}, "b"))
+
+# or :
+def get_key_value(my_dict, key):
+    return my_dict.get(key, None)
+
+# It is returning a KeyError because in the if statement accessing a key that does not exist in the dictionary results in a KeyError. We need to use a try except block if we keep the same syntax.
+
+
+# Fix code:
+
+def append_to_list(value, lst=[]):
+    lst.append(value)
+    print(lst)
+    return lst
+
+# print(append_to_list(1) == [1])
+# print(append_to_list(2) == [2])
+# print(append_to_list(2) == [2])
+
+def sum_(numbers, factor):
+    return factor * sum(numbers)
+
+# numbers = [1, 2, 3, 4]
+# print(sum_(numbers, 2) == 20)
+
+# We are overwriting the sum function. So we are making a recursive call in the return line without meaning to. 
+
+
+import copy
+
+original = [[1], [2], [3]]
+copied = copy.copy(original)
+
+original[0][0] = 99
+
+# print(copied[0] == [1])
+
+# shallow copies do not copy nested objects in a list. Need to perform a deep copy
+
+data_set = {1, 2, 3, 4, 5}
+
+# for item in data_set:
+#     if item % 2 == 0:
+#         data_set.remove(item)
+
+# sets are unchangeable, meaning you can't change their items, but you can remove and add new ones. Also, continuing to iterate over it while removing an element causes a runtime error because they are unordered so now the order has changed.
+#common solution is to use a comprehension:
+data_set = {item for item in data_set if item % 2 != 0}
+
+# How can we preserve the order of the original list?
+data = [4, 2, 4, 2, 1, 3, 2, 3, 2, 4, 3]
+unique_data = []
+seen = set()
+# for item in data:
+#     if item not in seen:
+#         seen.add(item)
+#         unique_data.append(item)
+# print(unique_data == [4, 2, 1, 3]) # now guranteed

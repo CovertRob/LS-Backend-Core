@@ -675,3 +675,8 @@ Understanding of how to create and use range objects and enumerate for indexing 
 
 - Using the *, the variable that we associate with the '*' becomes iterable - meaning you can do things like iterate over it, run some higher-order functions such as map and filter etc.
 - **kwargs receives arguments as a dictionary, so you can iterate over the pairs.
+
+## Random Notes
+
+- **You cannot change the size of a set, frozen set, list, or dict while iterating over it** - this will cause a runtime error in the case of a set. It won't notify you about it for a list or dict
+- Default arguments for functions that are mutable objects, such as an empty list, are shared between function calls. A new list is not instantiated every time, meaning you'll just keep adding objects to that first list created.
