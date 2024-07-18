@@ -158,8 +158,8 @@ word = 'Sesquipedalianism'
 
 # ADDITONAL Practice:
 
-# def sum_of_squares(lst):
-#     # Implementation
+def sum_of_squares(lst):
+    pass
 
 # numbers = [1, 2, 3, 4, 5]
 # print(sum_of_squares(numbers))  # => 55 (1^2 + 2^2 + 3^2 + 4^2 + 5^2)
@@ -167,8 +167,8 @@ word = 'Sesquipedalianism'
 
 # ####
 
-# def longest_word(sentence):
-
+def longest_word(sentence):
+    pass
 # sample_sentence = 'This is a sample sentence with long words'
 # print(longest_word(sample_sentence))  # => ['sentence']
 
@@ -179,8 +179,8 @@ word = 'Sesquipedalianism'
 # # The input will only consist of lowercase characters and will be at least one letter long.
 # # If there are multiple solutions, return the one that appears first.
 
-# def longest(string):
-
+def longest(string):
+    pass
 
 # print(longest('asd') == 'as')
 # print(longest('nab') == 'ab')
@@ -204,6 +204,8 @@ word = 'Sesquipedalianism'
 # print(alphabetized("The Holy Bible") == "BbeehHilloTy")
 # print(alphabetized("!@$%^&*()_+=-`,") == "")
 # print(alphabetized("CodeWars can't Load Today") == "aaaaCcdddeLnooorstTWy")
+
+####
 
 # Given a dictionary where both keys and values are unique, invert this dictionary so that its keys become values and its values become keys.
 
@@ -1234,3 +1236,141 @@ seen = set()
 #         seen.add(item)
 #         unique_data.append(item)
 # print(unique_data == [4, 2, 1, 3]) # now guranteed
+
+# Problem
+#   Given a 3x3 matrix represented by nested lists, create the transposition of that matrix.
+#   Transpose - exchanging of the rows and columns of the original matrix
+#   Do not modify the original matrix and do not use any external libraries. 
+#   Input: a nested list containing the 3x3 matrix with integer values
+#   Output: a new nested list containing the transposed 3x3 matrix with integer values
+
+# Examples / Test cases
+#   Below
+
+# Data Structures - nested lists, remember bracket notation matrix[row][column]
+#   An outer list and three sub-lists that each contain three elements
+
+# Algorithm
+
+# instantiate new 3x3 matrix
+# iterate through the rows
+# append each row number's elements to it's corresponding column index - ex row 1 element 2 will become row 2 element 1 (2nd item in that column)
+# return new matrix
+
+def transpose(matrix):
+    t_mat = [[], [], []]
+    for rows in matrix:
+        for idx2, elem in enumerate(rows):
+            t_mat[idx2].append(elem)
+    return t_mat
+
+
+
+# matrix = [
+#     [1, 5, 8],
+#     [4, 7, 2],
+#     [3, 9, 6],
+# ]
+
+# new_matrix = transpose(matrix)
+
+# print(new_matrix == [[1, 4, 3], [5, 7, 9], [8, 2, 6]]) # True
+# print(matrix == [[1, 5, 8], [4, 7, 2], [3, 9, 6]])     # True
+
+# Modify the above transpopse function to make it work for any MxN matrix
+# Just have to append the number of new rows by checking the length of matrix[0]
+
+def transpose(matrix):
+    t_mat = []
+    for _ in range(0,len(matrix[0])):
+        t_mat.append([])
+    print(t_mat)
+    for rows in matrix:
+        for idx2, elem in enumerate(rows):
+            t_mat[idx2].append(elem)
+    return t_mat
+
+# All of these examples should print True
+# print(transpose([[1, 2, 3, 4]]) == [[1], [2], [3], [4]])
+# print(transpose([[1], [2], [3], [4]]) == [[1, 2, 3, 4]])
+# print(transpose([[1]]) == [[1]])
+
+# matrix_3_by_5 = [
+#     [1, 2, 3, 4, 5],
+#     [4, 3, 2, 1, 0],
+#     [3, 7, 8, 6, 2],
+# ]
+# expected_result = [
+#     [1, 4, 3],
+#     [2, 3, 7],
+#     [3, 2, 8],
+#     [4, 1, 6],
+#     [5, 0, 2],
+# ]
+
+# print(transpose(matrix_3_by_5) == expected_result)
+
+# Write a function that takes an arbitrary MxN matrix, rotates it 90 degrees and returns the result as a new matrix. Do not mutate the original matrix.
+
+# Examples:
+
+# matrix = [
+#     [1, 5, 8],
+#     [4, 7, 2],
+#     [3, 9, 6],
+# ]
+# 3  4  1
+# 9  7  5
+# 6  2  8
+
+# 3  4  1
+# 9  7  5
+
+# 9  3
+# 7  4
+# 5  1
+
+# rotating a matrix is very similar to rotating one, just have to reverse the elements after the transposition. Trying to iterate through and append the elements backwards is very hard and confusing index wise
+# def rotate90(matrix):
+#     t_mat = []
+#     for _ in range(0,len(matrix[0])):
+#         t_mat.append([])
+#     for rows in matrix:
+#         for idx2, elem in enumerate(rows):
+#             t_mat[idx2].append(elem)
+#     for row in t_mat:
+#         row.reverse()
+#     return t_mat    
+
+# Other solutions from LS students:
+# The matrix: list is a function annotation, a subtle way of annotating to 3rd party programs that this is supposed to return a list
+def rotate90(matrix: list):
+    lst = ([list(row) for row in zip(*reversed(matrix))])
+    print(lst)
+    return lst
+
+# def get_sub(matrix, index):
+#     return [sub[index] for sub in reversed(matrix)]
+# def rotate90(matrix):
+#     return [get_sub(matrix, i) for i in range(len(matrix[0]))]
+
+matrix1 = [
+    [1, 5, 8],
+    [4, 7, 2],
+    [3, 9, 6],
+]
+
+matrix2 = [
+    [3, 7, 4, 2],
+    [5, 1, 0, 8],
+]
+
+new_matrix1 = rotate90(matrix1)
+new_matrix2 = rotate90(matrix2)
+new_matrix3 = rotate90(rotate90(rotate90(rotate90(matrix2))))
+
+# These examples should all print True
+print(new_matrix1 == [[3, 4, 1], [9, 7, 5], [6, 2, 8]])
+print(new_matrix2 == [[5, 3], [1, 7], [0, 4], [8, 2]])
+print(new_matrix3 == matrix2)
+
