@@ -158,8 +158,8 @@ word = 'Sesquipedalianism'
 
 # ADDITONAL Practice:
 
-# def sum_of_squares(lst):
-#     # Implementation
+def sum_of_squares(lst):
+    pass
 
 # numbers = [1, 2, 3, 4, 5]
 # print(sum_of_squares(numbers))  # => 55 (1^2 + 2^2 + 3^2 + 4^2 + 5^2)
@@ -167,20 +167,21 @@ word = 'Sesquipedalianism'
 
 # ####
 
-# def longest_word(sentence):
+def longest_word(sentence):
+    pass
 
 # sample_sentence = 'This is a sample sentence with long words'
 # print(longest_word(sample_sentence))  # => ['sentence']
 
 # ###
 
-# # Find the longest substring in alphabetical order.
-# # Example: the longest alphabetical substring in "asdfaaaabbbbcttavvfffffdf" is "aaaabbbbctt".
-# # The input will only consist of lowercase characters and will be at least one letter long.
-# # If there are multiple solutions, return the one that appears first.
+# Find the longest substring in alphabetical order.
+# Example: the longest alphabetical substring in "asdfaaaabbbbcttavvfffffdf" is "aaaabbbbctt".
+# The input will only consist of lowercase characters and will be at least one letter long.
+# If there are multiple solutions, return the one that appears first.
 
-# def longest(string):
-
+def longest(string):
+    pass
 
 # print(longest('asd') == 'as')
 # print(longest('nab') == 'ab')
@@ -193,12 +194,12 @@ word = 'Sesquipedalianism'
 
 # ####
 
-# # Re-order the characters of a string, so that they are concatenated into a new string in "case-insensitively-alphabetical-order-of-appearance" order.
-# # Whitespace and punctuation shall simply be removed!
-# # The input is restricted to contain no numerals and only words containing the english alphabet letters.
+# Re-order the characters of a string, so that they are concatenated into a new string in "case-insensitively-alphabetical-order-of-appearance" order.
+# Whitespace and punctuation shall simply be removed!
+# The input is restricted to contain no numerals and only words containing the english alphabet letters.
 
-# def alphabetized(string):
-
+def alphabetized(string):
+    pass
 
 # # Tests
 # print(alphabetized("The Holy Bible") == "BbeehHilloTy")
