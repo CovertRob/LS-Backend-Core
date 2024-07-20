@@ -177,10 +177,10 @@ def longest_word(sentence):
 
 # ###
 
-# # Find the longest substring in alphabetical order.
-# # Example: the longest alphabetical substring in "asdfaaaabbbbcttavvfffffdf" is "aaaabbbbctt".
-# # The input will only consist of lowercase characters and will be at least one letter long.
-# # If there are multiple solutions, return the one that appears first.
+# Find the longest substring in alphabetical order.
+# Example: the longest alphabetical substring in "asdfaaaabbbbcttavvfffffdf" is "aaaabbbbctt".
+# The input will only consist of lowercase characters and will be at least one letter long.
+# If there are multiple solutions, return the one that appears first.
 
 def longest(string):
     pass
@@ -196,12 +196,12 @@ def longest(string):
 
 # ####
 
-# # Re-order the characters of a string, so that they are concatenated into a new string in "case-insensitively-alphabetical-order-of-appearance" order.
-# # Whitespace and punctuation shall simply be removed!
-# # The input is restricted to contain no numerals and only words containing the english alphabet letters.
+# Re-order the characters of a string, so that they are concatenated into a new string in "case-insensitively-alphabetical-order-of-appearance" order.
+# Whitespace and punctuation shall simply be removed!
+# The input is restricted to contain no numerals and only words containing the english alphabet letters.
 
-# def alphabetized(string):
-
+def alphabetized(string):
+    pass
 
 # # Tests
 # print(alphabetized("The Holy Bible") == "BbeehHilloTy")
