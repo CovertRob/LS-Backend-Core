@@ -1377,3 +1377,308 @@ def rotate90(matrix: list):
 # print(new_matrix2 == [[5, 3], [1, 7], [0, 4], [8, 2]])
 # print(new_matrix3 == matrix2)
 
+# Create a function that takes a list of numbers as an argument. For each number, determine how many numbers in the list are smaller than it, and place the answer in a list. Return the resulting list.
+
+# When counting numbers, only count unique values. That is, if a number occurs multiple times in the list, it should only be counted once.
+
+
+# problem:
+# input: list of numbers
+# for eah number, how many numbers in the list are smalled than it and place that answer in a list
+# output: values of count smaller than each number 
+# only use unique values when counting numbers that are smaller, still include repeat number for determing count
+
+# examples below
+
+# data structures - use lists and a set to determine unique values
+
+# algorithm:
+
+#   create seen() set
+#   create count list to be returned
+#   create current int
+#   create number of ints smaller
+#   iterate through the input list starting with index 0
+#       iterate through the list again starting with index 0
+#           if current number is less than current int, append to seen() set
+#           increment the number of ints smaller
+#       append the count to the respective list index
+#       reset the seen set
+#   return the list
+#       
+
+# completed in 15 minutes
+def smaller_numbers_than_current(input_ints):
+    seen = set()
+    counts_of_smaller = []
+    num_of_ints_smaller = 0
+    for num in input_ints:
+        for elem in input_ints:
+            if elem < num and elem not in seen:
+                seen.add(elem)
+                num_of_ints_smaller += 1
+        counts_of_smaller.append(num_of_ints_smaller)
+        seen.clear()
+        num_of_ints_smaller = 0
+    print(counts_of_smaller)
+    return counts_of_smaller
+
+# refactor with comprehensions?
+
+# print(smaller_numbers_than_current([8, 1, 2, 2, 3]) == [3, 0, 1, 1, 2])
+# print(smaller_numbers_than_current([7, 7, 7, 7]) == [0, 0, 0, 0])
+# print(smaller_numbers_than_current([6, 5, 4, 8]) == [2, 1, 0, 3])
+# print(smaller_numbers_than_current([1]) == [0])
+
+# my_list = [1, 4, 6, 8, 13, 2, 4, 5, 4]
+# result   = [0, 2, 4, 5, 6, 1, 2, 3, 2]
+# print(smaller_numbers_than_current(my_list) == result)
+
+# Create a function that takes a list of integers as an argument. The function should return the minimum sum of 5 consecutive numbers in the list. If the list contains fewer than 5 elements, the function should return None.
+
+# Problem
+#   Input: a list of integers
+#   Output: a single integer that is the minimum sum of 5 consecutive integers
+#   Need to figure out what the smallest consecutive 5 sum of integers is
+#   The numbers can be positive or negative
+#   Return none if the function contains less than 5 elements
+#   The number of 5 sum checks we need to do 
+#   List sum does not wrap between front and end
+#   The number of times we need to check sums is length of the list - 5, inclusive.
+#   Example: For a list of length 6, 6 - 5 is 1, so we need to do 2 sums because there are two sets of 5 consecutive integers
+
+# examples below
+
+# data structures - lists
+
+# algorithm
+#   if the len of the input list is less than 5, return None
+#   while true:  
+#       iterate through the list of integers starting with index 0
+#           get the sum of 5 integers from current index
+#       if the len of input list is equal to 5, return the sum
+#       if the len of (input list) - current index = 1
+#           return the sum
+#       
+
+# This one I initially struggled with and took me about 40 minutes to re-work it a bit
+def minimum_sum(input_list):
+    if len(input_list) < 5:
+        return None
+    total = sum(input_list[0:5])
+    
+    for nums in range(1, len(input_list) - 4):
+        next_five = sum(input_list[nums:nums+5])
+        if next_five < total:
+            total = next_five
+        if len(input_list) == 5:
+            return total
+    return total
+
+# print(minimum_sum([1, 2, 3, 4]) is None)
+# print(minimum_sum([1, 2, 3, 4, 5, -5]) == 9)
+# print(minimum_sum([1, 2, 3, 4, 5, 6]) == 15)
+# print(minimum_sum([55, 2, 6, 5, 1, 2, 9, 3, 5, 100]) == 16)
+# print(minimum_sum([-1, -5, -3, 0, -1, 2, -4]) == -10)
+
+# Create a function that takes a string argument and returns a copy of the string with every second character in every third word converted to uppercase. Other characters should remain the same.
+
+# Problem
+#   Input: a string, consisting of characters and spaces
+#   Output: copy of string, every 2nd char in every 3rd word uppercase
+#   Need to iterate over the string and access the appropriate letters inthe appropriate words in the string. Do not mutate the original variable.
+#   Do not capitalize if it is a single letter word like 'a' 
+
+
+# Examples - we see no internatinal characters or numbers
+
+# Data structures - use lists
+
+# Algorithm
+#   create split of string at the white spaces
+#   use range function to get every 3rd word
+#   append the uppercase word back to the split string
+#   joint the string back together
+
+# struggled with this one too, about an hour
+def to_weird_case(input):
+    split_str = input.split()
+    for i in range(2, len(split_str), 3):
+        current_word = split_str[i]
+        if len(split_str[i]) == 1:
+            continue
+        upper_word = [char.upper() if idx % 2 == 1 else char for idx, char in enumerate(current_word)]
+        weird_word = ''.join(upper_word)
+        split_str[i] = weird_word
+    return ' '.join(split_str)
+
+# original = 'Lorem Ipsum is simply dummy text of the printing world'
+# expected = 'Lorem Ipsum iS simply dummy tExT of the pRiNtInG world'
+# print(to_weird_case(original) == expected)
+
+# original = 'It is a long established fact that a reader will be distracted'
+# expected = 'It is a long established fAcT that a rEaDeR will be dIsTrAcTeD'
+# print(to_weird_case(original) == expected)
+
+# print(to_weird_case('aaA bB c') == 'aaA bB c')
+
+# original = "Mary Poppins' favorite word is supercalifragilisticexpialidocious"
+# expected = "Mary Poppins' fAvOrItE word is sUpErCaLiFrAgIlIsTiCeXpIaLiDoCiOuS"
+# print(to_weird_case(original) == expected)
+
+# Create a function that takes a list of integers as an argument and returns a tuple of two numbers that are closest together in value. If there are multiple pairs that are equally close, return the pair that occurs first in the list.
+
+# Problem
+#   Input: list of integers, whole numbers
+#   output: tuple containing an integer pair
+#   Iterate through the list of integers and figure out which two integers are closest in value
+#   Need to get rid of negative values
+
+# Examples - list is positive numbers
+
+# data structures - use lists to contain integers
+
+# algorithm:
+
+#   use built in sort() method and sort list from smallest to largest integer
+#   instantiate difference variable
+#   iterate through the list of integers from index 0 to len - 1
+#       get difference between current integer index and next integer index
+#       if current index difference is less than stored difference, 
+#           update stored difference with current index difference
+
+# Add the pair as a key and the difference as the value
+# return the pair whose index came first
+
+# Find the difference for every pair
+
+# This one was hard, took me a couple of hours to get everything together
+def closest_numbers(input):
+    sorted_input = sorted(input)
+    difference = max(sorted_input) # need to start not at 0 otherwise condition below won't work
+    pair = (0, 0)
+    for i in range(0, len(sorted_input) - 1):
+        current_difference = abs(sorted_input[i] - sorted_input[i+1])
+        if current_difference < difference:
+            difference = current_difference
+            pair = (sorted_input[i], sorted_input[i+1])
+    idx1, idx2 = input.index(pair[0]), input.index(pair[1])
+    if idx1 > idx2:
+        return (input[idx2], input[idx1])
+    return (input[idx1], input[idx2])
+
+# def closest_numbers(input):
+#     sorted_input = sorted(input)
+#     differences = {(sorted_input[num], sorted_input[num+1]): abs(sorted_input[num] - sorted_input[num+1]) for num in range(0, len(input) -1, 2)}
+#     print(differences)
+#     index_list = []
+#     for num1, num2 in differences.keys():
+#         index_list.append(num1)
+#         index_list.append(num2)
+#     lowest_index_elem = input[min(input.index(elem) for elem in index_list)]
+#     item_to_return = ()
+#     for pair in differences.keys():
+#         if lowest_index_elem in list(pair):
+#             item_to_return = pair
+#     item1, item2 = item_to_return
+#     index1 = input.index(item1)
+#     index2 = input.index(item2)
+#     corrected_order = ()
+    
+
+    # don't need to find difference of every combo because sorted differences will automatically be less
+
+# bug - logic doesn't work on returning the first if multple are the same because I sort it in descending order
+
+# print(closest_numbers([5, 25, 15, 11, 20]) == (15, 11))
+# print(closest_numbers([19, 25, 32, 4, 27, 16]) == (25, 27))
+# print(closest_numbers([12, 22, 7, 17]) == (12, 7))
+
+# Create a function that takes a string argument and returns the character that occurs most often in the string. If there are multiple characters with the same greatest frequency, return the one that appears first in the string. When counting characters, consider uppercase and lowercase versions to be the same.
+
+# Problem 
+#   Figure out which character occurs most in the string. If multiple charactesr with the same greates frequency, return the one that appears first in the string. 
+#   Upper and lower case are the same in this problem.
+# Input: A string
+# Output: a single letter string
+
+# Examples / Test Cases - No international characters or numbers, includes punctuation
+
+# Data structures - list, perhaps a dictionary to store values
+
+# Algorithm
+#   Split the string into a list containing all individual characters
+#   sort the list of strings so that it is in lexagraphical order
+#   create a copy of the sorted list as a set to remove repeat elements
+#   use a dictionary comprehension with the unique set to iterate through the list and count each amount of characters
+#   Get the values that occur the most
+#   If multiple values have same greatest occurrence, get and compare index of each char and return the value of the one that has the least index
+
+def most_common_char(str_input):
+    lowercased = str_input.lower()
+    split_str = list(lowercased)
+    split_str.sort()
+    unique_chars = set(split_str)
+    num_chars = {chars: split_str.count(chars) for chars in unique_chars}
+    # find the greatest values in the dictionary and its corresponding char
+    max_value = max(num_chars.values())
+    greatest_values = [char for char, count in num_chars.items() if count == max_value]
+    # if there is only one greatest occurency, return it
+    if len(greatest_values) == 1:
+        return greatest_values[0]
+    index = []
+    # return the letter that occurs first in the lowercased string
+    for greatest_char in greatest_values:
+        index.append(lowercased.index(greatest_char))
+    return lowercased[min(index)]
+
+# print(most_common_char('Hello World') == 'l')
+# print(most_common_char('Mississippi') == 'i')
+# print(most_common_char('Happy birthday!') == 'h')
+# print(most_common_char('aaaaaAAAA') == 'a')
+
+# my_str = 'Peter Piper picked a peck of pickled peppers.'
+# print(most_common_char(my_str) == 'p')
+
+# my_str = 'Peter Piper repicked a peck of repickled peppers. He did!'
+# print(most_common_char(my_str) == 'e')
+
+# Create a function that takes a string argument and returns a dict object in which the keys represent the lowercase letters in the string, and the values represent how often the corresponding letter occurs in the string.
+
+# Problem: 
+#   Input: a string consisting of chars, punctuation, and spaces
+#   Output: a dict object, with keys the chars and valuees their occurrence value
+
+# Examples : below
+
+# data structures - list for string operations, set to get unique chars
+
+# algorithm:
+#   if inptu is empty or is not all alphabateical : return empty dict
+#   create list object containing input string lowercased
+#   create copy of list as a set to remove duplicate chars
+#   iterate through each element in the set and remove it if it is not alphabetical
+#   use dict comprehension to create dict object with keys as the unique values from the set and values the count of those chars from the list object containing the original string
+
+# Got these types of problems down to a science now, did it in about 15 minutes
+def count_letters(input_str):
+    if len(input_str) == 0:
+        return {}
+    str_as_list = list(input_str)
+    unique_chars_as_set = set(str_as_list)
+    char_occurrences = {unique_chars: str_as_list.count(unique_chars) for unique_chars in unique_chars_as_set if unique_chars.isalpha() and unique_chars.islower()}
+    return char_occurrences
+
+expected = {'w': 1, 'o': 2, 'e': 3, 'b': 1, 'g': 1, 'n': 1}
+print(count_letters('woebegone') == expected)
+
+expected = {'l': 1, 'o': 1, 'w': 1, 'e': 4, 'r': 2,
+            'c': 2, 'a': 2, 's': 2, 'u': 1, 'p': 2}
+print(count_letters('lowercase/uppercase') == expected)
+
+expected = {'u': 1, 'o': 1, 'i': 1, 's': 1}
+print(count_letters('W. E. B. Du Bois') == expected)
+
+print(count_letters('x') == {'x': 1})
+print(count_letters('') == {})
+print(count_letters('!!!') == {})
