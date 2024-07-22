@@ -1669,16 +1669,165 @@ def count_letters(input_str):
     char_occurrences = {unique_chars: str_as_list.count(unique_chars) for unique_chars in unique_chars_as_set if unique_chars.isalpha() and unique_chars.islower()}
     return char_occurrences
 
-expected = {'w': 1, 'o': 2, 'e': 3, 'b': 1, 'g': 1, 'n': 1}
-print(count_letters('woebegone') == expected)
+# expected = {'w': 1, 'o': 2, 'e': 3, 'b': 1, 'g': 1, 'n': 1}
+# print(count_letters('woebegone') == expected)
 
-expected = {'l': 1, 'o': 1, 'w': 1, 'e': 4, 'r': 2,
-            'c': 2, 'a': 2, 's': 2, 'u': 1, 'p': 2}
-print(count_letters('lowercase/uppercase') == expected)
+# expected = {'l': 1, 'o': 1, 'w': 1, 'e': 4, 'r': 2,
+#             'c': 2, 'a': 2, 's': 2, 'u': 1, 'p': 2}
+# print(count_letters('lowercase/uppercase') == expected)
 
-expected = {'u': 1, 'o': 1, 'i': 1, 's': 1}
-print(count_letters('W. E. B. Du Bois') == expected)
+# expected = {'u': 1, 'o': 1, 'i': 1, 's': 1}
+# print(count_letters('W. E. B. Du Bois') == expected)
 
-print(count_letters('x') == {'x': 1})
-print(count_letters('') == {})
-print(count_letters('!!!') == {})
+# print(count_letters('x') == {'x': 1})
+# print(count_letters('') == {})
+# print(count_letters('!!!') == {})
+
+# Create a function that takes a list of integers as an argument and returns the number of identical pairs of integers in that list. For instance, the number of identical pairs in [1, 2, 3, 2, 1] is 2: occurrences each of both 2 and 1.
+
+# If the list is empty or contains exactly one value, return 0.
+
+# If a certain number occurs more than twice, count each complete pair once. For instance, for [1, 1, 1, 1] and [2, 2, 2, 2, 2], the function should return 2. The first list contains two complete pairs while the second has an extra 2 that isn't part of the other two pairs.
+
+#Problem
+# Input: list of integers
+# Output: an integer
+# Need to find how many identical pairs of integers there are in the list.
+# Pairs must be an even number if a number repeats. See example above with 5 of the same number, that is only 2 pairs
+# If empty or one value return 0
+
+# Examples - Should return 0 if there are no pairs to match. Ex [23]
+
+# Data structures - list for iteration, 
+#   Set won't work here for the seen ones because can't add duplicates to a set
+
+# Algorithm
+#   define function name pairs
+#       instantiate pair counter
+#       instantiate copy of list sorted in ascending order
+#       iterate from i starting at index 0 to lenth of list - 1 (2nd to last element) with step 2 to account for pairs
+#           iterate from j for range i + 1 to len of list (last element)
+#           if element at index i equals element at index j -> increment the pair counter
+#       return pair counter
+
+# after over an hour I came up with a new idea: did it in about 10 minutes:
+
+#   count how many times each number appears in the list
+#   divide that number by floor division 2 and that is how many pairs there are of that number
+#   add up for each number and return
+
+def pairs(input):
+    set_copy = set(input)
+    numbers = {num: 0 for num in set_copy}
+    for num in numbers.keys():
+        numbers[num] = input.count(num) // 2
+    return sum(numbers.values())
+
+
+# print(pairs([3, 1, 4, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7]) == 3)
+# print(pairs([2, 7, 1, 8, 2, 8, 1, 8, 2, 8, 4]) == 4)
+# print(pairs([]) == 0)
+# print(pairs([23]) == 0)
+# print(pairs([997, 997]) == 1)
+# print(pairs([32, 32, 32]) == 1)
+# print(pairs([7, 7, 7, 7, 7, 7, 7]) == 3)
+
+# Create a function that takes a non-empty string as an argument. The string consists entirely of lowercase alphabetic characters. The function should return the length of the longest vowel substring. The vowels of interest are "a", "e", "i", "o", and "u".
+
+#Problem
+#   Find the longest vowel substring in the input string
+#   Input: string, all lowercase letters
+#   Output: integer representing length of longest vowel substring
+#   Can't take the string out of order here
+
+# Examples - below
+
+# Data structures - iterate through the string using index notation
+
+# Algorithm
+#   instantiate vowel counter list to hold count of each substring
+#   instantiate valid vowel characters as a set
+#   instantiate current char
+#   iterate through the string for char in input
+#       store first char as current char
+#       if char is in vowel set
+#           increment vowel counter
+#       if char is not in vowel set
+#           append the current value of vowel counter to list
+#           reset the vowel counter to 0
+#       
+#    return the maximum of the vowel counter list
+
+def longest_vowel_substring(input):
+    vowel_counts = []
+    vowel_counter = 0
+    valid_vowels = 'aeiou'
+    for char in input:
+        if char in valid_vowels:
+            vowel_counter += 1
+        if char not in valid_vowels:
+            vowel_counts.append(vowel_counter)
+            vowel_counter = 0
+    vowel_counts.append(vowel_counter)
+    return max(vowel_counts)
+
+# print(longest_vowel_substring('cwm') == 0)
+# print(longest_vowel_substring('many') == 1)
+# print(longest_vowel_substring('launchschoolstudents') == 2)
+# print(longest_vowel_substring('eau') == 3)
+# print(longest_vowel_substring('beauteous') == 3)
+# print(longest_vowel_substring('sequoia') == 4)
+# print(longest_vowel_substring('miaoued') == 5)
+
+# Create a function that takes two string arguments and returns the number of times that the second string occurs in the first string. Note that overlapping strings don't count: 'babab' contains 1 instance of 'bab', not 2.
+
+# You may assume that the second argument is never an empty string.
+
+# Problem
+#   Input: two strings
+#   Output: integer
+#   Determine number of occurrences of 2nd input string in first input string
+#   Overlapping substrings do not count, must be entirely seperate index
+
+#   Examples - note that babab and bab is 1 substring, return 0 if string 1 is empty or there are no substrings
+
+# data structures
+#   string
+#   list ?
+
+# Algorithm
+#   if substring 2 not in substring 1
+#       return 0
+#   instantiate substring counter starting with 1
+#   instantiate first index occurrence with str.find(str2)
+#   instantiate new str1 with slice [first index occurrence + len(str2):]
+#   while true:
+#       if str 2 is in new str1:
+#           again set new str1 equal to slice [str.find(str2) + len(str2):]
+#           increment substring counter
+#       else break
+#   return substring counter
+
+def count_substrings(str, sub):
+    if sub not in str:
+        return 0
+    sub_counter = 1
+    first_index = str.find(sub)
+    slice_str = str[first_index + len(sub):]
+    while True:
+        if sub in slice_str:
+            slice_str = slice_str[slice_str.find(sub) + len(sub):]
+            sub_counter += 1
+        else:
+            break
+    return sub_counter
+
+print(count_substrings('babab', 'bab') == 1)
+print(count_substrings('babab', 'ba') == 2)
+print(count_substrings('babab', 'b') == 3)
+print(count_substrings('babab', 'x') == 0)
+print(count_substrings('babab', 'x') == 0)
+print(count_substrings('', 'x') == 0)
+print(count_substrings('bbbaabbbbaab', 'baab') == 2)
+print(count_substrings('bbbaabbbbaab', 'bbaab') == 2)
+print(count_substrings('bbbaabbbbaabb', 'bbbaabb') == 1)
