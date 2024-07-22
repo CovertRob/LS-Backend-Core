@@ -1811,6 +1811,8 @@ def longest_vowel_substring(input):
 def count_substrings(str, sub):
     if sub not in str:
         return 0
+    if str == sub:
+        return 1
     sub_counter = 1
     first_index = str.find(sub)
     slice_str = str[first_index + len(sub):]
@@ -1822,12 +1824,203 @@ def count_substrings(str, sub):
             break
     return sub_counter
 
-print(count_substrings('babab', 'bab') == 1)
-print(count_substrings('babab', 'ba') == 2)
-print(count_substrings('babab', 'b') == 3)
-print(count_substrings('babab', 'x') == 0)
-print(count_substrings('babab', 'x') == 0)
-print(count_substrings('', 'x') == 0)
-print(count_substrings('bbbaabbbbaab', 'baab') == 2)
-print(count_substrings('bbbaabbbbaab', 'bbaab') == 2)
-print(count_substrings('bbbaabbbbaabb', 'bbbaabb') == 1)
+# print(count_substrings('babab', 'bab') == 1)
+# print(count_substrings('babab', 'ba') == 2)
+# print(count_substrings('babab', 'b') == 3)
+# print(count_substrings('babab', 'x') == 0)
+# print(count_substrings('babab', 'x') == 0)
+# print(count_substrings('', 'x') == 0)
+# print(count_substrings('bbbaabbbbaab', 'baab') == 2)
+# print(count_substrings('bbbaabbbbaab', 'bbaab') == 2)
+# print(count_substrings('bbbaabbbbaabb', 'bbbaabb') == 1)
+
+# Create a function that takes a string of digits as an argument and returns the number of even-numbered substrings that can be formed. For example, in the case of '1432', the even-numbered substrings are '14', '1432', '4', '432', '32', and '2', for a total of 6 substrings.
+
+# If a substring occurs more than once, you should count each occurrence as a separate substring.
+
+# Problem 
+#   Input - string containing digits
+#   Output - integer representing even substring combinations
+#   Need to figure out how many combinations of even number substrings can be made with the digits in the input string
+#   Substrings need a minimum of 1 digit to count as a substring
+#   Count each occurrence even if a repeat digit
+
+# Examples - return 0 if there are no even substrings
+
+# Data structures 
+#   List - for iterating the digits in the string
+
+# Algorithm
+#   instantiate substring counter
+#   iterate over input string within range index 0 to end of string (i)
+#       iterate over input string within range i to end of string (j)
+#           if slicce from i to j is an even substring, increment counter
+#   return counter
+
+def even_substrings(input):
+    sub_counter = 0
+    for i in range(0, len(input)+1):
+        for j in range(i+1, len(input)+1):
+            if int(input[i:j]) % 2 == 0:
+                sub_counter += 1
+    return sub_counter
+
+# print(even_substrings('1432') == 6)
+# print(even_substrings('3145926') == 16)
+# print(even_substrings('2718281') == 16)
+# print(even_substrings('13579') == 0)
+# print(even_substrings('143232') == 12)
+
+# Create a function that takes a nonempty string as an argument and returns a tuple consisting of a string and an integer. If we call the string argument s, the string component of the returned tuple t, and the integer component of the tuple k, then s, t, and k must be related to each other such that s == t * k. The values of t and k should be the shortest possible substring and the largest possible repeat count that satisfies this equation.
+
+# You may assume that the string argument consists entirely of lowercase alphabetic letters.
+
+# Problem
+#   Input - single string, all lowercase letters
+#   Output - tuple containing string and integer
+#   Problem - find the shortest possible substring and the largest possible repeat count that satisfies s == t * k
+#   Need to iterate until the first letter repeats itself again to find the shortest substring
+#   Sub - problem: finding k repeat count
+#       input: 2 strings, str and sub
+#       output: integer, count of how many times sub occurs in str
+
+def repeated_substring(input):
+    shortest_sub = input
+    for i in range(1, len(input)):
+        if input[0] == input[i]:
+            shortest_sub = input[0:i]
+            break
+    return (shortest_sub, count_substrings(input, shortest_sub))
+
+# refactored to account for my extra test case: I still don't like how I did this it doesn't feel like a good solution
+def repeated_substring(input):
+    shortest_sub = input
+    for i in range(1, len(input)):
+        if input[0] == input[i]:
+            shortest_sub = input[0:i]
+            if shortest_sub * count_substrings(input, shortest_sub) == input:
+                break
+    return (shortest_sub, count_substrings(input, shortest_sub))
+
+# print(repeated_substring('xyzxyzxyz') == ('xyz', 3))
+# print(repeated_substring('xyxy') == ('xy', 2))
+# print(repeated_substring('xyz') == ('xyz', 1))
+# print(repeated_substring('aaaaaaaa') == ('a', 8))
+# print(repeated_substring('superduper') == ('superduper', 1))
+# # my solution breaks if the word contains a repeat of the first character: (my own test case)
+# print(repeated_substring('expertexpert') == ('expert', 2))
+
+# Create a function that takes a string as an argument and returns True if the string is a pangram, False if it is not.
+
+# Pangrams are sentences that contain every letter of the alphabet at least once. For example, the sentence "Five quacking zephyrs jolt my wax bed." is a pangram since it uses every letter at least once. Note that case is irrelevant.
+
+# Problem
+#   Input: string
+#   Output: boolean
+#   Return true if the string contains every letter of the alphabet
+
+# Examples below
+
+# Data structures - use a set for the alphabet
+
+# Algorithm
+#   instantiate alphabet chars as a set
+#   iterate through the input string
+#       try to remove value from set
+#       if key error, continue
+#   return true if the alphabet set is empty
+
+def is_pangram(input):
+    alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
+    for char in input:
+        try:
+            alphabet.remove(char)
+        except KeyError:
+            continue
+    return not bool(alphabet)
+
+# print(is_pangram('The quick, brown fox jumps over the lazy dog!') == True)
+# print(is_pangram('The slow, brown fox jumps over the lazy dog!') == False)
+# print(is_pangram("A wizard’s job is to vex chumps quickly in fog.") == True)
+# print(is_pangram("A wizard’s task is to vex chumps quickly in fog.") == False)
+# print(is_pangram("A wizard’s job is to vex chumps quickly in golf.") == True)
+
+# my_str = 'Sixty zippers were quickly picked from the woven jute bag.'
+# print(is_pangram(my_str) == True)
+
+# Create a function that takes two strings as arguments and returns True if some portion of the characters in the first string can be rearranged to match the characters in the second. Otherwise, the function should return False.
+
+# You may assume that both string arguments only contain lowercase alphabetic characters. Neither string will be empty.
+
+# Problem
+#   Input: two strings, all lowercae letters
+#   Output: boolean value
+#   Need to determine if every character in str2 are in str1, which would allow str1 to be re-arranged to form str2
+#   Need to be careful of repeat characters being accounted for their appropriate number of times - need to remove the char each time we check it's presence
+
+#   Examples - str1 can be longer than str 2
+
+# data structures - use lists to get chars
+
+# Algorithm
+#   instantiate str1 as list
+#   instantiate str2 as list
+#   iterate through str2
+#       if str2 char is in str1 -> remove str2 char from str1
+#       else -> return False
+#   return False
+
+def unscramble(str1, str2):
+    list_str1 = list(str1)
+    list_str2 = list(str2)
+    for char in list_str2:
+        try:
+            list_str1.remove(char)
+        except ValueError:
+            return False
+    return True
+
+# print(unscramble('ansucchlohlo', 'launchschool') == True)
+# print(unscramble('phyarunstole', 'pythonrules') == True)
+# print(unscramble('phyarunstola', 'pythonrules') == False)
+# print(unscramble('boldface', 'coal') == True)
+
+# Create a function that takes a single integer argument and returns the sum of all the multiples of 7 or 11 that are less than the argument. If a number is a multiple of both 7 and 11, count it just once.
+
+# For example, the multiples of 7 and 11 that are below 25 are 7, 11, 14, 21, and 22. The sum of these multiples is 75.
+
+# If the argument is negative, return 0.
+
+# Problem
+#   Input: integer
+#   Output: integer sum
+#   Compute the multiples of 7 and 11 that are below the argument
+#   Store the multiples in a set so that there are no repeat multiples
+#   Do not inclue ceiling 
+
+# Examples - below
+
+# Data structures - set
+
+# Algorithm
+#   instantiate multiples as set
+#   get the multiples of 7 below arg and add to set
+#   get the multiples of 11 below are and add to set
+#   return the sum of the set
+#   
+
+def seven_eleven(ceiling):
+    multiples = set()
+    seven_multiples = {num for num in range(7, ceiling, 7)}
+    eleven_multiples = {num for num in range(11, ceiling, 11)}
+    multiples = seven_multiples | eleven_multiples
+    return sum(multiples)
+
+#my own test case, issue with when exaxt multiple
+print(seven_eleven(10) == 7)
+print(seven_eleven(11) == 7)
+print(seven_eleven(12) == 18)
+print(seven_eleven(25) == 75)
+print(seven_eleven(100) == 1153)
+print(seven_eleven(0) == 0)
+print(seven_eleven(-100) == 0)
