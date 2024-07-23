@@ -459,7 +459,7 @@ You should also be able to clearly explain, talk about, or demonstrate the follo
 ### str methods
 
 - str.index(sub[, start[, end]]) - like find() but raises a *ValueError* when substring is not found.
-- str.find(sub[, start[, end]]) - return lowest index in the string where substring sub is found w/in the slide s[start:end]. Optional arguments start and end are interpreted in slice notation
+- str.find(sub[, start[, end]]) - return lowest index in the string where substring sub is found w/in the slice s[start:end]. Optional arguments start and end are interpreted in slice notation
   - returns -1 if sub is not found
 - str.split(sep=None, maxsplit=-1) - return a list of the words in the string, using sep as the delimiter string. 
   - If *maxsplit* given, at most maxsplit splits are done (at most maxsplit +1 elements). If maxspit not specified or -1, then there is no limit on number of splits (all possible are made)

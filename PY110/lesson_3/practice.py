@@ -1723,6 +1723,18 @@ def pairs(input):
         numbers[num] = input.count(num) // 2
     return sum(numbers.values())
 
+# another way to do it:
+def pairs(lst):
+    pair_count = 0
+    seen = []
+    for i in range(len(lst)):
+        if lst[i] not in seen:
+            seen.append(lst[i])
+        else:
+            seen.remove(lst[i])
+            pair_count += 1
+    return pair_count
+
 
 # print(pairs([3, 1, 4, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7]) == 3)
 # print(pairs([2, 7, 1, 8, 2, 8, 1, 8, 2, 8, 4]) == 4)
@@ -1771,13 +1783,13 @@ def longest_vowel_substring(input):
     vowel_counts.append(vowel_counter)
     return max(vowel_counts)
 
-# print(longest_vowel_substring('cwm') == 0)
-# print(longest_vowel_substring('many') == 1)
-# print(longest_vowel_substring('launchschoolstudents') == 2)
-# print(longest_vowel_substring('eau') == 3)
-# print(longest_vowel_substring('beauteous') == 3)
-# print(longest_vowel_substring('sequoia') == 4)
-# print(longest_vowel_substring('miaoued') == 5)
+print(longest_vowel_substring('cwm') == 0)
+print(longest_vowel_substring('many') == 1)
+print(longest_vowel_substring('launchschoolstudents') == 2)
+print(longest_vowel_substring('eau') == 3)
+print(longest_vowel_substring('beauteous') == 3)
+print(longest_vowel_substring('sequoia') == 4)
+print(longest_vowel_substring('miaoued') == 5)
 
 # Create a function that takes two string arguments and returns the number of times that the second string occurs in the first string. Note that overlapping strings don't count: 'babab' contains 1 instance of 'bab', not 2.
 
@@ -2017,10 +2029,198 @@ def seven_eleven(ceiling):
     return sum(multiples)
 
 #my own test case, issue with when exaxt multiple
-print(seven_eleven(10) == 7)
-print(seven_eleven(11) == 7)
-print(seven_eleven(12) == 18)
-print(seven_eleven(25) == 75)
-print(seven_eleven(100) == 1153)
-print(seven_eleven(0) == 0)
-print(seven_eleven(-100) == 0)
+
+# print(seven_eleven(10) == 7)
+# print(seven_eleven(11) == 7)
+# print(seven_eleven(12) == 18)
+# print(seven_eleven(25) == 75)
+# print(seven_eleven(100) == 1153)
+# print(seven_eleven(0) == 0)
+# print(seven_eleven(-100) == 0)
+
+# Create a function that takes a string argument that consists entirely of numeric digits and computes the greatest product of four consecutive digits in the string. The argument will always have more than 4 digits.
+
+# Problem
+#   Input: string of integers greater than length 4
+#   Output: integer (multiplication)
+#   Find the substring of digits that results in the greatest product
+#   Can deduce if there are lenght of string arg - 3 combinations available
+#   need to find all the substrings of digits length 4 or greater - use comprehension and ranges
+
+# Examples - 
+
+# Data structures - integer and string
+
+# Algorithm
+#   find all substrings of input string length 4 or greater and store in a list
+#       sub-problem
+#   compute product of each substring and store in a list
+#   return the maximum product
+
+def substring_product(input):
+    product = 1 # start at 1 so no multiply by 0
+    for digits in input:
+        product *= int(digits)
+    return product
+
+def greatest_product(input):
+    sub_digits = [input[i:i+4] for i in range(0, len(input)) if len(input[i:i+4]) == 4]
+    products = [substring_product(sub) for sub in sub_digits]
+    return max(products)
+
+# print(greatest_product('23456') == 360)      # 3 * 4 * 5 * 6
+# print(greatest_product('3145926') == 540)    # 5 * 9 * 2 * 6
+# print(greatest_product('1828172') == 128)    # 1 * 8 * 2 * 8
+# print(greatest_product('123987654') == 3024) # 9 * 8 * 7 * 6
+
+# Create a function that returns the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. You may assume that the input string contains only alphanumeric characters
+
+# Problem
+#   Input - lowercase letters and numbers as a string, no spaces
+#   Output - integer
+#   Need to determine which alphanumeric characters occur more than once in the input string
+#   Need to treat string as case-insensitive when comparing
+
+# Examples - see that if ther are no repeats return 0
+
+# Data structure - sets and lists
+
+# Algorithm
+#   instantiate copy of input str in lowercase and as a list
+#   instantiate list comprehension, iterate through str list, append if it's count in the list in greater than 1 to find repeat characters
+#   return the size of the set of the repeat chars to get rid of duplicate repeats
+
+def distinct_multiples(input_str):
+    str_as_list = list(input_str.lower())
+    repeat_chars = [char for char in str_as_list if str_as_list.count(char) > 1]
+    return len(set(repeat_chars))
+
+# print(distinct_multiples('xyz') == 0)               # (none)
+# print(distinct_multiples('xxyypzzr') == 3)          # x, y, z
+# print(distinct_multiples('xXyYpzZr') == 3)          # x, y, z
+# print(distinct_multiples('unununium') == 2)         # u, n
+# print(distinct_multiples('multiplicity') == 3)      # l, t, i
+# print(distinct_multiples('7657') == 1)              # 7
+# print(distinct_multiples('3141592653589793') == 4)  # 3, 1, 5, 9
+# print(distinct_multiples('2718281828459045') == 5)  # 2, 1, 8, 4, 5
+
+# Create a function that takes a list of integers as an argument. The function should determine the minimum integer value that can be appended to the list so the sum of all the elements equal the closest prime number that is greater than the current sum of the numbers. For example, the numbers in [1, 2, 3] sum to 6. The nearest prime number greater than 6 is 7. Thus, we can add 1 to the list to sum to 7.
+
+# Notes:
+
+# The list will always contain at least 2 integers.
+# All values in the list must be positive (> 0).
+# There may be multiple occurrences of the various numbers in the list.
+
+# Problem
+#   Input: list of integers
+#   Output: integer
+#   Need to determine the sum of the input list of integers
+#   Need to determine the closest prime number to that sum
+#   Need to determine the difference between that sum and that prime number to find number to append 
+#   Prime number = number has multiples that are only 1 and itself
+#       problem - prime number generator
+#       sub-problem - determine a numbers factors
+
+# Examples - 
+
+# Data structures - lists
+
+# Algorithm
+#   instantiate sum of the input list and calculate it
+#   instantiate closest prime number greater than the sum of the list
+#   calculate the difference between the greater first prime and the sum of the list
+#   return the difference
+
+# Algorithm
+#   instantiate prime counter, starting input integer
+#   while true
+#       increment the prime counter
+#       if current value of prime counter only has 2 factors -> break
+
+# Algorithm
+#   instantiate range from 2 to input // 2
+#       if the input mod range value is 0
+#           return false
+#   return true
+
+def determine_if_prime(input_int):
+    for i in range(2, (input_int // 2) + 1):     
+        if input_int % i == 0:
+            return False
+    return True
+
+def get_next_prime(input_int):
+    prime_count = input_int
+    while True:
+        prime_count += 1
+        if determine_if_prime(prime_count):
+            break
+    return prime_count
+
+def nearest_prime_sum(input_lst):
+    sum_of_lst = sum(input_lst)
+    next_prime = get_next_prime(sum_of_lst)
+    return next_prime - sum_of_lst
+
+
+# print(nearest_prime_sum([1, 2, 3]) == 1)        # Nearest prime to 6 is 7
+# print(nearest_prime_sum([5, 2]) == 4)           # Nearest prime to 7 is 11
+# print(nearest_prime_sum([1, 1, 1]) == 2)        # Nearest prime to 3 is 5
+# print(nearest_prime_sum([2, 12, 8, 4, 6]) == 5) # Nearest prime to 32 is 37
+
+# # Nearest prime to 163 is 167
+# print(nearest_prime_sum([50, 39, 49, 6, 17, 2]) == 4)
+
+'''
+Create a function that takes an list of integers as an argument. Determine and return the index N for which all numbers with an index less than N sum to the same value as the numbers with an index greater than N. If there is no index that would make this happen, return -1.
+
+If you are given a list with multiple answers, return the index with the smallest value.
+
+The sum of the numbers to the left of index 0 is 0. Likewise, the sum of the numbers to the right of the last element is 0.
+
+Problem
+    need to determine two indexes from the input list of integers
+    the index N for which all numbers less than that index must sum to the same value as the numbers with an index greater than need
+
+Examples - the index N is not included in the computations of the sums on either side 
+
+Data structures 
+    Input: list of integers
+    Output: single integers
+    intermediary - 
+        iterate over the list
+        use a list to store sums
+
+Algorithm
+    instantiate minimum sum variable = -1
+    instantiate a list to hold our sums - used in the case of multiple answers
+    iterate through the input list of integers using a range
+        take a slice of the of the input list from starting index to current index
+        take a slice of the input list from current index to end index
+        append the sum of both to our sum list of their sums are equal
+    if the list of sums is not empty, find the minimum sum and set it equal to the minimum sum variable
+    return the minimum sum variable 
+
+'''
+def equal_sum_index(input_lst):
+    min_sum = -1
+    lst_of_sums = []
+    for i in range(0, len(input_lst)+1):
+        slice_1 = input_lst[0:i]
+        slice_2 = input_lst[i+1:len(input_lst)+1]
+        if sum(slice_1) == sum(slice_2):
+            lst_of_sums.append(i)
+    if len(lst_of_sums) >= 1:
+        min_sum = min(lst_of_sums)
+    return min_sum
+
+# print(equal_sum_index([1, 2, 4, 4, 2, 3, 2]) == 3)
+# print(equal_sum_index([7, 99, 51, -48, 0, 4]) == 1)
+# print(equal_sum_index([17, 20, 5, -60, 10, 25]) == 0)
+# print(equal_sum_index([0, 2, 4, 4, 2, 3, 2]) == -1)
+
+# # The following test case could return 0 or 3. Since we're
+# # supposed to return the smallest correct index, the correct
+# # return value is 0.
+# print(equal_sum_index([0, 20, 10, -60, 5, 25]) == 0)
