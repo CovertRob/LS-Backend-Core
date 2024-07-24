@@ -1408,20 +1408,20 @@ def rotate90(matrix: list):
 #       
 
 # completed in 15 minutes
-def smaller_numbers_than_current(input_ints):
-    seen = set()
-    counts_of_smaller = []
-    num_of_ints_smaller = 0
-    for num in input_ints:
-        for elem in input_ints:
-            if elem < num and elem not in seen:
-                seen.add(elem)
-                num_of_ints_smaller += 1
-        counts_of_smaller.append(num_of_ints_smaller)
-        seen.clear()
-        num_of_ints_smaller = 0
-    print(counts_of_smaller)
-    return counts_of_smaller
+# def smaller_numbers_than_current(input_ints):
+#     seen = set()
+#     counts_of_smaller = []
+#     num_of_ints_smaller = 0
+#     for num in input_ints:
+#         for elem in input_ints:
+#             if elem < num and elem not in seen:
+#                 seen.add(elem)
+#                 num_of_ints_smaller += 1
+#         counts_of_smaller.append(num_of_ints_smaller)
+#         seen.clear()
+#         num_of_ints_smaller = 0
+#     print(counts_of_smaller)
+#     return counts_of_smaller
 
 # refactor with comprehensions?
 
@@ -1461,19 +1461,19 @@ def smaller_numbers_than_current(input_ints):
 #           return the sum
 #       
 
-# This one I initially struggled with and took me about 40 minutes to re-work it a bit
-def minimum_sum(input_list):
-    if len(input_list) < 5:
-        return None
-    total = sum(input_list[0:5])
+# # This one I initially struggled with and took me about 40 minutes to re-work it a bit
+# def minimum_sum(input_list):
+#     if len(input_list) < 5:
+#         return None
+#     total = sum(input_list[0:5])
     
-    for nums in range(1, len(input_list) - 4):
-        next_five = sum(input_list[nums:nums+5])
-        if next_five < total:
-            total = next_five
-        if len(input_list) == 5:
-            return total
-    return total
+#     for nums in range(1, len(input_list) - 4):
+#         next_five = sum(input_list[nums:nums+5])
+#         if next_five < total:
+#             total = next_five
+#         if len(input_list) == 5:
+#             return total
+#     return total
 
 # print(minimum_sum([1, 2, 3, 4]) is None)
 # print(minimum_sum([1, 2, 3, 4, 5, -5]) == 9)
@@ -1553,19 +1553,19 @@ def to_weird_case(input):
 # Find the difference for every pair
 
 # This one was hard, took me a couple of hours to get everything together
-def closest_numbers(input):
-    sorted_input = sorted(input)
-    difference = max(sorted_input) # need to start not at 0 otherwise condition below won't work
-    pair = (0, 0)
-    for i in range(0, len(sorted_input) - 1):
-        current_difference = abs(sorted_input[i] - sorted_input[i+1])
-        if current_difference < difference:
-            difference = current_difference
-            pair = (sorted_input[i], sorted_input[i+1])
-    idx1, idx2 = input.index(pair[0]), input.index(pair[1])
-    if idx1 > idx2:
-        return (input[idx2], input[idx1])
-    return (input[idx1], input[idx2])
+# def closest_numbers(input):
+#     sorted_input = sorted(input)
+#     difference = max(sorted_input) # need to start not at 0 otherwise condition below won't work
+#     pair = (0, 0)
+#     for i in range(0, len(sorted_input) - 1):
+#         current_difference = abs(sorted_input[i] - sorted_input[i+1])
+#         if current_difference < difference:
+#             difference = current_difference
+#             pair = (sorted_input[i], sorted_input[i+1])
+#     idx1, idx2 = input.index(pair[0]), input.index(pair[1])
+#     if idx1 > idx2:
+#         return (input[idx2], input[idx1])
+#     return (input[idx1], input[idx2])
 
 # def closest_numbers(input):
 #     sorted_input = sorted(input)
@@ -1783,13 +1783,13 @@ def longest_vowel_substring(input):
     vowel_counts.append(vowel_counter)
     return max(vowel_counts)
 
-print(longest_vowel_substring('cwm') == 0)
-print(longest_vowel_substring('many') == 1)
-print(longest_vowel_substring('launchschoolstudents') == 2)
-print(longest_vowel_substring('eau') == 3)
-print(longest_vowel_substring('beauteous') == 3)
-print(longest_vowel_substring('sequoia') == 4)
-print(longest_vowel_substring('miaoued') == 5)
+# print(longest_vowel_substring('cwm') == 0)
+# print(longest_vowel_substring('many') == 1)
+# print(longest_vowel_substring('launchschoolstudents') == 2)
+# print(longest_vowel_substring('eau') == 3)
+# print(longest_vowel_substring('beauteous') == 3)
+# print(longest_vowel_substring('sequoia') == 4)
+# print(longest_vowel_substring('miaoued') == 5)
 
 # Create a function that takes two string arguments and returns the number of times that the second string occurs in the first string. Note that overlapping strings don't count: 'babab' contains 1 instance of 'bab', not 2.
 
@@ -2224,3 +2224,902 @@ def equal_sum_index(input_lst):
 # # supposed to return the smallest correct index, the correct
 # # return value is 0.
 # print(equal_sum_index([0, 20, 10, -60, 5, 25]) == 0)
+
+'''
+Create a function that takes an list of integers as an argument and returns the integer that appears an odd number of times. There will always be exactly one such integer in the input list.
+
+
+Problem:
+    Find and return the integer in the input ist that appears an odd number of times
+    There is always going to be a single integer that meets these reqirements
+
+Examples - in the case of a single input, return the input
+    The odd number of times could be once while the other elements repeat twice
+    The inputs can include negative numbers and 0
+
+Data Structures -
+    Input: list of integers
+    Output: single integer
+    Intermediary: 
+        iteration through list
+
+Algorithm
+    SET unique_nums as set of input list
+    iterate through set elements
+        if the count of the current num in the input list is odd, return set element as the odd integer
+
+'''
+
+def odd_fellow(input_lst):
+    unique_nums = set(input_lst)
+    for elem in unique_nums:
+        if input_lst.count(elem) % 2 == 1:
+            return elem
+
+
+# print(odd_fellow([4]) == 4)
+# print(odd_fellow([7, 99, 7, 51, 99]) == 51)
+# print(odd_fellow([7, 99, 7, 51, 99, 7, 51]) == 7)
+# print(odd_fellow([25, 10, -6, 10, 25, 10, -6, 10, -6]) == -6)
+# print(odd_fellow([0, 0, 0]) == 0)
+
+'''
+Create a function that takes a list of numbers, all of which are the same except one. Find and return the number in the list that differs from all the rest.
+
+The list will always contain at least 3 numbers, and there will always be exactly one number that is different.
+
+Problem
+    We are given a list of numbers and all of them are the same except for one. Need to find the number that is different and return it.
+    Guranteed to be at least 3 numbers in total, only one will ever be different.
+    Input: list of integers and floats
+    Output: single integer or float
+
+Examples - see that the input can include floats and 0
+
+Data structures - 
+    Input: list
+    Output: float or integer
+    Intermediary - lists and sets
+
+Algorithm
+    SET input list as a set
+    iterate through set
+        if the count of the current set element in input list is > 1, continue, else return the current element
+'''
+def what_is_different(input_lst):
+    unique_nums = set(input_lst)
+    for num in unique_nums:
+        if input_lst.count(num) == 1:
+            return num
+
+# print(what_is_different([0, 1, 0]) == 1)
+# print(what_is_different([7, 7, 7, 7.7, 7]) == 7.7)
+# print(what_is_different([1, 1, 1, 1, 1, 1, 1, 11, 1, 1, 1, 1]) == 11)
+# print(what_is_different([3, 4, 4, 4]) == 3)
+# print(what_is_different([4, 4, 4, 3]) == 3)
+
+# Study guide repeated problems below
+'''
+Problem 1 repeat
+
+Create a function that takes a list of numbers as an argument. For each number, determine how many numbers in the list are smaller than it, and place the answer in a list. Return the resulting list.
+
+When counting numbers, only count unique values. That is, if a number occurs multiple times in the list, it should only be counted once.
+
+Problem
+    Given a list of integers, determine for each number in that list how many numbers in the list are less than it and place those answer in a list
+    The index of the output answer should match the index of the element being counted
+    Only count unique values
+
+Examples
+    If all numbers are the same, return 0 for each index. Case is not inclusive
+    IF there is only 1 element, return 0 as there are none to be less than it
+    The output list length will always match the input list length
+
+Data structures 
+    Input: list
+    Output: list
+    Intermediary:
+        lists and sets (use for getting rid of repeat values)
+
+Algorithm
+    SET unique_values as a set of the list
+    SET count_less_than list as empty list
+    SET less_than_counter equal to 0
+    iterate through the input list of elements
+        iterate through the set elements
+            if element in set is less than current list element, increment less_than_counter
+        append less_than_counter to the count_less_than list
+        SET less_than_counter back to 0
+
+'''
+# Completed in 12 minutes, much better than last time
+
+def smaller_numbers_than_current(input_lst):
+    if len(input_lst) == 0:
+        return [0]
+    unique_values = set(input_lst)
+    count_less_than = []
+    less_than_counter = 0
+    for num  in input_lst:
+        for elem in unique_values:
+            if elem < num:
+                less_than_counter += 1
+        count_less_than.append(less_than_counter)
+        less_than_counter = 0
+    return count_less_than
+    
+
+# print(smaller_numbers_than_current([8, 1, 2, 2, 3]) == [3, 0, 1, 1, 2])
+# print(smaller_numbers_than_current([7, 7, 7, 7]) == [0, 0, 0, 0])
+# print(smaller_numbers_than_current([6, 5, 4, 8]) == [2, 1, 0, 3])
+# print(smaller_numbers_than_current([1]) == [0])
+
+# my_list = [1, 4, 6, 8, 13, 2, 4, 5, 4]
+# result   = [0, 2, 4, 5, 6, 1, 2, 3, 2]
+# print(smaller_numbers_than_current(my_list) == result)
+
+'''
+Create a function that takes a list of integers as an argument. The function should return the minimum sum of 5 consecutive numbers in the list. If the list contains fewer than 5 elements, the function should return None.
+
+Problem
+    Input: list of integers
+    Output: integer or None
+    We need to find the 5 consecutive integer sum that is the minimum in the input list
+    If there are less than 5 elements in the input list, return None
+
+Examples
+    There can be negative numbers included in the input list and 0
+    The output can be a negative sum
+
+Data structures 
+    Input: list
+    Output: singed integer
+    Intermediary:
+        lists
+        range objects
+        slices
+
+Algorithm
+    if the input list length is less than 5, return None
+    SET current_min_sum equal to sum of input list
+    iterate through the input list with range object
+        take slice of 5 elements and sum them up
+        if the sum of the slice is less than the current value of current_min_sum, re-assign current_min_sum to this slice's value
+    return current_min_sum
+'''
+
+# Got it in 17 minutes, much better than first time and cleaner
+
+def minimum_sum(input_lst):
+    if len(input_lst) < 5:
+        return None
+    current_min_sum = abs(sum(input_lst))
+    for i in range(0, len(input_lst)-4):
+        print(input_lst[i:i+5])
+        slice_sum = sum(input_lst[i:i+5])
+        if slice_sum < current_min_sum:
+            current_min_sum = slice_sum
+    print(current_min_sum)
+    return current_min_sum
+
+
+# print(minimum_sum([1, 2, 3, 4]) is None)
+# print(minimum_sum([1, 2, 3, 4, 5, -5]) == 9)
+# print(minimum_sum([1, 2, 3, 4, 5, 6]) == 15)
+# print(minimum_sum([55, 2, 6, 5, 1, 2, 9, 3, 5, 100]) == 16)
+# print(minimum_sum([-1, -5, -3, 0, -1, 2, -4]) == -10)
+
+'''
+Create a function that takes a string argument and returns a copy of the string with every second character in every third word converted to uppercase. Other characters should remain the same.
+
+Problem:
+    Given a string argument, we need to return a copy of the string with every 2nd character in every third word converted to uppercase
+    Leave all other characters the same
+    Input: Single string 
+    Output: single string
+    Sub-problem:
+        return a copy of a word with every 2nd charcter capitalized, every other character to remain the same
+
+Examples - if the word is a single character, leave it alone because it doesn't meet the 2nd character requirement
+
+Data structures
+    Input: string
+    Output: string
+    intermediary: 
+        list to hold the separated words
+        range objects to iterate over the words
+
+Algorithm:
+    SET words_separated as a list with the input string split at white spaces
+    SET index counter equal to 1
+    SET weird_word equal to empty string
+    iterate over the split list using enumerate
+        if the current index - 1 equals index counter (meaning it's a third index)
+            turn the word to weird case and augment assign the word to the weird word string
+            set index ounter to 1
+        else augment assign the normal case word to the weird_word string and increment index counter
+
+Algorithm:
+    Input: single word as a string
+    Output: single string with case changed
+        SET converted_str to empty string
+        iterate through input_str with enumerate
+            if the current index % 2 == 1, uppercase the letter and append it to the return string
+            else, append the letter unchanged
+        return converted_str
+
+'''
+def second_to_upper(word):
+    converted_str = ''
+    for idx, char in enumerate(word):
+        if idx % 2 == 1:
+            converted_str += char.upper()
+        else:
+            converted_str += char
+    return converted_str
+
+def to_weird_case(input_str):
+    words_separated = input_str.split()
+    index_counter = 1 # because 0, 1, 2
+    weird_word = ''
+    for idx, word in enumerate(words_separated):
+        if index_counter == 3:
+            weird_word += f" {second_to_upper(word)}"
+            index_counter = 1
+        else:
+            weird_word += f" {word}"
+            index_counter += 1
+    #print(weird_word)
+    return weird_word.strip()
+
+# original = 'Lorem Ipsum is simply dummy text of the printing world'
+# expected = 'Lorem Ipsum iS simply dummy tExT of the pRiNtInG world'
+# print(to_weird_case(original) == expected)
+
+# original = 'It is a long established fact that a reader will be distracted'
+# expected = 'It is a long established fAcT that a rEaDeR will be dIsTrAcTeD'
+# print(to_weird_case(original) == expected)
+
+# print(to_weird_case('aaA bB c') == 'aaA bB c')
+
+# original = "Mary Poppins' favorite word is supercalifragilisticexpialidocious"
+# expected = "Mary Poppins' fAvOrItE word is sUpErCaLiFrAgIlIsTiCeXpIaLiDoCiOuS"
+# print(to_weird_case(original) == expected)
+
+'''
+Create a function that takes a list of integers as an argument and returns a tuple of two numbers that are closest together in value. If there are multiple pairs that are equally close, return the pair that occurs first in the list.
+
+Problem
+    Need to find and return the pair of numbers that are closest together in value given a list of integers
+    If there are multiple pairs that are equally close together in value, you should return the pair that occurs first
+    Need to check each pair combination in the list
+    Input: list of integers
+    Output: tuple consisting of integer pair in the order they appear in the list
+    Use absolute value
+
+Examples - below
+
+Data structures:
+    Input: list with integers
+    Output: tuple with integers
+    Intermediary: 
+        range object
+        lists
+        tuple
+
+Algorithm:
+    SET current_min_difference = differencce of first two elements
+    SET current_tuple equal to empty tuple
+    iterate over the list with range object i to the length of the list
+        iterate over the list with range object j from i+1 to the length of the list
+            if the abs difference between i index value and j index value is less than current_min_difference value
+                set current_min_difference value
+                set current_tuple equal to tuple(i, j)
+    return current_tuple pair
+'''
+def closest_numbers(input_lst):
+    current_min_difference = abs(input_lst[0] - input_lst[1])
+    current_tuple = ()
+    for i in range(0, len(input_lst)):
+        for j in range(i+1, len(input_lst)):
+            difference = abs(input_lst[i] - input_lst[j])
+            if difference < current_min_difference:
+                current_min_difference = difference
+                current_tuple = (input_lst[i], input_lst[j])
+    print(current_tuple)
+    return current_tuple
+            
+
+# print(closest_numbers([5, 25, 15, 11, 20]) == (15, 11))
+# print(closest_numbers([19, 25, 32, 4, 27, 16]) == (25, 27))
+# print(closest_numbers([12, 22, 7, 17]) == (12, 7))
+
+# Back to advanced exercises
+''' 
+Write a function that takes two sorted lists as arguments and returns a new list that contains all the elements from both input lists in ascending sorted order. You may assume that the lists contain either all integer values or all string values.
+
+You may not provide any solution that requires you to sort the result list. You must build the result list one element at a time in the proper order.
+
+Your solution should not mutate the input lists.
+
+Problem
+    Input: two lists, either all integer or all string values
+    Output: a sorted list of those values
+    We need to return a new list with all elements from both lists sorted in ascending order
+    We are not allowed to sort the result list, instead we need to build the result list one element at a time in the sorted order
+    Do not mutate the input lists
+    sub-problem:
+        find the smallest value between two lists that is greater than a given value N
+
+Examples - The input can include empty lists
+
+Data structures:
+    Input: two lists
+    Output: one list
+    Intermediary:
+        lists
+
+Algorithm:
+    define function with parameters current_smallest, lst1, lst2
+        SET new lst equal to lst1 + lst2
+        iterate over the combined list
+            if the current element is less than current
+
+*Must pick one element at a time*
+Algorithm:
+    SET new empty list to be return list
+    SET current_smallest equal to 0
+    iterate with range object i for length of both input lists
+        find the next smallest value that is not in the return list
+        append next smallest value to the return list
+    return the return list
+
+Jacked this up because didn't read that the two lists are already sorted to begin with
+LS's solution below:
+
+'''
+def merge(list1, list2):
+    copy1 = list1[:]
+    copy2 = list2[:]
+    result = []
+
+    while copy1 and copy2:
+        if copy1[0] <= copy2[0]:
+            result.append(copy1.pop(0))
+        else:
+            result.append(copy2.pop(0))
+
+    return result + copy1 + copy2
+
+# All of these examples should print True
+# print(merge([1, 5, 9], [2, 6, 8]) == [1, 2, 5, 6, 8, 9])
+# print(merge([1, 1, 3], [2, 2]) == [1, 1, 2, 2, 3])
+# print(merge([], [1, 4, 5]) == [1, 4, 5])
+# print(merge([1, 4, 5], []) == [1, 4, 5])
+
+# names1 = ['Alice', 'Kim', 'Pete', 'Sue']
+# names2 = ['Bonnie', 'Rachel', 'Tyler']
+# names_expected = ['Alice', 'Bonnie', 'Kim', 'Pete',
+#                   'Rachel', 'Sue', 'Tyler']
+# print(merge(names1, names2) == names_expected)
+
+'''
+Problem:
+    Sort a list using the merge sort algorithm.
+    Input: list of either integer or string values
+    Output: sorted list of the same values
+
+Examples - 
+[9, 2, 7, 6, 8, 5, 0, 1] -->              # initial list
+[[9, 2, 7, 6], [8, 5, 0, 1]] -->          # divide into two lists
+[[[9, 2], [7, 6]], [[8, 5], [0, 1]]] -->  # divide each sub-list in two
+# repeat until each sub-list contains only 1 value
+[[[[9], [2]], [[7], [6]]], [[[8], [5]], [[0], [1]]]]
+
+Data structures:
+    The algorithm uses recursion
+    lists
+
+Algorithm:
+    What is our base case? - when each sublist has 1 element
+
+    split the list into two sublists until each sublist has 1 element
+    call merge on the sublists
+    return the merged lists
+'''
+
+def merge_sort(input_lst):
+    if len(input_lst) == 1:
+        return input_lst
+    
+    sub_list1 = input_lst[:len(input_lst) // 2]
+    sub_list2 = input_lst[len(input_lst) // 2:]
+
+    sub_list1 = merge_sort(sub_list1)
+    sub_list2 = merge_sort(sub_list2)
+
+    return merge(sub_list1, sub_list2)
+
+# All of these examples should print True
+# print(merge_sort([9, 5, 7, 1]) == [1, 5, 7, 9])
+# print(merge_sort([5, 3]) == [3, 5])
+# print(merge_sort([6, 2, 7, 1, 4]) == [1, 2, 4, 6, 7])
+# print(merge_sort([9, 2, 7, 6, 8, 5, 0, 1]) == [0, 1, 2, 5, 6, 7, 8, 9])
+
+# original = ['Sue', 'Pete', 'Alice', 'Tyler', 'Rachel',
+#             'Kim', 'Bonnie']
+# expected = ['Alice', 'Bonnie', 'Kim', 'Pete', 'Rachel',
+#             'Sue', 'Tyler']
+# print(merge_sort(original) == expected)
+
+# original = [7, 3, 9, 15, 23, 1, 6, 51, 22, 37, 54,
+#             43, 5, 25, 35, 18, 46]
+# expected = [1, 3, 5, 6, 7, 9, 15, 18, 22, 23, 25,
+#             35, 37, 43, 46, 51, 54]
+# print(merge_sort(original) == expected)
+
+
+'''
+Implement the binary search algorithm.
+
+Problem:
+    The input list that you are searching for a value in is already sorted.
+    Find and return the matching value provided in the input arguments.
+
+Examples:
+    two arguments for the function: the list and the value to search for
+    inputs can be strings or integers, not both
+
+Data Structure:
+    lists
+
+Algorithm:
+    SET the starting value to the value in the middle of the list
+    if this value is equal to the search value, return it
+    SET empty list
+    if the middle value is greater than the search value, discard the lower half
+    if the middle value is less than the search value, discard the upper half
+    perform recursive call
+
+'''
+
+def binary_search(lst, search_item):
+    high = len(lst) - 1
+    low = 0
+
+    while low <= high:
+        mid = (high + low) // 2
+       
+        if lst[mid] == search_item:
+            return mid
+        elif lst[mid] < search_item:
+            low = mid + 1
+        else:
+            high = mid - 1
+
+    return -1
+
+# All of these examples should print True
+# businesses = ['Apple Store', 'Bags Galore', 'Bike Store',
+#               'Donuts R Us', 'Eat a Lot', 'Good Food',
+#               'Pasta Place', 'Pizzeria', 'Tiki Lounge',
+#               'Zooper']
+# print(binary_search(businesses, 'Pizzeria') == 7)
+# print(binary_search(businesses, 'Apple Store') == 0)
+
+# print(binary_search([1, 5, 7, 11, 23, 65, 89, 102], 77) == -1)
+# print(binary_search([1, 5, 7, 11, 23, 65, 89, 102], 89) == 6)
+# print(binary_search([1, 5, 7, 11, 23, 65, 89, 102], 5) == 1)
+
+# names = ['Alice', 'Bonnie', 'Kim', 'Pete', 'Rachel', 'Sue',
+#          'Tyler']
+# print(binary_search(names, 'Peter') == -1)
+# print(binary_search(names, 'Tyler') == 6)
+
+from fractions import Fraction
+
+def egyptian(target_value):
+    denominators = []
+    unit_denominator = 1
+    while target_value != 0:
+        unit_fraction = Fraction(1, unit_denominator)
+        if unit_fraction <= target_value:
+            target_value -= unit_fraction
+            denominators.append(unit_denominator)
+
+        unit_denominator += 1
+
+    return denominators
+
+def unegyptian(denominators):
+    return sum([Fraction(1, d) for d in denominators])
+
+from fractions import Fraction
+
+# # Using the egyptian function
+# # Your results may differ for these first 3 examples
+# print(egyptian(Fraction(2, 1)))      # [1, 2, 3, 6]
+# print(egyptian(Fraction(137, 60)))   # [1, 2, 3, 4, 5]
+# print(egyptian(Fraction(3, 1)))
+# # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 230, 57960]
+
+# # Using the unegyptian function
+# # All of these examples should print True
+# print(unegyptian(egyptian(Fraction(1, 2))) == Fraction(1, 2))
+# print(unegyptian(egyptian(Fraction(3, 4))) == Fraction(3, 4))
+# print(unegyptian(egyptian(Fraction(39, 20))) == Fraction(39, 20))
+# print(unegyptian(egyptian(Fraction(127, 130))) == Fraction(127, 130))
+# print(unegyptian(egyptian(Fraction(5, 7))) == Fraction(5, 7))
+# print(unegyptian(egyptian(Fraction(1, 1))) == Fraction(1, 1))
+# print(unegyptian(egyptian(Fraction(2, 1))) == Fraction(2, 1))
+# print(unegyptian(egyptian(Fraction(3, 1))) == Fraction(3, 1))
+
+# Easy 4 problems
+'''
+Write a function that takes a list of integers between 0 and 19 and returns a list of those integers sorted based on the English word for each number:
+'''
+
+def get_number_word(num):
+    numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+    return numbers[num]
+
+def alphabetic_number_sort(lst):
+    return sorted(lst, key=get_number_word)
+
+# input_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+#               10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+# expected_result = [8, 18, 11, 15, 5, 4, 14, 9, 19, 1,
+#                    7, 17, 6, 16, 10, 13, 3, 12, 2, 0]
+
+# print(alphabetic_number_sort(input_list) == expected_result)
+# # Prints True
+
+#Transform two lists into frozen sets and find their common elements.
+
+def intersection(lst1, lst2):
+    return frozenset(lst1) & frozenset(lst2)
+
+# list1 = [2, 4, 6, 8]
+# list2 = [1, 3, 5, 7, 8]
+# expected_result = frozenset({8})
+# print(intersection(list1, list2) == expected_result) # True
+
+'''
+Given a dictionary, return its keys sorted by the values associated with each key.
+'''
+
+def get_value(item):
+    return item[1]
+
+def order_by_value(input_dict):
+    sorted_items = sorted(input_dict.items(), key=get_value)
+    return [keys[0] for keys in sorted_items]
+
+# my_dict = {'p': 8, 'q': 2, 'r': 6}
+# keys = ['q', 'r', 'p']
+# print(order_by_value(my_dict) == keys)  # True
+
+''' 
+From two list arguments, determine the elements that are unique to the first list. The return value should be a set.
+''' 
+def unique_from_first(list1, list2):
+    return set(list1) - set(list2)
+
+# list1 = [3, 6, 9, 12]
+# list2 = [6, 12, 15, 18]
+# print(unique_from_first(list1, list2) == {9, 3})
+
+'''
+Write a function that takes a string argument and returns a list of substrings of that string. Each substring should begin with the first letter of the word, and the list should be ordered from shortest to longest.
+'''
+
+def leading_substrings(str):
+    return [str[:i] for i in range(1, len(str)+1)]
+
+#All of these examples should print True
+# print(leading_substrings('abc') == ['a', 'ab', 'abc'])
+# print(leading_substrings('a') == ['a'])
+# print(leading_substrings('xyzy') == ['x', 'xy', 'xyz', 'xyzy'])
+
+'''
+Write a function that returns a list of all substrings of a string. Order the returned list by where in the string the substring begins. This means that all substrings that start at index position 0 should come first, then all substrings that start at index position 1, and so on. Since multiple substrings will occur at each position, return the substrings at a given index from shortest to longest.
+
+You may (and should) use the leading_substrings function you wrote in the previous exercise:
+'''
+def substrings(str):
+    return [ sub for idx, char in enumerate(str) 
+                    for sub in leading_substrings(str[idx:]) ]
+
+# expected_result = [
+#     "a", "ab", "abc", "abcd", "abcde",
+#     "b", "bc", "bcd", "bcde",
+#     "c", "cd", "cde",
+#     "d", "de",
+#     "e",
+# ]
+
+# print(substrings('abcde') == expected_result)  # True
+
+''' 
+
+Write a function that returns a list of all palindromic substrings of a string. That is, each substring must consist of a sequence of characters that reads the same forward and backward. The substrings in the returned list should be sorted by their order of appearance in the input string. Duplicate substrings should be included multiple times.
+
+You may (and should) use the substrings function you wrote in the previous exercise.
+
+For the purpose of this exercise, you should consider all characters and pay attention to case; that is, 'AbcbA' is a palindrome, but 'Abcba' and 'Abc-bA' are not. In addition, assume that single characters are not palindromes.
+'''
+
+def palindromes(str):
+    subs = substrings(str)
+    return [sub for sub in subs if sub == sub[::-1] and len(sub) != 1]
+
+# print(palindromes('abcd') == [])                  # True
+# print(palindromes('madam') == ['madam', 'ada'])   # True
+
+# print(palindromes('hello-madam-did-madam-goodbye') ==
+#                   [
+#                       'll', '-madam-', '-madam-did-madam-',
+#                       'madam', 'madam-did-madam', 'ada',
+#                       'adam-did-mada', 'dam-did-mad',
+#                       'am-did-ma', 'm-did-m', '-did-',
+#                       'did', '-madam-', 'madam', 'ada', 'oo',
+#                   ])    # True
+
+# print(palindromes('knitting cassettes') ==
+#                   [
+#                       'nittin', 'itti', 'tt', 'ss',
+#                       'settes', 'ette', 'tt',
+#                   ])    # True
+
+''' 
+
+Write a function that takes two arguments, an inventory item ID and a list of transactions, and returns a list containing only the transactions for the specified inventory item.
+
+'''
+def transactions_for(id, lst):
+    return [dict for dict in lst if dict['id'] == id]
+
+# transactions = [
+#     {"id": 101, "movement": 'in',  "quantity":  5},
+#     {"id": 105, "movement": 'in',  "quantity": 10},
+#     {"id": 102, "movement": 'out', "quantity": 17},
+#     {"id": 101, "movement": 'in',  "quantity": 12},
+#     {"id": 103, "movement": 'out', "quantity": 20},
+#     {"id": 102, "movement": 'out', "quantity": 15},
+#     {"id": 105, "movement": 'in',  "quantity": 25},
+#     {"id": 101, "movement": 'out', "quantity": 18},
+#     {"id": 102, "movement": 'in',  "quantity": 22},
+#     {"id": 103, "movement": 'out', "quantity": 15},
+# ]
+
+# print(transactions_for(101, transactions) ==
+#       [
+#           {"id": 101, "movement": "in",  "quantity":  5},
+#           {"id": 101, "movement": "in",  "quantity": 12},
+#           {"id": 101, "movement": "out", "quantity": 18},
+#       ]) # True
+
+''' 
+The time of day can be represented as the number of minutes before or after midnight. If the number of minutes is positive, the time is after midnight. If the number of minutes is negative, the time is before midnight.
+
+Write a function that takes a time using this minute-based format and returns the time of day in 24-hour format (hh:mm). Your function should work with any integer input.
+
+You may not use Python's datetime module.
+
+''' 
+
+MINUTES_PER_HOUR = 60
+HOURS_PER_DAY = 24
+MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR
+
+def format_time(hours, minutes):
+    return f"{hours:02d}:{minutes:02d}"
+
+# Note that with the modulus operator, -3 % 1440 is 1437, with negative numbers it takes away from the 2nd number: what is the least positive integer to subtract from -3 to make 1440 divisible by -3?
+
+def time_of_day(delta_minutes):
+    delta_minutes = delta_minutes % MINUTES_PER_DAY # normalize the time to be within minutes in a day
+    print(delta_minutes)
+    hours = delta_minutes // MINUTES_PER_HOUR
+    minutes = delta_minutes % MINUTES_PER_HOUR
+    return format_time(hours, minutes)
+
+# print(time_of_day(0) == "00:00")        # True
+# print(time_of_day(-3) == "23:57")       # True
+# print(time_of_day(35) == "00:35")       # True
+# print(time_of_day(-1437) == "00:03")    # True
+# print(time_of_day(3000) == "02:00")     # True
+# print(time_of_day(800) == "13:20")      # True
+# print(time_of_day(-4231) == "01:29")    # True
+
+
+
+''' 
+As seen in the previous exercise, the time of day can be represented as the number of minutes before or after midnight. If the number of minutes is positive, the time is after midnight. If the number of minutes is negative, the time is before midnight.
+
+Write two functions that each take a time of day in 24 hour format, and return the number of minutes before and after midnight, respectively. Both functions should return a value in the range 0 through 1439.
+
+You may not use Python's datetime module.
+
+Problem:
+    We are given a string input in the format 00:00 which represents how many hours and minutes
+    Need to convert the string format to total minutes and determine it's respective value either after or before midnight
+
+Examples - both 00:00 and 24:00 should return 0
+
+Data structures - integers and strings
+
+Algorithm:
+    SET hours by taking slice of input string
+    SET minutes by taking slice of input string
+    SET total minutes by multiplying hours by 60 minutes and adding minutes to it
+    return the total minutes either from or to 0 or 1440
+    
+'''
+
+def after_midnight(input):
+    hours = int(input[:2])
+    minutes = int(input[3:])
+    if hours + minutes == 0 or hours == 24:
+        return 0
+    total_minutes = (hours * 60) + minutes
+    return total_minutes
+
+def before_midnight(input):
+    hours = int(input[:2])
+    minutes = int(input[3:])
+    if hours + minutes == 0 or hours == 24:
+        return 0
+    total_minutes = (hours * 60) + minutes
+    return 1440 - total_minutes
+
+# LS's solution:
+HOURS_PER_DAY = 24
+MINUTES_PER_HOUR = 60
+MINUTES_PER_DAY = HOURS_PER_DAY * MINUTES_PER_HOUR
+
+def after_midnight(time_str):
+    hours, minutes = [int(unit) for unit in time_str.split(":")]
+    return ((hours * MINUTES_PER_HOUR) + minutes) % MINUTES_PER_DAY
+
+def before_midnight(time_str):
+    delta_minutes = MINUTES_PER_DAY - after_midnight(time_str)
+    if delta_minutes == MINUTES_PER_DAY:
+        delta_minutes = 0
+    return delta_minutes
+
+# print(after_midnight("00:00") == 0)     # True
+# print(before_midnight("00:00") == 0)    # True
+# print(after_midnight("12:34") == 754)   # True
+# print(before_midnight("12:34") == 686)  # True
+# print(after_midnight("24:00") == 0)     # True
+# print(before_midnight("24:00") == 0)    # True
+''' 
+Write a function that takes a string, doubles every character in the string, then returns the result as a new string.
+'''
+def repeater(str):
+    return ''.join([char * 2 for char in str])
+
+# print(repeater('Hello') == "HHeelllloo")              # True
+# print(repeater('Good job!') == "GGoooodd  jjoobb!!")  # True
+# print(repeater('') == "")                             # True
+
+'''
+
+Write a function that takes a string, doubles every consonant in the string, and returns the result as a new string. The function should not double vowels ('a','e','i','o','u'), digits, punctuation, or whitespace.
+
+You may assume that only ASCII characters will be included in the argument.
+
+'''
+VOWELS = 'aeiou'
+def string_checker(str):
+    if str not in VOWELS and str.isalpha():
+        return True
+    return False
+    
+def double_consonants(str):
+    return ''.join([char * 2 if string_checker(char) else char for char in str])
+
+# All of these examples should print True
+# print(double_consonants('String') == "SSttrrinngg")
+# print(double_consonants('Hello-World!') == "HHellllo-WWorrlldd!")
+# print(double_consonants('July 4th') == "JJullyy 4tthh")
+# print(double_consonants('') == "")
+
+def reverse_number(number):
+    return int(str(number)[::-1])
+
+# print(reverse_number(12345) == 54321)   # True
+# print(reverse_number(12213) == 31221)   # True
+# print(reverse_number(456) == 654)       # True
+# print(reverse_number(1) == 1)           # True
+# print(reverse_number(12000) == 21)      # True
+''' 
+Write a function that takes a string argument consisting of a first name, a space, and a last name. The function should return a new string consisting of the last name, a comma, a space, and the first name.
+'''
+def swap_name(str):
+    split_str = str.split()
+    return f"{split_str[1]}, {split_str[0]}"
+
+#print(swap_name('Joe Roberts') == "Roberts, Joe")   # True
+
+''' 
+Create a function that takes two integers as arguments. The first argument is a count, and the second is the starting number of a sequence that your function will create. The function should return a list containing the same number of elements as the count argument. The value of each element should be a multiple of the starting number.
+
+You may assume that count will always be an integer greater than or equal to 0. The starting number can be any integer. If the count is 0, the function should return an empty list.
+
+Algorithm:
+
+''' 
+
+def sequence(count, start):
+    if count == 0:
+        return []
+    multiples = [start*i for i in range(1, count+1)]
+    return multiples
+
+# print(sequence(5, 1) == [1, 2, 3, 4, 5])          # True
+# print(sequence(4, -7) == [-7, -14, -21, -28])     # True
+# print(sequence(3, 0) == [0, 0, 0])                # True
+# print(sequence(0, 1000000) == [])                 # True
+
+''' 
+Write a function that takes a list as an argument and reverses its elements, in place. That is, mutate the list passed into the function. The returned object should be the same object used as the argument.
+
+You may not use the list.reverse method nor may you use a slice ([::-1]).
+'''
+
+def reverse_list(lst):
+    
+    for idx in range(len(lst)//2):
+        lst[idx], lst[-(idx + 1)] = lst[-(idx+1)], lst[idx]
+    return lst
+
+# list1 = [1, 2, 3, 4]
+# result = reverse_list(list1)
+# print(result == [4, 3, 2, 1])               # True
+# print(list1 is result)                      # True
+
+# list2 = ["a", "b", "c", "d", "e"]
+# result2 = reverse_list(list2)
+# print(result2 == ['e', 'd', 'c', 'b', 'a']) # True
+# print(list2 is result2)                     # True
+
+# list3 = ["abc"]
+# result3 = reverse_list(list3)
+# print(result3 == ['abc'])                   # True
+# print(list3 is result3)                     # True
+
+# list4 = []
+# result4 = reverse_list(list4)
+# print(result4 == [])                        # True
+# print(list4 is result4)                     # True
+
+''' 
+Write a function that takes a string as an argument and returns True if all parentheses in the string are properly balanced, False otherwise. To be properly balanced, parentheses must occur in matching '(' and ')' pairs.
+
+'''
+
+# LS's solution: If the string is balanced, the parens value will be 0
+
+def is_balanced(s):
+    parens = 0
+    for char in s:
+        if char == "(":
+            parens += 1
+        elif char == ")":
+            parens -= 1
+        if parens < 0:
+            return False
+    return parens == 0
+
+print(is_balanced("What (is) this?") == True)        # True
+print(is_balanced("What is) this?") == False)        # True
+print(is_balanced("What (is this?") == False)        # True
+print(is_balanced("((What) (is this))?") == True)    # True
+print(is_balanced("((What)) (is this))?") == False)  # True
+print(is_balanced("Hey!") == True)                   # True
+print(is_balanced(")Hey!(") == False)                # True
+print(is_balanced("What ((is))) up(") == False)      # True
