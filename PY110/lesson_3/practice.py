@@ -1770,6 +1770,8 @@ def pairs(lst):
 #       
 #    return the maximum of the vowel counter list
 
+# got chopy between translating your algorithm once you found issues with it
+
 def longest_vowel_substring(input):
     vowel_counts = []
     vowel_counter = 0
@@ -1783,6 +1785,30 @@ def longest_vowel_substring(input):
     vowel_counts.append(vowel_counter)
     return max(vowel_counts)
 
+# other solution for it: from Khaled
+def longest_vowel_substring(string):
+    start, end = 0, 1
+    longest = 0
+    while True:
+        current = string[start: end]
+        if current[-1] in VOWELS:
+            if len(current) > longest:
+                longest = len(current)
+            end += 1
+        else:
+            start = end
+            end = start + 1
+        if end > len(string):
+            break
+    return longest
+
+# print(longest_vowel_substring('cwm') == 0)
+# print(longest_vowel_substring('many') == 1)
+# print(longest_vowel_substring('launchschoolstudents') == 2)
+# print(longest_vowel_substring('eau') == 3)
+# print(longest_vowel_substring('beauteous') == 3)
+# print(longest_vowel_substring('sequoia') == 4)
+# print(longest_vowel_substring('miaoued') == 5)
 # print(longest_vowel_substring('cwm') == 0)
 # print(longest_vowel_substring('many') == 1)
 # print(longest_vowel_substring('launchschoolstudents') == 2)
