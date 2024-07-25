@@ -3176,9 +3176,81 @@ def dms(input):
 DEGREE = "\u00B0"
 
 # All of these examples should print True
-print(dms(30) == "30°00'00\"")
-print(dms(76.73) == "76°43'48\"")
-print(dms(254.6) == "254°35'59\"")
-print(dms(93.034773) == "93°02'05\"")
-print(dms(0) == "0°00'00\"")
-print(dms(360) == "360°00'00\"" or dms(360) == "0°00'00\"")
+# print(dms(30) == "30°00'00\"")
+# print(dms(76.73) == "76°43'48\"")
+# print(dms(254.6) == "254°35'59\"")
+# print(dms(93.034773) == "93°02'05\"")
+# print(dms(0) == "0°00'00\"")
+# print(dms(360) == "360°00'00\"" or dms(360) == "0°00'00\"")
+
+'''
+Repeat of max roation problem:
+
+Take the number 735291 and rotate it by one digit to the left, getting 352917. Next, keep the first digit fixed in place and rotate the remaining digits to get 329175. Keep the first two digits fixed in place and rotate again to get 321759. Keep the first three digits fixed in place and rotate again to get 321597. Finally, keep the first four digits fixed in place and rotate the final two digits to get 321579. The resulting number is called the maximum rotation of the original number.
+
+Write a function that takes an integer as an argument and returns the maximum rotation of that integer. You can (and probably should) use the rotate_rightmost_digits function from the previous exercise.
+
+Problem:
+    A rotation of an integer is defined as starting at a index N and rotating the numbers that come after it. For example, 735291 rotated by one digit to the left is 352917..
+    We need to repeat this for every single index to the right through the entire integer
+    Input: integer
+    Output: integer (rotated)
+    sub-problem: rotate N index of an integer to the right  
+        given an input integer, rotate it to the right from a given index N
+
+Examples: single integer rotation is itself
+            two integer rotation is just those two swapped
+
+Data structures
+    Input: integer
+    Inputer: integer
+    intermediary: strings for manipulation 
+                    lists to hold elements
+
+Algorithm:
+    Overall process:
+    1. Rotate the input by one digit to the left -take index 0 and put it at index -1, leaving the rest alone
+    2. Keep the first digit in place, so start from index 1 and rotate the remaining digits, so index 1 goes to the end and the others shift left
+    repeat the above process for all indexes of the input integer
+
+    sub-problem: rotate N index
+        SET input integer as a list so we can access each value
+        create a new list using slice notation: 
+            slice[:N] + slice[N+1:] + index[N]
+        return the new list joined together as an integer
+
+    Main problem:
+        perform the sub-problem rotation for all indexe values of input integer using range object
+        return new integer
+'''
+'''
+One of the core skills we're looking for at this stage is your ability to problem solve and decompose a complicated problem. Doing that requires a systematic approach to tackling an exercise. You should know what the code you write is doing, and you should never enter "let me just run it to see what it will do" mode. You must be in full control of the code, and your process must be intentional and directed, not "hack and slash" or "trial and error." Not having an intentional problem-solving approach is the leading cause of problems during the interview.
+'''
+
+# Got it done in 28 minutes with about 7 of it being some debugging on an index edge case
+
+def rotate_n_index(input, index):
+    input_as_lst = list(str(input))
+    if len(str(input)) == 2:
+        sliced_list = input_as_lst[1] + input_as_lst[0]
+    else:
+        sliced_list = input_as_lst[: index] + input_as_lst[index+1:] + [input_as_lst[index]]
+    # when joining together here with a 0 integer in the lead, it's concatenating that integer value
+    return  int(''.join(sliced_list))
+
+
+def max_rotation(input_int):
+    rotated_int = input_int
+    for idx in range(0, len(str(input_int)) - 1):
+        rotated_int = rotate_n_index(rotated_int, idx)
+    return rotated_int
+
+# print(max_rotation(735291) == 321579)          # True
+# print(max_rotation(3) == 3)                    # True
+# print(max_rotation(35) == 53)                  # True
+# print(max_rotation(8703529146) == 7321609845)  # True
+
+# # Note that the final sequence here is `015`. The leading
+# # zero gets dropped, though, since we're working with
+# # an integer.
+# print(max_rotation(105) == 15)                 # True
