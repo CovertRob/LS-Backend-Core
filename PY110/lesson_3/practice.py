@@ -3363,11 +3363,12 @@ Algorithm:
 
     
 '''
+def expanded_form(num):
+    PAD = '0'
+    expanded = [elem + (PAD * ((len(str(num))-1) - idx)) for idx, elem in enumerate(str(num)) if elem != 0]
+    
 
-# def expanded_form(num):
-
-
-# print(expanded_form(12) == '10 + 2')
+print(expanded_form(12) == '10 + 2')
 # print(expanded_form(42) == '40 + 2')
 # print(expanded_form(70304) == '70000 + 300 + 4')
 
