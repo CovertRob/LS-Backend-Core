@@ -3254,3 +3254,127 @@ def max_rotation(input_int):
 # # zero gets dropped, though, since we're working with
 # # an integer.
 # print(max_rotation(105) == 15)                 # True
+
+target_letters = ['a', 'b', 'c', 'd', 'e']
+characters = ['a', 'b', 'b', 'd', 'f', 'f', 'z', 'z', 'z']
+# Iterate over the list and return the dictionary below
+
+def morph_characters(target_chars, lst):
+  
+    char_dict = {}
+    for elem in target_chars:
+        if elem in lst:
+            char_dict[elem] = {'present': True, 'count': lst.count(elem)}
+        else:
+            char_dict[elem] = {'present': False, 'count': 0}
+
+    return char_dict
+# ???
+
+print(morph_characters(target_letters, characters) ==
+{
+ 'a': { 'present': True, 'count': 1 },
+ 'b': { 'present': True, 'count': 2 },
+ 'c': { 'present': False, 'count': 0 },
+ 'd': { 'present': True, 'count': 1 },
+ 'e': { 'present': False, 'count': 0 },
+})
+
+#{'present': False, 'count': 0}
+# Find the longest substring in alphabetical order.
+# Example: the longest alphabetical substring in "asdfaaaabbbbcttavvfffffdf" is "aaaabbbbctt".
+# The input will only consist of lowercase characters and will be at least one letter long.
+# If there are multiple solutions, return the one that appears first.
+
+'''
+
+'''
+
+
+
+
+# def longest(string):
+
+
+# print(longest('asd') == 'as')
+# print(longest('nab') == 'ab')
+# print(longest('abcdeapbcdef') ==  'abcde')
+# print(longest('asdfaaaabbbbcttavvfffffdf') == 'aaaabbbbctt')
+# print(longest('asdfbyfgiklag') == 'fgikl')
+# print(longest('z') == 'z')
+# print(longest('zyba') == 'z')
+
+# Issue - not seeing zeroes in the output value
+# Issue - when feeling pressured people are sometimes too quick to get into their algorithm and miss a potentially easier way to do it that's not as complicated
+
+# You will be given a number and you will need to return it as a string in expanded form. For example:
+
+# expanded_form(12); # Should return '10 + 2'
+# expanded_form(42); # Should return '40 + 2'
+# expanded_form(70304); # Should return '70000 + 300 + 4'
+
+# Note: All numbers will be whole numbers greater than 0.
+
+'''
+Problem:
+    Expanded form: for each index of the integer, expanded form is from that index to the end of the integers length, that many 0's appended onto that index integer value. The whole expanded form is all those integers added up.
+    We need to iterate over each index integer value in the whole integer, and expand each one, then concateneate it back together
+    The expanded number will add back up to the original input integer
+    Input: integer
+    Output: string format
+
+    sub-problem: zero padding
+        input: string
+        output: string
+        padd as many 0's as index value to length - 1
+
+Examples - 
+
+Data structures:
+    input: integer
+    output: strings
+    lists for string operations
+
+print(expanded_form(70304) == '70000 + 300 + 4')
+
+70304
+7 => 7000
+0 ???
+3 => 00
+
+Algorithm:
+    high level:
+        iterate over each value in the integer
+        pad it with as many 0's from that index to the length of the string - 1
+        combine back together in string format shown below
+
+    Algorith: padding
+        two arguments: string to be padded, pad amount
+            SET empty string to be padded string
+            iterate using range object from 1 to pad amount + 1
+                use augmented assignment to add on each string '0'
+            return padded strings
+    Algorithm:
+        SET the input integer as a casted string
+        SET empty list to hold each padded integer
+        iterate over each char in input integer 
+            apppend the return value from pad_current_integer to empty list
+        
+
+    
+'''
+
+# def expanded_form(num):
+
+
+# print(expanded_form(12) == '10 + 2')
+# print(expanded_form(42) == '40 + 2')
+# print(expanded_form(70304) == '70000 + 300 + 4')
+
+# matrix = [
+#     [1, 2, 3],
+#     [4, 5, 6],
+#     [7, 8, 9]
+# ]
+
+# print(flattened_matrix)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
