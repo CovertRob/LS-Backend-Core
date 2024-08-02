@@ -3369,9 +3369,11 @@ Algorithm:
 '''
 def expanded_form(num):
     PAD = '0'
-    expanded = [elem + (PAD * ((len(str(num))-1) - idx)) for idx, elem in enumerate(str(num)) if elem != 0]
+    expanded = [elem + (PAD * ((len(str(num))-1) - idx)) for idx, elem in enumerate(str(num)) if elem != '0']
+    #print(' + '.join(expanded).rstrip())
+    return ' + '.join(expanded).rstrip()
     
-#print(expanded_form(12) == '10 + 2')
+# print(expanded_form(12) == '10 + 2')
 # print(expanded_form(42) == '40 + 2')
 # print(expanded_form(70304) == '70000 + 300 + 4')
 
@@ -3506,3 +3508,20 @@ def next_featured(number):
 # error = ("There is no possible number that "
 #          "fulfills those requirements.")
 # print(next_featured(9876543201) == error)       # True
+
+
+# Re-order the characters of a string, so that they are concatenated into a new string in "case-insensitively-alphabetical-order-of-appearance" order.
+# Whitespace and punctuation shall simply be removed!
+# The input is restricted to contain no numerals and only words containing the english alphabet letters.
+
+def lowercase(str):
+    return str.lower()
+
+def alphabetized(string):
+    in_order = sorted(string, key=lowercase)
+    print(in_order)
+    
+# Tests
+print(alphabetized("The Holy Bible") == "BbeehHilloTy")
+print(alphabetized("!@$%^&*()_+=-`,") == "")
+print(alphabetized("CodeWars can't Load Today") == "aaaaCcdddeLnooorstTWy")
