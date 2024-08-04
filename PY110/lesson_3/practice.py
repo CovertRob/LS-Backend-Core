@@ -2870,7 +2870,7 @@ expected_result = [
     "e",
 ]
 
-print(substrings('abcde') == expected_result)  # True
+# print(substrings('abcde') == expected_result)  # True
 
 ''' 
 
@@ -3519,9 +3519,10 @@ def lowercase(str):
 
 def alphabetized(string):
     in_order = sorted(string, key=lowercase)
-    print(in_order)
+    alphas = [char for char in in_order if char.isalpha()]
+    return ''.join(alphas)
     
 # Tests
-print(alphabetized("The Holy Bible") == "BbeehHilloTy")
-print(alphabetized("!@$%^&*()_+=-`,") == "")
-print(alphabetized("CodeWars can't Load Today") == "aaaaCcdddeLnooorstTWy")
+# print(alphabetized("The Holy Bible") == "BbeehHilloTy")
+# print(alphabetized("!@$%^&*()_+=-`,") == "")
+# print(alphabetized("CodeWars can't Load Today") == "aaaaCcdddeLnooorstTWy")
