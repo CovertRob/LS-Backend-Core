@@ -1162,11 +1162,11 @@ def reverse_string(string):
 
 # You want to multiply all elements of a list by 2. However, the function is not returning the expected result. Explain the bug, and provide a solution.
 
-def multiply_list(lst):
-    for idx, item in enumerate(lst):
-        lst[idx] = item * 2
+# def multiply_list(lst):
+#     for idx, item in enumerate(lst):
+#         lst[idx] = item * 2
 
-    return lst
+#     return lst
 
 #print(multiply_list([1, 2, 3]) == [2, 4, 6])
 
@@ -3271,14 +3271,14 @@ def morph_characters(target_chars, lst):
     return char_dict
 # ???
 
-print(morph_characters(target_letters, characters) ==
+#print(morph_characters(target_letters, characters) ==
 {
  'a': { 'present': True, 'count': 1 },
  'b': { 'present': True, 'count': 2 },
  'c': { 'present': False, 'count': 0 },
  'd': { 'present': True, 'count': 1 },
  'e': { 'present': False, 'count': 0 },
-})
+}
 
 #{'present': False, 'count': 0}
 # Find the longest substring in alphabetical order.
@@ -3368,7 +3368,7 @@ def expanded_form(num):
     expanded = [elem + (PAD * ((len(str(num))-1) - idx)) for idx, elem in enumerate(str(num)) if elem != 0]
     
 
-print(expanded_form(12) == '10 + 2')
+#print(expanded_form(12) == '10 + 2')
 # print(expanded_form(42) == '40 + 2')
 # print(expanded_form(70304) == '70000 + 300 + 4')
 
@@ -3379,3 +3379,66 @@ print(expanded_form(12) == '10 + 2')
 # ]
 
 # print(flattened_matrix)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+''' 
+Write a function that takes a list as an argument and returns a list that contains two elements, both of which are lists. Put the first half of the original list elements in the first element of the return value and put the second half in the second element. If the original list contains an odd number of elements, place the middle element in the first half list.
+'''
+
+def halvsies(lst):
+  
+    half1 = lst[:((len(lst) + 1) //2)]
+    half2 = lst[((len(lst) + 1) //2):]
+    
+    return [half1, half2]
+
+# All of these examples should print True
+# print(halvsies([1, 2, 3, 4]) == [[1, 2], [3, 4]])
+# print(halvsies([1, 5, 2, 4, 3]) == [[1, 5, 2], [4, 3]])
+# print(halvsies([5]) == [[5], []])
+# print(halvsies([]) == [[], []])
+
+''' 
+Write a function that combines two lists passed as arguments and returns a new list that contains all elements from both list arguments, with each element taken in alternation.
+
+You may assume that both input lists are non-empty, and that they have the same number of elements.
+
+'''
+def interleave(lst1, lst2):
+    combined_lst = []
+    for idx in range(len(lst1)):
+        item1, item2 = lst1.pop(0), lst2.pop(0)
+        combined_lst.append(item1)
+        combined_lst.append(item2)
+    return combined_lst
+
+
+# list1 = [1, 2, 3]
+# list2 = ['a', 'b', 'c']
+# expected = [1, "a", 2, "b", 3, "c"]
+# print(interleave(list1, list2) == expected)      # True
+
+''' 
+Write a function that takes a list of positive integers as input, multiplies all of the integers together, divides the result by the number of entries in the list, and returns the result as a string with the value rounded to three decimal places.
+
+'''
+
+def multiplicative_average(lst):
+    multiplied = 1
+    for idx in range(len(lst)):
+        multiplied *= lst[idx]
+    return f"{multiplied / len(lst):.3f}"
+
+# All of these examples should print True
+# print(multiplicative_average([3, 5]) == "7.500")
+# print(multiplicative_average([2, 5, 8]) == "26.667")
+# print(multiplicative_average([2, 5]) == "5.000")
+# print(multiplicative_average([1, 1, 1, 1]) == "0.250")
+# print(multiplicative_average([2, 5, 7, 11, 13, 17]) == "28361.667")
+
+
+def multiply_list(lst1, lst2):
+    return [a*b for a, b in zip(list1, list2)]
+
+list1 = [3, 5, 7]
+list2 = [9, 10, 11]
+print(multiply_list(list1, list2) == [27, 50, 77])  # True

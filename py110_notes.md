@@ -680,3 +680,18 @@ Understanding of how to create and use range objects and enumerate for indexing 
 
 - **You cannot change the size of a set, frozen set, list, or dict while iterating over it** - this will cause a runtime error in the case of a set. It won't notify you about it for a list or dict
 - Default arguments for functions that are mutable objects, such as an empty list, are shared between function calls. A new list is not instantiated every time, meaning you'll just keep adding objects to that first list created.
+
+### Format specification mini-language
+
+num = 35
+f'{num:5d}'            # '   35' (Leading spaces)
+f'{num:05d}'           # '00035' (Leading zeros)
+
+num = 3.141592653589793
+f'{num:.3f}'           # '3.142' (3-digit precision)
+f'{num:.5f}'           # '3.14159' (5-digit precision)
+
+string = 'Hello'
+f'{string:<10s}'       # 'Hello     ' (Left aligned)
+f'{string:>10s}'       # '     Hello' (Right aligned)
+f'{string:^10s}'       # '  Hello   ' (Centered)
