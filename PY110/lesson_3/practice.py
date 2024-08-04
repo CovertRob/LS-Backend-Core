@@ -1895,13 +1895,13 @@ def count_substrings(str, sub):
 #           if slicce from i to j is an even substring, increment counter
 #   return counter
 
-def even_substrings(input):
-    sub_counter = 0
-    for i in range(0, len(input)+1):
-        for j in range(i+1, len(input)+1):
-            if int(input[i:j]) % 2 == 0:
-                sub_counter += 1
-    return sub_counter
+# def even_substrings(input):
+#     sub_counter = 0
+#     for i in range(0, len(input)+1):
+#         for j in range(i+1, len(input)+1):
+#             if int(input[i:j]) % 2 == 0:
+#                 sub_counter += 1
+#     return sub_counter
 
 # print(even_substrings('1432') == 6)
 # print(even_substrings('3145926') == 16)
@@ -2853,18 +2853,22 @@ def leading_substrings(str):
 Write a function that returns a list of all substrings of a string. Order the returned list by where in the string the substring begins. This means that all substrings that start at index position 0 should come first, then all substrings that start at index position 1, and so on. Since multiple substrings will occur at each position, return the substrings at a given index from shortest to longest.
 
 You may (and should) use the leading_substrings function you wrote in the previous exercise:
-'''
+
 def substrings(str):
     return [ sub for idx, char in enumerate(str) 
                     for sub in leading_substrings(str[idx:]) ]
+'''
+def substrings(str): 
+    return [ sub for idx in range(len(str)+1)
+                    for sub in leading_substrings(str[idx:]) ]
 
-# expected_result = [
-#     "a", "ab", "abc", "abcd", "abcde",
-#     "b", "bc", "bcd", "bcde",
-#     "c", "cd", "cde",
-#     "d", "de",
-#     "e",
-# ]
+expected_result = [
+    "a", "ab", "abc", "abcd", "abcde",
+    "b", "bc", "bcd", "bcde",
+    "c", "cd", "cde",
+    "d", "de",
+    "e",
+]
 
 # print(substrings('abcde') == expected_result)  # True
 
@@ -3365,7 +3369,9 @@ Algorithm:
 '''
 def expanded_form(num):
     PAD = '0'
-    expanded = [elem + (PAD * ((len(str(num))-1) - idx)) for idx, elem in enumerate(str(num)) if elem != 0]
+    expanded = [elem + (PAD * ((len(str(num))-1) - idx)) for idx, elem in enumerate(str(num)) if elem != '0']
+    #print(' + '.join(expanded).rstrip())
+    return ' + '.join(expanded).rstrip()
     
 
 #print(expanded_form(12) == '10 + 2')
@@ -3379,6 +3385,148 @@ def expanded_form(num):
 # ]
 
 # print(flattened_matrix)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+'''
+Create a function that takes a string of digits as an argument and returns the number of even-numbered substrings that can be formed. For example, in the case of '1432', the even-numbered substrings are '14', '1432', '4', '432', '32', and '2', for a total of 6 substrings.
+
+If a substring occurs more than once, you should count each occurrence as a separate substring.
+
+Problem: We need to take a list of integers in string format and determine how many even numbered substrings can be made out of the string integer.
+    Need to find all substrings from the input string
+    Determine if it is even or not
+    Input: string
+    Output: integer
+    Rules: count repeat substrings
+
+Examples: We see in the examples that we need to determine each substring from each char position, not just the leading ones
+
+Data structures:
+    Input: string
+    Output: integer
+    Intermerdiary: casting to integer, lists
+
+Algorithm:
+    high level: 
+        1. Find all substrings from the input string and place in a list (sub-problem)
+            - 
+        2. iterate through each substring, cast it as an integer, and determine if it is even
+            3. If the substring is even, increment the evens counter
+        4. Return the evens counter
+'''
+
+def integer_substrings(number):
+    substrings = [number[i:j+1] for i in range(len(number)) for j in range(i, len(number))]
+    
+    return substrings
+
+
+def even_substrings(number):
+    subs = integer_substrings(number)
+    evens = 0
+    for sub in subs:
+        if int(sub) % 2 == 0:
+            evens += 1
+    return evens
+
+# print(even_substrings('1432') == 6)
+# print(even_substrings('3145926') == 16)
+# print(even_substrings('2718281') == 16)
+# print(even_substrings('13579') == 0)
+# print(even_substrings('143232') == 12)
+
+'''
+A featured number (something unique to this exercise) is an odd number that is a multiple of 7, with all of its digits occurring exactly once each. For example, 49 is a featured number, but 98 is not (it is not odd), 97 is not (it is not a multiple of 7), and 133 is not (the digit 3 appears twice).
+
+Write a function that takes an integer as an argument and returns the next featured number greater than the integer. Issue an error message if there is no next featured number.
+
+NOTE: The largest possible featured number is 9876543201.
+
+Problem:
+    Given an input integer, find the next featured number greater than the input integer.
+    Rules:
+        1. Featured number is odd
+        2. Featured number is a multiple of 7
+        3. All digits occur exactly once each
+    Issue an error message if there is no next featured number - use the given largest possible featured number for this
+
+Examples:
+    goes by multiples of 7
+
+Data structures:
+    input: integer
+    output: integer
+    intermediary: strings for integer manipulation,
+        lists
+        sets to verify repeat digits
+
+Algorithm:
+    high level: 
+        1. given input integer, get next multiple of 7 greater than that
+        2. check if it is odd and if any digits repeat
+            3. If both true, return the number
+        3. continue 2 and 3 until true 
+    sub-problem: are no repeat checker
+        1. convert input integer to list
+        2. convert input list copy to set
+        3. compare list and set length
+            4. if the lengths are equal, return true
+        4. else return false
+    sub-problem: find multiple of 7 above a number
+'''
+
+def are_no_repeat(number):
+    
+    if len(list(str(number))) == len(set(str(number))):
+        return True
+    return False
+
+def next_seven_multiple(number):
+    counter = 1
+    while True:
+        if number + counter % 7 == 0:
+            return number + counter
+        counter += 1
+
+def next_featured(number):
+    next_multiple = number
+    if number >= 9876543201:
+        return "There is no possible number that fulfills those requirements."
+    while True:
+        next_multiple = next_multiple_of_7(next_multiple)
+        if next_multiple % 2 == 1 and are_no_repeat(next_multiple):
+            return next_multiple
+    
+
+# print(next_featured(12) == 21)                  # True
+# print(next_featured(20) == 21)                  # True
+# print(next_featured(21) == 35)                  # True
+# print(next_featured(997) == 1029)               # True
+# print(next_featured(1029) == 1043)              # True
+# print(next_featured(999999) == 1023547)         # True
+# print(next_featured(999999987) == 1023456987)   # True
+# print(next_featured(9876543186) == 9876543201)  # True
+# print(next_featured(9876543200) == 9876543201)  # True
+
+# error = ("There is no possible number that "
+#          "fulfills those requirements.")
+# print(next_featured(9876543201) == error)       # True
+
+
+# Re-order the characters of a string, so that they are concatenated into a new string in "case-insensitively-alphabetical-order-of-appearance" order.
+# Whitespace and punctuation shall simply be removed!
+# The input is restricted to contain no numerals and only words containing the english alphabet letters.
+
+def lowercase(str):
+    return str.lower()
+
+def alphabetized(string):
+    in_order = sorted(string, key=lowercase)
+    alphas = [char for char in in_order if char.isalpha()]
+    return ''.join(alphas)
+    
+# Tests
+# print(alphabetized("The Holy Bible") == "BbeehHilloTy")
+# print(alphabetized("!@$%^&*()_+=-`,") == "")
+# print(alphabetized("CodeWars can't Load Today") == "aaaaCcdddeLnooorstTWy")
 
 ''' 
 Write a function that takes a list as an argument and returns a list that contains two elements, both of which are lists. Put the first half of the original list elements in the first element of the return value and put the second half in the second element. If the original list contains an odd number of elements, place the middle element in the first half list.
