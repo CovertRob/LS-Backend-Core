@@ -1614,23 +1614,23 @@ def to_weird_case(input):
 #   Get the values that occur the most
 #   If multiple values have same greatest occurrence, get and compare index of each char and return the value of the one that has the least index
 
-def most_common_char(str_input):
-    lowercased = str_input.lower()
-    split_str = list(lowercased)
-    split_str.sort()
-    unique_chars = set(split_str)
-    num_chars = {chars: split_str.count(chars) for chars in unique_chars}
-    # find the greatest values in the dictionary and its corresponding char
-    max_value = max(num_chars.values())
-    greatest_values = [char for char, count in num_chars.items() if count == max_value]
-    # if there is only one greatest occurency, return it
-    if len(greatest_values) == 1:
-        return greatest_values[0]
-    index = []
-    # return the letter that occurs first in the lowercased string
-    for greatest_char in greatest_values:
-        index.append(lowercased.index(greatest_char))
-    return lowercased[min(index)]
+# def most_common_char(str_input):
+#     lowercased = str_input.lower()
+#     split_str = list(lowercased)
+#     split_str.sort()
+#     unique_chars = set(split_str)
+#     num_chars = {chars: split_str.count(chars) for chars in unique_chars}
+#     # find the greatest values in the dictionary and its corresponding char
+#     max_value = max(num_chars.values())
+#     greatest_values = [char for char, count in num_chars.items() if count == max_value]
+#     # if there is only one greatest occurency, return it
+#     if len(greatest_values) == 1:
+#         return greatest_values[0]
+#     index = []
+#     # return the letter that occurs first in the lowercased string
+#     for greatest_char in greatest_values:
+#         index.append(lowercased.index(greatest_char))
+#     return lowercased[min(index)]
 
 # print(most_common_char('Hello World') == 'l')
 # print(most_common_char('Mississippi') == 'i')
@@ -3589,4 +3589,83 @@ def multiply_list(lst1, lst2):
 
 list1 = [3, 5, 7]
 list2 = [9, 10, 11]
-print(multiply_list(list1, list2) == [27, 50, 77])  # True
+# print(multiply_list(list1, list2) == [27, 50, 77])  # True
+
+def digit_list(digits):
+    return [int(digit) for digit in str(digits)]
+
+# print(digit_list(12345) == [1, 2, 3, 4, 5])       # True
+# print(digit_list(7) == [7])                       # True
+# print(digit_list(375290) == [3, 7, 5, 2, 9, 0])   # True
+# print(digit_list(444) == [4, 4, 4])               # True
+
+vehicles = ['car', 'car', 'truck', 'car', 'SUV', 'truck',
+            'motorcycle', 'motorcycle', 'car', 'truck']
+
+def count_occurrences(vehicles):
+    unique = set(vehicles)
+    for types in unique:
+        print(f"{types} => {vehicles.count(types)}")
+
+#count_occurrences(vehicles)
+
+# your output sequence may appear in a different sequence
+# car => 4
+# truck => 3
+# SUV => 1
+# motorcycle => 2
+
+''' 
+Create a function that takes a string argument and returns the character that occurs most often in the string. If there are multiple characters with the same greatest frequency, return the one that appears first in the string. When counting characters, consider uppercase and lowercase versions to be the same.
+Rules:
+    treat characters case insensitive
+    return the character that occurs with the greatest frequency first
+
+Algorithm:
+    create a lowercase copy of the input string
+    create a list with all the unique characters
+    return the character with the greatest occurrences in the lowercase copy
+'''
+
+
+def most_common_char(input):
+    lower_str = list(input.lower())
+    max_count = 0
+    current_max_char = ''
+    for char in lower_str:
+        char_count = lower_str.count(char)
+        if char_count > max_count:
+            max_count = char_count
+            current_max_char = char
+    return current_max_char
+    
+# print(most_common_char('Hello World') == 'l')
+# print(most_common_char('Mississippi') == 'i')
+# print(most_common_char('Happy birthday!') == 'h')
+# print(most_common_char('aaaaaAAAA') == 'a')
+
+# my_str = 'Peter Piper picked a peck of pickled peppers.'
+# print(most_common_char(my_str) == 'p')
+
+# my_str = 'Peter Piper repicked a peck of repickled peppers. He did!'
+# print(most_common_char(my_str) == 'e')
+
+'''
+Create a function that takes a string argument that consists entirely of numeric digits and computes the greatest product of four consecutive digits in the string. The argument will always have more than 4 digits.
+'''
+
+def greatest_product(number):
+    sub_products = [number[idx:idx+4] for idx in range(len(number)-3)]
+    products = []
+    for sub in sub_products:
+        current_product = 1
+        for number in sub:
+            current_product *= int(number)
+        products.append(current_product)
+        current_product = 1
+    return max(products)
+
+# print(greatest_product('23456') == 360)      # 3 * 4 * 5 * 6
+# print(greatest_product('3145926') == 540)    # 5 * 9 * 2 * 6
+# print(greatest_product('1828172') == 128)    # 1 * 8 * 2 * 8
+# print(greatest_product('123987654') == 3024) # 9 * 8 * 7 * 6
