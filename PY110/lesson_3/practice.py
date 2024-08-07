@@ -3590,3 +3590,54 @@ def multiply_list(lst1, lst2):
 list1 = [3, 5, 7]
 list2 = [9, 10, 11]
 print(multiply_list(list1, list2) == [27, 50, 77])  # True
+
+''' 
+Create a function that takes a string of digits as an argument and returns the number of even-numbered substrings that can be formed. For example, in the case of '1432', the even-numbered substrings are '14', '1432', '4', '432', '32', and '2', for a total of 6 substrings.
+
+If a substring occurs more than once, you should count each occurrence as a separate substring.
+
+Problem: We need to get all the substrings contained in the input and return those that are even numbered
+    Input: integer as a string
+    Output: integer count of how many even substrings there are
+    Rules: count repeats of substrings
+
+Examples: if it has no even substrings, return 0
+
+Data structures: list
+
+Algorithm:
+    high level: 
+    1. get all substrings - subproblem
+    2. iterate throug the substrings and count how many are even - subproblem
+    3. return the even count
+
+    get all substrings
+        - iterate through the string using a nested comprehension and slice
+        - iterate with i from 0 to the length of the string and with j from i to the length of the string
+    
+    count even
+        - SET even counter to 0
+        - cast the substring to an integer
+        - check if the remainder from % 2 is 0
+            - if it is, increment the even counter
+        - return the even counter
+
+
+'''
+
+def find_all_substrings(input):
+    return [input[idx:j+1] for idx in range(len(input)) for j in range(idx, len(input))]
+
+def even_substrings(input):
+    even_count = 0
+    substrings = find_all_substrings(input)
+    for sub in substrings:
+        if int(sub) % 2 == 0:
+            even_count += 1
+    return even_count
+
+print(even_substrings('1432') == 6)
+print(even_substrings('3145926') == 16)
+print(even_substrings('2718281') == 16)
+print(even_substrings('13579') == 0)
+print(even_substrings('143232') == 12)
