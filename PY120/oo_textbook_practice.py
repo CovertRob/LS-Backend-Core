@@ -96,6 +96,11 @@ class Car:
         self._color = color
         self.speed = 0
     
+    @classmethod
+    def gas_mileage(cls, gallons, miles):
+        mileage = miles / gallons
+        print(f'{mileage} miles per gallon')
+
     def engine_start(self):
         print('The engine is on!')
 
@@ -128,8 +133,13 @@ class Car:
     @property
     def year(self):
         return self._year
+    
+    def spray_paint(self, paint):
+        self.color = paint
+        print(f'Your {paint} paint job looks great!')
 
-lumina = Car('chevy lumina', 1997, 'white')
+
+# lumina = Car('chevy lumina', 1997, 'white')
 # lumina.engine_start() # The engine is on!
 # lumina.get_speed()    # Your speed is 0 mph.
 # lumina.speed_up(20)   # You accelerated 20 mph.
@@ -144,19 +154,54 @@ lumina = Car('chevy lumina', 1997, 'white')
 #                       # The engine is off
 # lumina.get_speed()    # Your speed is 0 mph.
     
-print(f'My car is {lumina.color}.')
-# My car is white.
+# print(f'My car is {lumina.color}.')
+# # My car is white.
 
-print(f"My car's model is a {lumina.model}.")
-# My car's model is a chevy lumina.
+# print(f"My car's model is a {lumina.model}.")
+# # My car's model is a chevy lumina.
 
-print(f"My car's year is {lumina.year}.")
-# My car's year is 1997.
+# print(f"My car's year is {lumina.year}.")
+# # My car's year is 1997.
 
-lumina.color = 'brown'
-print(f'My car is now {lumina.color}.')
-# My car is now brown.
+# lumina.color = 'brown'
+# print(f'My car is now {lumina.color}.')
+# # My car is now brown.
 
-lumina.year = 2023
+# lumina.year = 2023
 # AttributeError: property 'year' of 'Car' object
 # has no setter
+
+# lumina.spray_paint('pink')
+# print(lumina.color)
+
+#Car.gas_mileage(13, 351)
+
+class Person:
+
+    def __init__(self, first_name, last_name):
+        self._set_name(first_name, last_name)
+
+    @property
+    def name(self):
+        first_name = self._first_name.title()
+        last_name = self._last_name.title()
+        return f'{first_name} {last_name}'
+
+    @name.setter
+    def name(self, name):
+        first_name, last_name = name
+        self._set_name(first_name, last_name)
+
+    @classmethod
+    def _validate(cls, name):
+        if not name.isalpha():
+            raise ValueError('Name must be alphabetic.')
+
+    def _set_name(self, first_name, last_name):
+        Person._validate(first_name)
+        Person._validate(last_name)
+        self._first_name = first_name
+        self._last_name = last_name
+
+# Possibly make turn engine on instance method a static method because it doesn't technically modify the object state
+

@@ -291,3 +291,34 @@ print(ReallyGoodCat.counter)           # 3
   - These do not have any arguments
   - Use a static method when you want to be clear that the method doesn't use or modify the object or class state
 
+## Magic Methods
+
+- Python has over 100 of them, also called duner methods: dunder stands for double underscore
+- Also magic variables and magic functions
+- Pronounce it as "dunder something"
+
+### `__str__` and `__repr__` Methods
+
+- str: return sa human-readable representation of an object
+- repr: depicts how you would recreate an object
+  - often time these two return the same  value but not always
+- You can re-define these in a class, otherwise inherits and use defaults from the overall object superclass
+- Python implicitly uses in a variety of places:
+  - calls str on each positional argument passed to print function
+  - calls str when performing string interpolation, as in an f-string
+  - calls repr when printing elements of a container object
+- When calling str, it looks for a defined str method and then a defined repr method
+  - repr does not look for a str method after not finding a defined repr method
+
+### Comparison Methods
+
+|Operator	| Method	| description|
+|---------|---------|------------|
+|==|	`__eq__`|	Equal to |
+|!=	|`__ne__`| Not equal to|
+|<	|_`_lt__`	| Less than|
+|<=	|`__le__`	| Less than or equal to|
+|>	|`__gt__`	| Greater than|
+|>=	|`__ge__`	| Greater than or equal to|
+
+- **By default, Python assumes that two custom objects are only equal when they are the same object**
