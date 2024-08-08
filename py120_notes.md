@@ -312,13 +312,49 @@ print(ReallyGoodCat.counter)           # 3
 
 ### Comparison Methods
 
-|Operator	| Method	| description|
+|Operator| Method| description|
 |---------|---------|------------|
-|==|	`__eq__`|	Equal to |
-|!=	|`__ne__`| Not equal to|
-|<	|_`_lt__`	| Less than|
-|<=	|`__le__`	| Less than or equal to|
-|>	|`__gt__`	| Greater than|
-|>=	|`__ge__`	| Greater than or equal to|
+|==|`__eq__`|Equal to |
+|!=|`__ne__`| Not equal to|
+|<|`_lt__`| Less than|
+|<=|`__le__`| Less than or equal to|
+|>|`__gt__`| Greater than|
+|>=|`__ge__`| Greater than or equal to|
 
 - **By default, Python assumes that two custom objects are only equal when they are the same object**
+
+- When using `eq` and `ne` you need to be careful in your method definitions:
+  - Make sure to use NotImplemented when needed otherwise it'll default to the object comparison method
+- You can avoid these checks when using nested class for internal use
+
+~~~Python
+class Cat:
+
+    def __init__(self, name):
+        self.name = name
+
+    def __eq__(self, other):
+        if not isinstance(other, Cat):
+            return NotImplemented
+
+        return self.name == other.name
+
+    def __ne__(self, other):
+        if not isinstance(other, Cat):
+            return NotImplemented
+
+        return self.name != other.name
+~~~
+
+- When defining `__iadd__` you should also define `__add__`
+- When defining arithmetic operators, they should obey the commutative and associative laws of arithmetic
+
+### Magic Variables
+
+- `__name__` variables returns teh current module's name as a string
+  - often used as a main() function, refer to previous code files
+- `__file__` variable returns teh full path name of the current running program
+  - helpful for finding various assets and other resources needed by a program
+  - sing `__file__` can be a little tricky until you get comfortable with it. You might think it'll be easier to just hardcode the file and folder names in your program. However, that's not a good idea. Once you start distributing the program, you'll lost control over where people will put the project files. By using `__file__`, relative path names, and os.path.abspath, you'll won't need to care about where people install your software. So long as they don't mess with the folder structure of the project, the program will work.
+
+- The `__dict__` variable returns a dictionary of all the instance variables defined by an object
