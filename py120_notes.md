@@ -358,3 +358,111 @@ class Cat:
   - sing `__file__` can be a little tricky until you get comfortable with it. You might think it'll be easier to just hardcode the file and folder names in your program. However, that's not a good idea. Once you start distributing the program, you'll lost control over where people will put the project files. By using `__file__`, relative path names, and os.path.abspath, you'll won't need to care about where people install your software. So long as they don't mess with the folder structure of the project, the program will work.
 
 - The `__dict__` variable returns a dictionary of all the instance variables defined by an object
+
+## Inheritance
+
+### Class Inheritance
+
+- Use inheritance to enable the DRY paradigm: "don't repeat yourself"
+- Can redefine methods in the subclasses for specific functions
+
+### Super Function
+
+- super() retunrs a placeholder object that acts like an instance of the current object's superclass: **called a proxy object**
+  - super function is actually a constructor for a class named super.
+- The most common way to use `super` is with the `__init__` method:
+
+~~~Python
+class Vehicle:
+
+    def __init__(self, wheels):
+        self._wheels = wheels
+        print(f'I have {self._wheels} wheels.')
+
+    def drive(self):
+        print('I am driving.')
+
+class Car(Vehicle):
+
+    def __init__(self):
+        print('Creating a car.')
+        super().__init__(4)
+
+class Truck(Vehicle):
+
+    def __init__(self):
+        print('Creating a truck.')
+        super().__init__(18)
+
+class Motorcycle(Vehicle):
+
+    def __init__(self):
+        print('Creating a motorcycle.')
+        super().__init__(2)
+
+    def drive(self):
+        super().drive()
+        print('No! I am riding!')
+
+car = Car()         # A car has been created.
+                    # I have 4 wheels
+car.drive()         # I am driving.
+print()
+
+truck = Truck()     # A truck has been created.
+                    # I have 18 wheels
+truck.drive()       # I am driving.
+print()
+
+motorcycle = Motorcycle()
+# A motorcycle has been created.
+# I have 2 wheels
+
+motorcycle.drive()  # I am driving.
+                    # No! I am riding!
+~~~
+
+- **A subclass's `__init__` method, if it exists, should almost always call `super().__init__` before it does anything else
+  - The parent class usually needs to complete initializing the superclass part of the object before the subclass does anything that might rely on it
+
+## Multiple inheritance
+
+- Ability of a class to inherit from multiple superclasses: inherits attributes from each of those classes
+  - creates a new class that combines multiple classes
+- MI is tricky...stay away until you have a lot of experience...has many pitfalls
+
+## Mix-Ins
+
+- Classes that are never instantiated providing common behaviors to classes that have no apparent hierarchy
+  - provides behaviors to other classes
+  - interface only -- a standard set of methods that can be used wherever needed
+  - typically small and focused on providing specific functionality
+- typically class named with a `Mixin` suffix
+
+## Is-a and has-a relationship
+
+- Think back to the square vs rectangle problem from book
+- Inheritance relationshps should have an "is-a" relationship:
+  - If class A subclasses class B, then objects of type A must also be usable as objects of type B
+- Be careful about inheriting from classes with incompatible API's
+
+- If you wish to inherit from a class that doesn't have an is-a relationship, explor using a mix-in or composition
+- Composition: a class uses one or more objects of other classes to provide soem of the composing classes functionality
+  - Often refered to as collaboration (collaborators are objects a class interacts with to perform its responsibilities and functionality)
+- **Colaboration uses other classes inside of the clas** - not in the class definition, that is inheritance
+- Many dev's prefer has-a over is-a: called **Composition Over Inheritance** (COI)
+
+## Method Resolution Order (MRO)
+
+- modified version of a depth first search from left to right of the classes in the class definition to resolve what method to use
+
+## Attributes and Properties
+
+- Attribute: general programming concept, these are teh different characteristics that make up an object
+  - can refer to the names or the names and values attributed to the object
+- Prpoerty: a combination of an instance varible, a getter method, and an optional setter method
+  - provides controlled access to the attributes of an object
+- **Difficult to provide absolute definitions for OOP nomenclature**
+- In summary:
+  - Attributes include both methods and instance variables
+  - Properties are getters and setters defined by the @property and @name.setter decorators. Properties don't require an associated instance variable, though they usualy do have one
