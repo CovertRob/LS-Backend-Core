@@ -13,6 +13,9 @@
 # Create the class
 # create an empty class named Cat
 
+import copy
+
+
 class Cat:
 
     def __init__(self) -> None:
@@ -877,12 +880,221 @@ class House:
     def price(self, value):
         self._price = value
 
-home1 = House(100000)
-home2 = House(150000)
-if home1 < home2:
-    print("Home 1 is cheaper")
-if home2 > home1:
-    print("Home 2 is more expensive")
+    def __lt__(self, other):
+        return self.price < other.price
+    
+    def __gt__(self, other):
+        return self.price > other.price
+    
+    # need to implement type checking here, reference LS's solution
+
+# def __gt__(self, other):
+#         if isinstance(other, House):
+#             return self._price > other._price
+
+#         return NotImplemented
+
+# home1 = House(100000)
+# home2 = House(150000)
+# if home1 < home2:
+#     print("Home 1 is cheaper")
+# if home2 > home1:
+#     print("Home 2 is more expensive")
 
 # Home 1 is cheaper
 # Home 2 is more expensive
+
+
+# Implement a Wallet class that represents a wallet with a certain amount of money. You want to be able to combine (add) two wallets together to get a new wallet with the combined total amount from both wallets.
+
+# And Wallet pt 2 with str
+
+class Wallet:
+    
+    def __init__(self, value) -> None:
+        self._value = value
+
+    @property
+    def amount(self):
+        return self._value
+    
+    def __add__(self, other):
+        if isinstance(other, Wallet):
+            return Wallet(self.amount + other.amount)
+
+    def __str__(self):
+        return f"Wallet with ${self.amount}"
+    
+# wallet1 = Wallet(50)
+# wallet2 = Wallet(30)
+# merged_wallet = wallet1 + wallet2
+# print(merged_wallet.amount == 80)       # True
+# print(merged_wallet)
+
+# Write a class such that the following code prints the results indicated by the comments:
+
+class Transform:
+
+    def __init__(self, phrase: str) -> None:
+        self._phrase = phrase
+
+    @classmethod
+    def lowercase(cls, phrase):
+        return phrase.lower()
+
+    @property
+    def phrase(self):
+        return self._phrase
+    
+    def uppercase(self):
+        return self.phrase.upper()
+
+# From LS: lowercase could also be a static method since it doens't interact wiht or depend on class-specific details. It's essentially a utility function related to the class.
+
+# my_data = Transform('abc')
+# print(my_data.uppercase())              # ABC
+# print(Transform.lowercase('XYZ'))       # xyz
+
+#--------------------------------Medium Problems-------------------------------#
+
+# Implement Circular Buffer
+
+# This first implementation did not work...
+
+# class CircularBuffer:
+
+#     def __init__(self, size) -> None:
+#         self._max_buffer_size = size
+#         self._buffer = []
+#         self._oldest_obj_idx = 0 # value changes
+
+#     def buffer_full(self):
+#         if len(self._buffer) == self.max_buffer_size:
+#             return True
+#         return False
+
+#     @property
+#     def max_buffer_size(self):
+#         return self._max_buffer_size
+    
+#     def put(self, obj):
+#         # if the buffer is not full, append the element to the list
+#         # if the buffer is full:
+#             # remove the oldest object from the buffer
+#             # replace the removed oldest object with the new object
+#             # if the oldest obj idx is less than the length, increment it
+#             # else, set the oldest obj idx back to 0
+
+#         if self.buffer_full():
+#             current_oldest_idx = copy.copy(self._oldest_obj_idx)
+#             self.get()
+#             self._buffer.insert(current_oldest_idx, obj)
+            
+#         else:
+#             self._buffer.append(obj)
+
+#     def get(self): # remove and return the oldest object, Return None if empty
+#         # if the buffer lenght is 0, return None
+#         # remove and then return the object at the oldest obj idx
+#         if len(self._buffer) == 0:
+#             return None
+#         oldest = self._buffer.pop(self._oldest_obj_idx)
+        
+        
+#         return oldest
+    
+        '''
+        If the buffer started out not full, leave the oldest idx alone
+        If the buffer was full, increment the oldest idx by 1
+if len(self._buffer) == self._max_buffer_size - 1 and self._oldest_obj_idx < self._max_buffer_size - 1:
+                self._oldest_obj_idx += 1
+                print('executed')
+        else:
+            self._oldest_obj_idx = 0
+        '''
+
+# other solution from user submitted:
+
+class CircularBuffer:
+    def __init__(self, size):
+        self.size = size
+        self._buffer = []
+
+    def put(self, object):
+        if len(self._buffer) == self.size:
+            self._buffer.pop(0)                       
+
+        self._buffer.append(object)
+
+    def get(self):
+        return self._buffer.pop(0) if self._buffer else None
+    
+# LS's solution...confusing af
+
+class CircularBuffer:
+    def __init__(self, size):
+        self.buffer = [None] * size
+        self.next = 0
+        self.oldest = 0
+
+    def put(self, obj):
+        next_item = (self.next + 1) % len(self.buffer)
+
+        if self.buffer[self.next] is not None:
+            self.oldest = next_item
+
+        self.buffer[self.next] = obj
+        self.next = next_item
+
+    def get(self):
+        value = self.buffer[self.oldest]
+        self.buffer[self.oldest] = None
+        if value is not None:
+            self.oldest += 1
+            self.oldest %= len(self.buffer)
+
+        return value
+        
+
+buffer = CircularBuffer(3)
+
+print(buffer.get() is None)          # True
+
+buffer.put(1)
+
+buffer.put(2)
+
+print(buffer.get() == 1)             # True
+
+buffer.put(3)
+buffer.put(4)
+print(buffer.get() == 2)             # True
+
+buffer.put(5)
+buffer.put(6)
+buffer.put(7)
+print(buffer.get() == 5)             # True
+print(buffer.get() == 6)             # True
+print(buffer.get() == 7)             # True
+print(buffer.get() is None)          # True
+
+buffer2 = CircularBuffer(4)
+
+print(buffer2.get() is None)         # True
+
+buffer2.put(1)
+buffer2.put(2)
+print(buffer2.get() == 1)            # True
+
+buffer2.put(3)
+buffer2.put(4)
+print(buffer2.get() == 2)            # True
+
+buffer2.put(5)
+buffer2.put(6)
+buffer2.put(7)
+print(buffer2.get() == 4)            # True
+print(buffer2.get() == 5)            # True
+print(buffer2.get() == 6)            # True
+print(buffer2.get() == 7)            # True
+print(buffer2.get() is None)         # True
