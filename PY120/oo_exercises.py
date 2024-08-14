@@ -1056,45 +1056,330 @@ class CircularBuffer:
         return value
         
 
-buffer = CircularBuffer(3)
+# buffer = CircularBuffer(3)
 
-print(buffer.get() is None)          # True
+# print(buffer.get() is None)          # True
 
-buffer.put(1)
+# buffer.put(1)
 
-buffer.put(2)
+# buffer.put(2)
 
-print(buffer.get() == 1)             # True
+# print(buffer.get() == 1)             # True
 
-buffer.put(3)
-buffer.put(4)
-print(buffer.get() == 2)             # True
+# buffer.put(3)
+# buffer.put(4)
+# print(buffer.get() == 2)             # True
 
-buffer.put(5)
-buffer.put(6)
-buffer.put(7)
-print(buffer.get() == 5)             # True
-print(buffer.get() == 6)             # True
-print(buffer.get() == 7)             # True
-print(buffer.get() is None)          # True
+# buffer.put(5)
+# buffer.put(6)
+# buffer.put(7)
+# print(buffer.get() == 5)             # True
+# print(buffer.get() == 6)             # True
+# print(buffer.get() == 7)             # True
+# print(buffer.get() is None)          # True
 
-buffer2 = CircularBuffer(4)
+# buffer2 = CircularBuffer(4)
 
-print(buffer2.get() is None)         # True
+# print(buffer2.get() is None)         # True
 
-buffer2.put(1)
-buffer2.put(2)
-print(buffer2.get() == 1)            # True
+# buffer2.put(1)
+# buffer2.put(2)
+# print(buffer2.get() == 1)            # True
 
-buffer2.put(3)
-buffer2.put(4)
-print(buffer2.get() == 2)            # True
+# buffer2.put(3)
+# buffer2.put(4)
+# print(buffer2.get() == 2)            # True
 
-buffer2.put(5)
-buffer2.put(6)
-buffer2.put(7)
-print(buffer2.get() == 4)            # True
-print(buffer2.get() == 5)            # True
-print(buffer2.get() == 6)            # True
-print(buffer2.get() == 7)            # True
-print(buffer2.get() is None)         # True
+# buffer2.put(5)
+# buffer2.put(6)
+# buffer2.put(7)
+# print(buffer2.get() == 4)            # True
+# print(buffer2.get() == 5)            # True
+# print(buffer2.get() == 6)            # True
+# print(buffer2.get() == 7)            # True
+# print(buffer2.get() is None)         # True
+
+# Create an object-oriented number guessing class for numbers in the range 1 to 100, with a limit of 7 guesses per game. The game should play like this:
+
+import random
+
+class GuessingGame:
+
+    def __init__(self):
+        self._number = random.randrange(1, 101)
+        self._guesses = 7
+
+    @property
+    def guesses(self):
+        return self._guesses
+
+    @guesses.setter
+    def guesses(self, num):
+        self._guesses = num
+
+    @property
+    def number(self):
+        return self._number
+
+    @number.setter
+    def number(self, num):
+        self._number = num
+
+    def play(self):
+        self.guesses = 7
+        
+        while True:
+            if self.guesses == 0:
+                print("You have no more guesses. You lost!")
+                break
+            print(f"You have {self.guesses} guesses remaining")
+            print(f"Enter a number between 1 and 100:")
+            user_guess = int(input())
+            while True:
+                if user_guess not in range(1, 101):
+                    print("Invalid guess. Enter a number between 1 and 100:")
+                    user_guess = int(input())
+                else:
+                    break
+            if user_guess > self.number:
+                print("Your guess is too high")
+            if user_guess < self.number:
+                print("Your guess is too low")
+            if user_guess == self.number:
+                print("That's the number")
+                print("You won!")
+                break # end game loop
+            self.guesses -= 1
+            
+
+
+
+
+
+# game = GuessingGame()
+# game.play()
+
+# You have 7 guesses remaining.
+# Enter a number between 1 and 100: 104
+# Invalid guess. Enter a number between 1 and 100: 50
+# Your guess is too low.
+
+# You have 6 guesses remaining.
+# Enter a number between 1 and 100: 75
+# Your guess is too low.
+
+# You have 5 guesses remaining.
+# Enter a number between 1 and 100: 85
+# Your guess is too high.
+
+# You have 4 guesses remaining.
+# Enter a number between 1 and 100: 0
+# Invalid guess. Enter a number between 1 and 100: 80
+# Your guess is too low.
+
+# You have 3 guesses remaining.
+# Enter a number between 1 and 100: 81
+# That's the number!
+
+#You won!
+
+#game.play()
+
+# You have 7 guesses remaining.
+# Enter a number between 1 and 100: 50
+# Your guess is too high.
+
+# You have 6 guesses remaining.
+# Enter a number between 1 and 100: 25
+# Your guess is too low.
+
+# You have 5 guesses remaining.
+# Enter a number between 1 and 100: 37
+# Your guess is too high.
+
+# You have 4 guesses remaining.
+# Enter a number between 1 and 100: 31
+# Your guess is too low.
+
+# You have 3 guesses remaining.
+# Enter a number between 1 and 100: 34
+# Your guess is too high.
+
+# You have 2 guesses remaining.
+# Enter a number between 1 and 100: 32
+# Your guess is too low.
+
+# You have 1 guess remaining.
+# Enter a number between 1 and 100: 32
+# Your guess is too low.
+
+# You have no more guesses. You lost!
+
+# Note that a game object should start a new game with a new number to guess with each call to play.
+
+# In the previous exercise, you wrote a number guessing game that determines a secret number between 1 and 100, and gives the user 7 opportunities to guess the number.
+
+# Update your solution to accept a low and high value when you create a GuessingGame object, and use those values to compute a secret number for the game. You should also change the number of guesses allowed so the user can always win if she uses a good strategy. You can compute the number of guesses with:
+
+# LS's solution:
+
+import random
+import math
+
+class GuessingGame:
+
+    # Delete these constants. They are no longer useful
+    # SECRET_RANGE = range(1, 100 + 1)
+    # MAX_GUESSES = 7
+    # GUESSES_REMAINING = range(MAX_GUESSES, 0, -1)
+
+    RESULT_OF_GUESS_MESSAGE = {
+        "high": "Your number is too high.",
+        "low": "Your number is too low.",
+        "match": "That's the number!",
+    }
+
+    WIN_OR_LOSE = {
+        "high": "lose",
+        "low": "lose",
+        "match": "win",
+    }
+
+    RESULT_OF_GAME_MESSAGE = {
+        "win": "You won!",
+        "lose": "You have no more guesses. You lost!",
+    }
+
+    def __init__(self, low, high):
+        self.secret_range = range(low, high + 1)
+        self.max_guesses = int(math.log2(high - low + 1)) + 1
+        self.guesses_remaining = range(self.max_guesses, 0, -1)
+        self.secret_number = None
+
+    def play(self):
+        self.reset()
+        game_result = self.play_game()
+        self.show_game_end_message(game_result)
+
+    def reset(self):
+        self.secret_number = random.choice(self.secret_range)
+
+    def play_game(self):
+        for remaining_guesses in self.guesses_remaining:
+            self.show_guesses_remaining(remaining_guesses)
+            result = self.check_guess(self.get_one_guess())
+            print(self.RESULT_OF_GUESS_MESSAGE[result])
+            if result == "match":
+                return self.WIN_OR_LOSE[result]
+
+        return self.WIN_OR_LOSE[result]
+
+    def show_guesses_remaining(self, remaining):
+        print()
+        if remaining == 1:
+            print('You have 1 guess remaining.')
+        else:
+            print(f"You have {remaining} guesses remaining.")
+
+    def get_one_guess(self):
+        while True:
+            prompt = ("Enter a number between "
+                      f"{self.secret_range[0]} and "
+                      f"{self.secret_range[-1]}: ")
+
+            guess = input(prompt)
+            if guess.isdigit():
+                guess = int(guess)
+                if guess in self.secret_range:
+                    return guess
+
+            print("Invalid guess. ", end="")
+
+    def check_guess(self, guess_value):
+        if guess_value == self.secret_number:
+            return "match"
+        elif guess_value < self.secret_number:
+            return "low"
+        else:
+            return "high"
+
+    def show_game_end_message(self, result):
+        print("\n", self.RESULT_OF_GAME_MESSAGE[result])
+
+
+# Update this class so you can use it to determine the lowest ranking and highest ranking cards in a list of Card objects:
+
+class Card:
+
+    ROYAL_VALUES = ['Ace', 'Jack', 'King', 'Queen']
+
+    
+    def match_royal_value(self, royal):
+        match royal:
+            case 'Ace': return 14
+            case 'King': return 13
+            case 'Queen': return 12
+            case 'Jack': return 11
+
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+
+    # Implement equals
+    def __eq__(self, other):
+        self_value = self.rank
+        other_value = other.rank
+        if self.rank in self.ROYAL_VALUES:
+            self_value = self.match_royal_value(self.rank)
+        if other.rank in other.ROYAL_VALUES:
+            print(other.rank)
+            other_value = other.match_royal_value(other.rank)
+
+        return self_value == other_value
+        
+    # Implement max
+    # Implement min
+    # Implement str
+
+# For this exercise, numeric cards are low cards, ordered from 2 through 10. Jacks are higher than 10s, Queens are higher than Jacks, Kings are higher than Queens, and Aces are higher than Kings. The suit plays no part in the relative ranking of cards.
+
+# If you have two or more cards of the same rank in your list, your min and max methods should return one of the matching cards; it doesn't matter which one.
+
+# Besides any methods needed to determine the lowest and highest cards, create a __str__ method that returns a string representation of the card, e.g., "Jack of Diamonds", "4 of Clubs", etc.
+
+
+
+cards = [Card(2, 'Hearts'),
+          Card(10, 'Diamonds'),
+          Card('Ace', 'Clubs')]
+
+print(cards[0] == cards[2])
+# print(min(cards) == Card(2, 'Hearts'))             # True
+# print(max(cards) == Card('Ace', 'Clubs'))          # True
+# print(str(min(cards)) == "2 of Hearts")            # True
+# print(str(max(cards)) == "Ace of Clubs")           # True
+
+# cards = [Card(5, 'Hearts')]
+# print(min(cards) == Card(5, 'Hearts'))             # True
+# print(max(cards) == Card(5, 'Hearts'))             # True
+# print(str(Card(5, 'Hearts')) == "5 of Hearts")     # True
+
+# cards = [Card(4, 'Hearts'),
+#          Card(4, 'Diamonds'),
+#          Card(10, 'Clubs')]
+# print(min(cards).rank == 4)                        # True
+# print(max(cards) == Card(10, 'Clubs'))             # True
+# print(str(Card(10, 'Clubs')) == "10 of Clubs")     # True
+
+# cards = [Card(7, 'Diamonds'),
+#          Card('Jack', 'Diamonds'),
+#          Card('Jack', 'Spades')]
+# print(min(cards) == Card(7, 'Diamonds'))           # True
+# print(max(cards).rank == 'Jack')                   # True
+# print(str(Card(7, 'Diamonds')) == "7 of Diamonds") # True
+
+# cards = [Card(8, 'Diamonds'),
+#          Card(8, 'Clubs'),
+#          Card(8, 'Spades')]
+# print(min(cards).rank == 8)                        # True
+# print(max(cards).rank == 8)                        # True
