@@ -466,3 +466,117 @@ motorcycle.drive()  # I am driving.
 - In summary:
   - Attributes include both methods and instance variables
   - Properties are getters and setters defined by the @property and @name.setter decorators. Properties don't require an associated instance variable, though they usualy do have one
+
+## Duck Typing
+
+- Duck typing occurs when objects of different unrelated types both respond to the same method namme
+  - **NOT concerned with class or type of an object, but a particular behavior**
+  - This is another form of polymorphism
+
+~~~Python
+class Wedding:
+    def prepare(self, preparers):
+        for preparer in preparers:
+            preparer.prepare_wedding(self)
+
+class Chef:
+    def prepare_wedding(self, wedding):
+        prepare_food(wedding.guests)
+
+    def prepare_food(self, guests):
+        # implementation goes here
+
+class Decorator:
+    def prepare_wedding(self, wedding):
+        decorate_place(wedding.flowers)
+
+    def decorate_place(self, flowers):
+        # implementation goes here
+
+class Musician:
+    def prepare_wedding(self, wedding):
+        prepare_performance(wedding.songs)
+
+    def prepare_performance(self, songs):
+        # implementation goes here
+~~~
+
+## Encapsulation
+
+- describes the idea of bundling or combining the data and the operations that work on that data into a single entity aka an object
+  - Python doesn't technically suppport proper encapsulation since it doens't support real *access control* for limiting attribute exposure
+- Encapsulation purpose: restrict access to state and certain behaviors via access control
+  - AKA objects expose a public interface: keeping their implementation details hidden
+  - Python gets around this by using the underscore naming conventions
+- **Classes group common behaviors and objects encapsulate state**
+
+## Objects as State
+
+- An object's state is saved in the object's instance variables
+- You can also create brand new instance varialbes and assign it to an object
+
+~~~Python
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+class Dog:
+    def speak(self):
+        return 'bark!'
+
+    def fetch(self):
+        return 'fetching!'
+
+class Bulldog(Dog):
+    pass
+
+bob = Person('Robert')
+bud = Bulldog()
+
+bob.pet = bud
+print(bob.pet)      # <__main__.Bulldog object at 0x105001f50>\
+~~~
+
+## Collaboration
+
+- **If object A calls any methods or accesses any instance varialbes of object B, then object B is a *collaborator* of object A**
+  - If object A just holds onto B and only prints or returns it, then B is not a collaborator of A
+
+~~~Python
+class Engine:
+    def start(self):
+        pass
+
+class Car:
+    def __init__(self, engine):
+        self.engine = engine
+
+    def start(self):
+        return self.engine.start()
+
+class Driver:
+    def __init__(self, car):
+        self.car = car
+
+    def drive(self):
+        return self.car.start()
+
+engine = Engine()
+car = Car(engine)
+driver = Driver(car)
+~~~
+
+- Collaboration can also take place inside a class's methods by using method arguments and instance variables as collaborators:
+
+~~~Python
+class Foo:
+    def __init__(self, obj):
+        self.obj = obj
+
+    def bar(self, qux):
+        return self.obj.name() + qux.name()
+~~~
+
+- **Be sure to consider what collaborations your classes will have and if those associations make sense**
+
+- **Extending the abilities of a class coincides with an is-a relationship, not has-a**
