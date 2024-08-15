@@ -1313,7 +1313,10 @@ class Card:
 
     ROYAL_VALUES = ['Ace', 'Jack', 'King', 'Queen']
 
-    
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+
     def match_royal_value(self, royal):
         match royal:
             case 'Ace': return 14
@@ -1321,25 +1324,35 @@ class Card:
             case 'Queen': return 12
             case 'Jack': return 11
 
-    def __init__(self, rank, suit):
-        self.rank = rank
-        self.suit = suit
-
-    # Implement equals
+    # Implement equals, did this before I made the get rank value function
     def __eq__(self, other):
         self_value = self.rank
         other_value = other.rank
         if self.rank in self.ROYAL_VALUES:
             self_value = self.match_royal_value(self.rank)
         if other.rank in other.ROYAL_VALUES:
-            print(other.rank)
             other_value = other.match_royal_value(other.rank)
-
         return self_value == other_value
+
+    #Implemented for max and min
+    def __lt__(self, other):
+        if self.get_rank_value() <= other.get_rank_value():
+            return True
+        return False
+    
+    def __gt__(self, other):
+        if self.get_rank_value() >= other.get_rank_value():
+            return True
+        return False
         
-    # Implement max
-    # Implement min
-    # Implement str
+    def __str__(self) -> str:
+        return f"{self.rank} of {self.suit}"
+    
+    def get_rank_value(self):
+        if self.rank in self.ROYAL_VALUES:
+            return self.match_royal_value(self.rank)
+        return self.rank
+            
 
 # For this exercise, numeric cards are low cards, ordered from 2 through 10. Jacks are higher than 10s, Queens are higher than Jacks, Kings are higher than Queens, and Aces are higher than Kings. The suit plays no part in the relative ranking of cards.
 
@@ -1349,11 +1362,10 @@ class Card:
 
 
 
-cards = [Card(2, 'Hearts'),
-          Card(10, 'Diamonds'),
-          Card('Ace', 'Clubs')]
+# cards = [Card(2, 'Hearts'),
+#           Card(10, 'Diamonds'),
+#           Card('Ace', 'Clubs')]
 
-print(cards[0] == cards[2])
 # print(min(cards) == Card(2, 'Hearts'))             # True
 # print(max(cards) == Card('Ace', 'Clubs'))          # True
 # print(str(min(cards)) == "2 of Hearts")            # True
@@ -1365,7 +1377,7 @@ print(cards[0] == cards[2])
 # print(str(Card(5, 'Hearts')) == "5 of Hearts")     # True
 
 # cards = [Card(4, 'Hearts'),
-#          Card(4, 'Diamonds'),
+#           Card(4, 'Diamonds'),
 #          Card(10, 'Clubs')]
 # print(min(cards).rank == 4)                        # True
 # print(max(cards) == Card(10, 'Clubs'))             # True
@@ -1373,13 +1385,301 @@ print(cards[0] == cards[2])
 
 # cards = [Card(7, 'Diamonds'),
 #          Card('Jack', 'Diamonds'),
-#          Card('Jack', 'Spades')]
+#           Card('Jack', 'Spades')]
 # print(min(cards) == Card(7, 'Diamonds'))           # True
 # print(max(cards).rank == 'Jack')                   # True
 # print(str(Card(7, 'Diamonds')) == "7 of Diamonds") # True
 
 # cards = [Card(8, 'Diamonds'),
-#          Card(8, 'Clubs'),
-#          Card(8, 'Spades')]
+#           Card(8, 'Clubs'),
+#           Card(8, 'Spades')]
 # print(min(cards).rank == 8)                        # True
 # print(max(cards).rank == 8)                        # True
+
+# Use the code from the previous exercise, create a Deck class that contains all of the standard 52 playing cards. RANKS and SUITS code provided.
+
+# The Deck class should provide a draw method to deal one card. The Deck should be shuffled when it is initialized. If no more cards remain when draw is called, the method should generate a new set of 52 shuffled cards, then deal one card from the new cards.
+
+class Deck():
+
+    RANKS = list(range(2, 11)) + ['Jack', 'Queen', 'King', 'Ace']
+    SUITS = ['Hearts', 'Clubs', 'Diamonds', 'Spades']
+
+    def __init__(self) -> None:
+        self.deck = self.initialize_deck() # create deck already shuffled
+        random.shuffle(self.deck)
+
+    def initialize_deck(self):
+        return ([Card(value, suite) for value in self.RANKS
+                            for suite in self.SUITS])
+    
+    def draw(self):
+        if len(self.deck) == 0:
+            self.deck = self.initialize_deck()
+            return self.deck.pop(0)
+        return self.deck.pop(0)
+
+# deck = Deck()
+# drawn = []
+# for _ in range(52):
+#     drawn.append(deck.draw())
+
+# count_rank_5 = sum([1 for card in drawn if card.rank == 5])
+# count_hearts = sum([1 for card in drawn if card.suit == 'Hearts'])
+
+# print(count_rank_5 == 4)      # True
+# print(count_hearts == 13)     # True
+
+# drawn2 = []
+# for _ in range(52):
+#     drawn2.append(deck.draw())
+
+# print(drawn != drawn2)        # True (Almost always).
+
+# Poker Hand problem:
+
+# Include Card and Deck classes from the last two exercises.
+
+class PokerHand:
+    def __init__(self, deck):
+        self._cards = [deck.draw() for _ in range(5)]
+
+    def print(self):
+       for card in self._cards:
+           print(card)
+
+    def evaluate(self):
+        if self._is_royal_flush():
+            return "Royal flush"
+        elif self._is_straight_flush():
+            return "Straight flush"
+        elif self._is_four_of_a_kind():
+            return "Four of a kind"
+        elif self._is_full_house():
+            return "Full house"
+        elif self._is_flush():
+            return "Flush"
+        elif self._is_straight():
+            return "Straight"
+        elif self._is_three_of_a_kind():
+            return "Three of a kind"
+        elif self._is_two_pair():
+            return "Two pair"
+        elif self._is_pair():
+            return "Pair"
+        else:
+          return "High card"
+
+    def _is_royal_flush(self):
+        min_value = 10
+        for card in self._cards:
+            if card.get_rank_value() < 10:
+                min_value = card.rank
+
+        return (self._is_straight_flush() and
+                min_value == 10)
+
+    def _is_straight_flush(self):
+        return (self._is_flush() and
+                self._is_straight())
+
+    def _is_four_of_a_kind(self):
+        return self._is_n_of_a_kind(4)
+
+    def _is_full_house(self):
+        return (self._is_three_of_a_kind() and
+                self._is_pair())
+
+    def _is_flush(self):
+        return all([card.suit == self._cards[0].suit 
+                    for card in self._cards])
+
+    def _is_straight(self):
+        values = sorted([card.get_rank_value() for card in self._cards])
+        sequence = list(range(values[0], values[0] + 5))
+        return values == sequence
+
+    def _is_three_of_a_kind(self):
+        return self._is_n_of_a_kind(3)
+
+    def _is_two_pair(self):
+        rank_counts = {}
+        for card in self._cards:
+            rank_counts[card.rank] = (
+                rank_counts.get(card.rank, 0) + 1
+            )
+
+        pairs = { _: value
+                  for _, value in rank_counts.items()
+                  if value == 2 }
+
+        return len(pairs) == 2
+
+    def _is_pair(self):
+        return self._is_n_of_a_kind(2)
+
+    def _is_n_of_a_kind(self, number):
+        rank_counts = {}
+        for card in self._cards:
+            rank_counts[card.rank] = (
+                rank_counts.get(card.rank, 0) + 1
+            )
+
+        return any([count == number
+                    for count in rank_counts.values()])
+    
+hand = PokerHand(Deck())
+hand.print()
+print(hand.evaluate())
+print()
+
+# Adding TestDeck class for testing purposes
+
+class TestDeck(Deck):
+    def __init__(self, cards):
+        self.deck = cards
+
+# All of these tests should return True
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card("Ace", "Hearts"),
+            Card("Queen", "Hearts"),
+            Card("King", "Hearts"),
+            Card("Jack", "Hearts"),
+            Card(10, "Hearts"),
+        ]
+    )
+)
+print(hand.evaluate() == "Royal flush")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(8, "Clubs"),
+            Card(9, "Clubs"),
+            Card("Queen", "Clubs"),
+            Card(10, "Clubs"),
+            Card("Jack", "Clubs"),
+        ]
+    )
+)
+print(hand.evaluate() == "Straight flush")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(3, "Hearts"),
+            Card(3, "Clubs"),
+            Card(5, "Diamonds"),
+            Card(3, "Spades"),
+            Card(3, "Diamonds"),
+        ]
+    )
+)
+print(hand.evaluate() == "Four of a kind")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(3, "Hearts"),
+            Card(3, "Clubs"),
+            Card(5, "Diamonds"),
+            Card(3, "Spades"),
+            Card(5, "Hearts"),
+        ]
+    )
+)
+print(hand.evaluate() == "Full house")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(10, "Hearts"),
+            Card("Ace", "Hearts"),
+            Card(2, "Hearts"),
+            Card("King", "Hearts"),
+            Card(3, "Hearts"),
+        ]
+    )
+)
+print(hand.evaluate() == "Flush")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(8, "Clubs"),
+            Card(9, "Diamonds"),
+            Card(10, "Clubs"),
+            Card(7, "Hearts"),
+            Card("Jack", "Clubs"),
+        ]
+    )
+)
+print(hand.evaluate() == "Straight")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card("Queen", "Clubs"),
+            Card("King", "Diamonds"),
+            Card(10, "Clubs"),
+            Card("Ace", "Hearts"),
+            Card("Jack", "Clubs"),
+        ]
+    )
+)
+print(hand.evaluate() == "Straight")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(3, "Hearts"),
+            Card(3, "Clubs"),
+            Card(5, "Diamonds"),
+            Card(3, "Spades"),
+            Card(6, "Diamonds"),
+        ]
+    )
+)
+print(hand.evaluate() == "Three of a kind")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(9, "Hearts"),
+            Card(9, "Clubs"),
+            Card(5, "Diamonds"),
+            Card(8, "Spades"),
+            Card(5, "Hearts"),
+        ]
+    )
+)
+print(hand.evaluate() == "Two pair")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(2, "Hearts"),
+            Card(9, "Clubs"),
+            Card(5, "Diamonds"),
+            Card(9, "Spades"),
+            Card(3, "Diamonds"),
+        ]
+    )
+)
+print(hand.evaluate() == "Pair")
+
+hand = PokerHand(
+    TestDeck(
+        [
+            Card(2, "Hearts"),
+            Card("King", "Clubs"),
+            Card(5, "Diamonds"),
+            Card(9, "Spades"),
+            Card(3, "Diamonds"),
+        ]
+    )
+)
+print(hand.evaluate() == "High card")
