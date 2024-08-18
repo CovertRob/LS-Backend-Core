@@ -580,3 +580,17 @@ class Foo:
 - **Be sure to consider what collaborations your classes will have and if those associations make sense**
 
 - **Extending the abilities of a class coincides with an is-a relationship, not has-a**
+
+## Coding and Design Tips
+
+- Explore the problem before designign a solution: use code spikes
+- Repetitive nouns in method names is a sign that you're missing a class
+- When naming methods, don't include the class name
+- Avoid long method invocation chains: long chains can blow up if something returns a value that is unexpected
+- Avoid design patterns for now: premature optimization is the root of all evil
+
+## CRC cards
+
+- Class responsiblity collaborate cards: models various classes of a program
+<https://launchschool.com/lessons/14df5ba5/assignments/d0605323>
+- Only public methods should be listed on the cards

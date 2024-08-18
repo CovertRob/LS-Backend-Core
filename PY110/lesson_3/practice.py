@@ -3715,8 +3715,23 @@ def even_substrings(input):
             even_count += 1
     return even_count
 
-print(even_substrings('1432') == 6)
-print(even_substrings('3145926') == 16)
-print(even_substrings('2718281') == 16)
-print(even_substrings('13579') == 0)
-print(even_substrings('143232') == 12)
+# print(even_substrings('1432') == 6)
+# print(even_substrings('3145926') == 16)
+# print(even_substrings('2718281') == 16)
+# print(even_substrings('13579') == 0)
+# print(even_substrings('143232') == 12)
+
+class Student:
+
+    def __init__(self, name, grade=None):
+        self.name = name
+        self.grade = grade
+
+    def __repr__(self):
+        return f'{self.__class__.__name__} {self.name}'
+    
+    def test(self):
+        pass
+
+ade = Student('Adewale')
+print(ade)        # Student Adewale
