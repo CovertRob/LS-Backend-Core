@@ -683,9 +683,12 @@ print(teacher.get_name())
 ~~~
 
 - Don't use directly self to access class variables because it is indistinguishable if it's a class or isntance variable
+<<<<<<< HEAD
 
 ### Inheriting instance variables
 
 - Instance variables are not inherited
   - If a superclass defines an instance variable, an instance of a sublcass knows about it
   - A superclass can also reference the instance variables in its subclasses
+=======
+>>>>>>> 77ea3e5ae0f699328263a0e1951f7d76e13f13e4
