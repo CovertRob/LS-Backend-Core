@@ -303,12 +303,11 @@ class SmartLamp:
     @property
     def color(self):
         return self._color
-
+    
     @color.setter
     def color(self, color):
         if not isinstance(color, str):
             raise TypeError('Color must be a color name.')
-
         self._color = color
 
     @property
@@ -323,3 +322,121 @@ class SmartLamp:
                 return
 
         raise ValueError('Brightness must be between 0 and 100.')
+    
+# Problem Sets Exceptions:
+
+# 1. Write a program that asks the user for two numbers and divides the first number by the second number. Handle any potential ZeroDivisionError or ValueError exceptions
+
+def divide_nums():
+    print('Enter two numbers')
+    try:
+        num1 = int(input('Enter number 1: '))
+        num2 = int(input('Enter number 2: '))
+        divide = num1 / num2
+    except ZeroDivisionError:
+        print('Cannot divide by 0')
+    except ValueError:
+        print('Value must be an integer')
+    else:
+        print(divide)
+    finally:
+        print('End of program')
+
+# divide_nums()
+
+# Print only when no exceptions raised
+
+# Modify to  handle on single exception line
+
+def divide_nums():
+    print('Enter two numbers')
+    try:
+        num1 = int(input('Enter number 1: '))
+        num2 = int(input('Enter number 2: '))
+        divide = num1 / num2
+    except (ZeroDivisionError, ValueError) as e:
+        print(e)
+    else:
+        print(divide)
+    finally:
+        print('End of program')
+
+# divide_nums()
+
+# Write a program that asks the user for a number. If the input isn't a number, let Python raise an appropriate exception. If the number is negative, raise a ValueError with an appropriate error message. If the number isn't negative, print a message that shows its value.
+
+def prob_3():
+    num = float(input('Enter a number: '))
+    if num < 0:
+        raise ValueError('Negative numbers are not allowed!')
+    print(f'You entered {num}')
+
+# prob_3()
+
+# 5. Modify your answer from the previous problem to raise a custom exception named NegativeNumberError instead of an ordinary ValueError exception.
+
+class NegativeNumberError(ValueError):
+    pass
+
+def prob_5():
+    num = float(input('Enter a number: '))
+    if num < 0:
+        raise NegativeNumberError('Negative numbers are not allowed!')
+    print(f'You entered {num}')
+
+def inverse(numbers):
+    result = []
+    for num in numbers:
+        try:
+            result.append(1 / num)
+        except ZeroDivisionError:
+            result.append(float('inf'))
+    return result
+
+# In some cases, a floating point number divided by 0 can be treated as infinity. In Python, infinity is represented by the name inf. This name can't be access directly; if you want an infinite value, you need to use float('inf') or float('infinity'). That's one possible solution to what happens when you divide by 0.
+
+#print(inverse([1, 2, 0, 3, 4]))
+
+# Write two functions to fetch the sixth element from the list: one using the LBYL approach and another using the AFNP approach. In both cases, the function should return None when the element isn't found.
+
+numbers = [1, 2, 3, 4, 5]
+
+# LBYL approach
+def get_sixth_element_lbyl():
+    if len(numbers) > 5:
+        return numbers[5]
+
+    return None
+
+# AFNP approach
+def get_sixth_element_afnp():
+    try:
+        return numbers[5]
+    except IndexError:
+        return None
+
+# 'hello'.upper()
+# #[1, 2, 3].push(4)
+# {'key': 'value'}.get('key')
+# (12345).length()
+
+class Point:
+    def __init__(self, x, y):
+        self.coordinates = {'x': x, 'y': y}
+
+    def __eq__(self, other):
+        if not isinstance(other, Point):
+            return NotImplemented
+        print(self.coordinates)
+        print(other.coordinates)
+        return self.coordinates == other.coordinates
+
+point1 = Point(5, 10)
+point2 = Point(5, 10)
+point3 = point1
+point1.coordinates['x'] = 4
+
+print(point1 == point2)
+print(point2 == point3)
+print(point1 == point3)
+print(point3 is point1)
