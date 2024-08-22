@@ -176,8 +176,6 @@ class TTTGame:
             self.computer_moves()
             if self.is_game_over():
                 break
-
-            break
         self.board.display()
         self.display_results()
         self.display_goodbye_message()
