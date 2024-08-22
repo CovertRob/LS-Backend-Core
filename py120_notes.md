@@ -10,7 +10,7 @@
 - Object scope refers to the methods and instance variables an object can access
   - Methods - includes those acquired by the class via inheritance or minx-ins
   - Instance varialbles - includes variables acquired via inheritance
-- The instance methods to NOT belong to the object, they belong to the Class (the object can access them)
+- The instance methods do NOT belong to the object, they belong to the Class (the object can access them)
 - Instance variables belong to the objects
   - An object can only access its own state
 
@@ -683,12 +683,9 @@ print(teacher.get_name())
 ~~~
 
 - Don't use directly self to access class variables because it is indistinguishable if it's a class or isntance variable
-<<<<<<< HEAD
 
 ### Inheriting instance variables
 
 - Instance variables are not inherited
   - If a superclass defines an instance variable, an instance of a sublcass knows about it
   - A superclass can also reference the instance variables in its subclasses
-=======
->>>>>>> 77ea3e5ae0f699328263a0e1951f7d76e13f13e4

@@ -331,11 +331,11 @@ class Dog:
     def __init__(self, breed):
         self.breed = breed
 
-dog1 = Dog('Golden Retriever')
-dog2 = Dog('Poodle')
+# dog1 = Dog('Golden Retriever')
+# dog2 = Dog('Poodle')
 
-print(dog1.breed)  # Golden Retriever
-print(dog2.breed)  # Poodle
+# print(dog1.breed)  # Golden Retriever
+# print(dog2.breed)  # Poodle
 
 # 2 Create a getter and mark for internal use
 class Dog:
@@ -345,11 +345,11 @@ class Dog:
     def get_breed(self):
         return self._breed
 
-dog1 = Dog('Golden Retriever')
-dog2 = Dog('Poodle')
+# dog1 = Dog('Golden Retriever')
+# dog2 = Dog('Poodle')
 
-print(dog1.get_breed())  # Golden Retriever
-print(dog2.get_breed())  # Poodle
+# print(dog1.get_breed())  # Golden Retriever
+# print(dog2.get_breed())  # Poodle
 
 # 3. Create a Cat class that has a single method named get_name that returns the name instance variable. Without initializing name, try to instantiate a Cat object and call get_name. Print Name not set! when the error occurs.
 
@@ -360,9 +360,9 @@ class Cat:
         except AttributeError:
             return "Name not set!"
 
-cat = Cat()
-print(cat.get_name())  # Name not set!    
-# Problem Sets Exceptions:
+# cat = Cat()
+# print(cat.get_name())  # Name not set!    
+# # Problem Sets Exceptions:
 
 # 1. Write a program that asks the user for two numbers and divides the first number by the second number. Handle any potential ZeroDivisionError or ValueError exceptions
 
@@ -470,12 +470,284 @@ class Point:
         print(other.coordinates)
         return self.coordinates == other.coordinates
 
-point1 = Point(5, 10)
-point2 = Point(5, 10)
-point3 = point1
-point1.coordinates['x'] = 4
+# point1 = Point(5, 10)
+# point2 = Point(5, 10)
+# point3 = point1
+# point1.coordinates['x'] = 4
 
-print(point1 == point2)
-print(point2 == point3)
-print(point1 == point3)
-print(point3 is point1)
+# print(point1 == point2)
+# print(point2 == point3)
+# print(point1 == point3)
+# print(point3 is point1)
+
+
+# Practice Problems
+
+# 1.
+# print(True.__class__.__name__)                      # bool
+# print('hello'.__class__.__name__)                   # str
+# print([1, 2, 3, 'happy days'].__class__.__name__)   # list
+# print({1, 2, 3}.__class__.__name__)                 # set
+# print((142).__class__.__name__)                     # int
+# print(1.2345.__class__.__name__)                    # float
+
+# How does self.__class__.__name__ work
+
+# We use self.__class__.__name__ in the method. It works like so:
+
+# self refers to the object referenced by small_car. In this case, that's a Car object.
+# self.__class__ returns a reference to the Car class, which is an object of type class.
+# Finally, self.__class__.__name__ returns the name of the Car class as a string: 'Car'.
+
+# Which of the following classes create objects with instance vars?
+
+class Fruit:
+    def __init__(self, name):
+        my_name = name
+
+class Pizza:
+    def __init__(self, name):
+        self.my_name = name
+
+#         Pizza class instances will have instance variables by virtue of assigning a value to self.my_name in the Pizza.__init__ method. Fruit class instances don't have instance variables since none are defined. my_name is a local variable only defined inside Fruit.__init__.
+
+# You can verify this by using the vars function to see what instance variables exist in Pizza and Fruit objects:
+
+# print(vars(Fruit('orange')))     # {}
+# print(vars(Pizza('pepperoni')))  # {'my_name': 'pepperoni'}
+
+# 8
+
+# Suppose you have an object named my_obj and that you want to call a method named foo using my_obj as the caller. How can you see where Python will look for the method. You don't need to determine the actual method location; just identifying the search sequence is sufficient.
+
+# use print(my_obj.__class__.mro()) method
+# MRO is also called the lookup chain
+
+# List the type of variable
+
+# excited_dog = 'excited dog' : local var
+# self.excited_dog = 'excited dog' : instance var
+# self.__class__.excited_dog = 'excited dog' : class var
+# BigDog.excited_dog = 'excited dog' : class var
+
+# You can tell based on the prefixes
+
+# Explain _catsc_count
+
+class Cat:
+    _cats_count = 0
+
+    def __init__(self, type):
+        self.type = type
+        self.__class__._cats_count += 1
+
+    @classmethod
+    def cats_count(cls):
+        return cls._cats_count
+    
+# Increments how many Cat objects have been created
+    
+# cat1 = Cat('or')
+# cat2 = Cat('or')
+# cat3 = Cat('or')
+# print(Cat.cats_count())
+
+# Easy 2 problem set
+
+# Benefits of using OOP in Python
+# Encapsulation of code
+# Using polymorphism to define features
+# Custom behaviors defined
+# Manages program complexity
+# Allows programmers to think about code at a more abstract level
+# Different kinds of data
+
+# 4
+# Hello
+# AttributeError
+# TypeError
+# Goodbye
+# TypeError because not defined as a class method
+
+# If you have an instance method and a class method named the same, using an instance of the class, Python will call the class method instead
+
+# 6
+class Cat:
+    def __init__(self, type):
+        self.type = type
+
+    def __str__(self) -> str:
+        return f"I am a {self.type}"
+#print(Cat('hairball'))
+# <__main__.Cat object at 0x10695eb10>
+
+# 7
+# You can call class methods with class instances but cannot call instance methods with the class name
+
+# Medium problem set
+
+# 1.
+class BankAccount:
+    def __init__(self, starting_balance):
+        self._balance = starting_balance
+
+    def balance_is_positive(self):
+        return self.balance > 0
+
+    @property
+    def balance(self):
+        return self._balance
+    
+# Using self.balance is fine here because it is defined as a property getter
+
+# 2 Update InvoiceEntry so it functions as shown
+
+class InvoiceEntry:
+    def __init__(self, product_name, number_purchased):
+        self._product_name = product_name
+        self._quantity = number_purchased
+
+    @property
+    def quantity(self):
+        return self._quantity
+    
+    @quantity.setter
+    def quantity(self, value):
+        self._quantity = value
+
+# entry = InvoiceEntry('Marbles', 5000)
+# print(entry.quantity)         # 5000
+
+# entry.quantity = 10_000
+# print(entry.quantity)         # 10_000
+
+class Animal:
+    def speak(self, argv):
+        print(argv)
+
+class Cat(Animal):
+    def meow(self):
+        self.speak('Meow')
+
+class Dog(Animal):
+    def bark(self):
+        self.speak('Woof! Woof! Woof!')
+
+# Given the following code, write additional code fro KrispyKreme such that the print invocations will work as shown
+
+class KrispyKreme:
+    def __init__(self, filling, glazing):
+        self.filling = filling
+        self.glazing = glazing
+
+    def __str__(self) -> str:
+        if self.filling == None:
+            fill = 'Plain'
+        else:
+            fill = self.filling
+        if self.glazing == None:
+            return fill
+        return f"{fill} with {self.glazing}"
+        
+
+# donut1 = KrispyKreme(None, None)
+# donut2 = KrispyKreme('Vanilla', None)
+# donut3 = KrispyKreme(None, 'sugar')
+# donut4 = KrispyKreme(None, 'chocolate sprinkles')
+# donut5 = KrispyKreme('Custard', 'icing')
+
+# print(donut1)       # Plain
+# print(donut2)       # Vanilla
+# print(donut3)       # Plain with sugar
+# print(donut4)       # Plain with chocolate sprinkles
+# print(donut5)       # Custard with icing
+
+# LS solution:
+
+# Put this code in the KrispyKreme class
+def __str__(self):
+    options = []
+    options.append(self.filling or 'Plain')
+    if self.glazing is not None:
+        options.append(self.glazing)
+
+    return ' with '.join(options)
+
+
+# Catamaran is being added in. Modify the class definitions and move code into a mix-in, as necessary, to share code among Catamaran and the wheeled vehicles.
+
+class FuelStatsMixin:
+
+    def fuel_params(self, kilometers_per_liter, liters_of_fuel_capacity):
+        self.fuel_efficiency = kilometers_per_liter
+        self.fuel_capacity = liters_of_fuel_capacity
+
+    def range(self):
+        return self.fuel_capacity * self.fuel_efficiency
+
+class WheeledVehicle(FuelStatsMixin):
+    def __init__(self,
+                 tire_list,
+                 kilometers_per_liter,
+                 liters_of_fuel_capacity):
+        self.tires = tire_list
+        self.fuel_params(kilometers_per_liter, liters_of_fuel_capacity)
+
+    def tire_pressure(self, tire_index):
+        self.tires[tire_index]
+
+    def inflate_tire(self, tire_index, pressure):
+        self.tires[tire_index] = pressure
+
+class Auto(WheeledVehicle):
+    def __init__(self):
+        # 4 tires with various tire pressures
+        super().__init__([30, 30, 32, 32], 50, 25.0)
+
+class Motorcycle(WheeledVehicle):
+    def __init__(self):
+        # 2 tires with various tire pressures
+        super().__init__([20, 20], 80, 8.0)
+
+class Watercraft(FuelStatsMixin):
+    def __init__(self,
+                 number_propellers,
+                 number_hulls,
+                 fuel_efficiency,
+                 fuel_capacity):
+        self.propellers = number_propellers
+        self.hulls = number_hulls
+        self.fuel_params(fuel_efficiency, fuel_capacity)
+
+    def range(self):
+        return super().range() + 10
+
+class Motorboat(Watercraft):
+    def __init__(self, kilometers_per_liter, liters_of_fuel_capacity) -> None:
+        super().__init__(1, 1, kilometers_per_liter, liters_of_fuel_capacity)
+
+class Catamaran(Watercraft):
+  def __init__(self,
+               number_propellers,
+               number_hulls,
+               kilometers_per_liter,
+               liters_of_fuel_capacity):
+      super().__init__(number_propellers, number_hulls, 
+                       kilometers_per_liter, liters_of_fuel_capacity)
+      
+
+# auto = Auto()
+# motorcycle = Motorcycle()
+# catamaran = Catamaran(2, 2, 1.5, 600)
+
+# print(auto.fuel_efficiency)             # 50
+# print(auto.fuel_capacity)               # 25.0
+# print(auto.range())                     # 1250.0
+
+# print(motorcycle.fuel_efficiency)       # 80
+# print(motorcycle.fuel_capacity)         # 8.0
+# print(motorcycle.range())               # 640.0
+
+# print(catamaran.fuel_efficiency)        # 1.5
+# print(catamaran.fuel_capacity)          # 600
+# print(catamaran.range())                # 900.0
