@@ -289,3 +289,85 @@ except FileNotFoundError:
 ~~~
 
 - Best to use try/accept blocks such as above when opening files
+
+## Keyword arguments
+
+- All positional arguments must be specified before the first keyword argument
+- If all arguments passed as keyword arguments, order does not matter
+- You can ensure arguments are positional-only by using a slash:
+
+~~~Python
+def greet(name, /, color=None):
+    if color:
+        print(f"Hello {name}. Your favorite color is {color}.")
+    else:
+        print(f"Hello {name}. You don't have a favorite color.")
+
+greet("Pete") # Hello Pete. You don't have a favorite color.
+greet("Max", color="blue") # Hello Max. Your favorite color is blue.
+greet(color="blue", name="Max") # TypeError
+greet(name="Srdjan") # TypeError
+~~~
+
+- The slash says that all arguments before this slash must be "positional"
+- Add an asterisk before the first parameter we want to be keyword only to achieve the same for keywords:
+
+~~~Python
+def greet(name, /, *, color=None):
+    if color:
+        print(f"Hello {name}. Your favorite color is {color}.")
+    else:
+        print(f"Hello {name}. You don't have a favorite color.")
+
+greet("Pete") # Hello Pete. You don't have a favorite color.
+greet("Max", color="blue") # Hello Max. Your favorite color is blue.
+greet("Max", "blue") # TypeError
+~~~
+
+- This declares all arguments following color must be named
+- Place * at beginning to make function accept only keyword arguments
+
+### Any number of positional arguments
+
+~~~Python
+def greet_all(*names):
+    for name in names:
+        print(f"Hello, {name}.")
+
+greet_all("Chris", "Pete", "Nick")
+# Hello, Chris.
+# Hello, Pete.
+# Hello, Nick.
+~~~
+
+- The asterisk before it means `names` becomes a tuple containing all the arguments passed to the function
+  - Often named *args
+
+~~~Python
+def say_pets(name, **pets):
+    print(f"{name} pets are...:")
+    for name, animal in pets.items():
+        print(f"{name}, a lovely {animal}.")
+
+say_pets("Pete", Cocoa="cat", Cheddar="cat")
+# Pete pets are...:
+# Cocoa, a lovely cat.
+# Cheddar, a lovely cat.
+~~~
+
+- You can do the same with `**kwargs` for keyword arguments
+- `**pets` tells Python to accept any keyword argument given and to store them in a dictionary
+- `*args` must come after all positional arguments
+
+~~~Python
+def custom_func(x, y, *args):
+    pass
+
+custom_func(1, 2)          # args points to an empty tuple
+custom_func(1, 2, 3, 4, 5) # args points to a tuple (3, 4, 5)
+custom_func(1)             # raises a TypeError
+~~~
+
+- You can place an argument after `*args`, but it must be a keyword argument
+- This means `**kwargs` must come after `*args`
+  - Cannot define any parameters after `**kwargs`

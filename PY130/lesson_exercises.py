@@ -162,46 +162,105 @@ def reduce(callback, iterable, initial):
 
 # print(set(atleast_5(lst)))
 
-file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
-content = file.read()
-file.close()
+# file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
+# content = file.read()
+# file.close()
 
-print(repr(content))
-# 'Running dog\nSleeping cat\nSwimming fish\nSinging bird\n'
+# print(repr(content))
+# # 'Running dog\nSleeping cat\nSwimming fish\nSinging bird\n'
 
-file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
-content = file.readlines()
-file.close()
+# file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
+# content = file.readlines()
+# file.close()
 
-print(repr(content))
-# ['Running dog\n', 'Sleeping cat\n',
-#  'Swimming fish\n', 'Singing bird\n']
+# print(repr(content))
+# # ['Running dog\n', 'Sleeping cat\n',
+# #  'Swimming fish\n', 'Singing bird\n']
 
-file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
-print(repr(file.readline()))   # 'Running dog\n'
-print(repr(file.readline()))   # 'Sleeping cat\n'
-print(repr(file.readline()))   # 'Swimming fish\n'
-print(repr(file.readline()))   # 'Singing bird\n'
-print(repr(file.readline()))   # ''
-print(repr(file.readline()))   # ''
-file.close()
+# file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
+# print(repr(file.readline()))   # 'Running dog\n'
+# print(repr(file.readline()))   # 'Sleeping cat\n'
+# print(repr(file.readline()))   # 'Swimming fish\n'
+# print(repr(file.readline()))   # 'Singing bird\n'
+# print(repr(file.readline()))   # ''
+# print(repr(file.readline()))   # ''
+# file.close()
 
-file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
-for line in file:
-    print(repr(line))
+# file = open('/home/robert_feconda/launchschool/LS-Backend-Core/PY130/example.txt', 'r')
+# for line in file:
+#     print(repr(line))
 # 'Running dog\n'
 # 'Sleeping cat\n'
 # 'Swimming fish\n'
 # 'Singing bird\n'
 
-file.close()
+# file.close()
 
 # Writing to a file below.
 # Don't use a REPL to run this code
-file = open('output.txt', 'w')
-file.write('Hello, world!\n')
+# file = open('output.txt', 'w')
+# file.write('Hello, world!\n')
 
-lines = ['First line\n', 'Second line\n']
-file.writelines(lines)
+# lines = ['First line\n', 'Second line\n']
+# file.writelines(lines)
 
-file.close()
+# file.close()
+
+# Practice Problems: Arguments and Parameters
+
+# Write a function named combine that takes three positional arguments and returns a tuple containing all three. Call this function with three different values.
+
+def combine(one, two, three):
+    return (one, two, three)
+# print(combine('a', 2, None))
+
+# Define a function named multiply that accepts two positional-only arguments and returns their product. The function should not allow these parameters to be passed as keyword arguments.
+
+def multiply(one, two, /):
+    return one*two
+
+# print(multiply(3, 2))
+# print(multiply(one=3, two=2))
+
+# Create a function named describe_pet that takes one positional argument animal_type and one keyword argument name with a default value of an empty string. The function should print a description of the pet. The function should not accept more than 1 positional argument.
+
+def describe_pet(animal_type, *, name=''):
+    if name:
+        print(f"I am a {animal_type} and my name is {name}")
+    else:
+        print(f"I am a {animal_type}")
+# Could use / to make animal_type position only
+# describe_pet('Cat')
+# describe_pet('Cat', name='Crackers')
+# describe_pet(animal_type='Cat', name='Crackers')
+
+# Write a function named calculate_average that any number of numeric arguments and returns their average. Make sure it returns None if no arguments are provided
+
+def calculate_average(*args):
+    if args:
+        return sum(args) / len(args)
+    return None
+
+# Create a function named find_person that accepts any number of keyword arguments in which each key is someone's name and the value is their associated profession. The function should check whether any of the key/value pairs has a key of "Antonina" and then, if the key is found, print a message that shows Antonina's profession. Otherwise, it should say "Antonina not found". The function should not accept any positional arguments.
+
+def find_person(**kwargs):
+    if 'Antonina' in kwargs.keys():
+        print(kwargs['Antonina'])
+    else:
+        print('Antonina not found')
+
+# Define a function named concat_strings that takes any number of strings and returns the concatenation of all the strings. Add a keyword-only argument sep with a default value of ' ' that specifies the separator to use between the strings.
+
+def concat_strings(*args, sep=' '):
+    return sep.join(args)
+# Don't need to / can't apply *, to make keyword only, you can't have positional after *args
+
+# Create a function named register that takes exactly three arguments: username as positional-only, password as keyword-only, and age as either a positional or keyword argument.
+
+def register(username, /, age, *, password):
+    return {'username': username, 'password': password, 'age': age}
+
+# Create a function named print_message that requires a keyword-only argument (message) and an optional keyword-only argument (level) with a default value of "INFO". The function should print out the message prefixed with the level. The function shouldn't accept any positional arguments.
+
+def print_message(*, message, level='INFO'):
+    return f"[{level}] {message}"
