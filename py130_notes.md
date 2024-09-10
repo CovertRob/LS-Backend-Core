@@ -371,3 +371,214 @@ custom_func(1)             # raises a TypeError
 - You can place an argument after `*args`, but it must be a keyword argument
 - This means `**kwargs` must come after `*args`
   - Cannot define any parameters after `**kwargs`
+
+## Unpacking iterables
+
+- The `*` operator tells Python that the element following it is an iterable
+  - Python then iterates over this iterable, passing each element as a separate argument to the function
+- You can also unpack into variables like so:
+`names = ("Chris", "Pete", "Nick")`
+`chris, pete, nick = names`
+- Can also do nested unpacking
+
+~~~Python
+data = ["apple", (8, 3, 7), 42]
+fruit, (x, y, z), answer = data
+print(fruit, x, y, z, answer)      # Outputs: apple 8 3 7 42
+~~~
+
+- **You get an error if too many or not enough matched variables to unpack all items**
+- The fix is extended unpacking: use an asterisk * to assign a list with an arbitrary number of elements
+
+~~~Python
+names = ("Chris", "Pete", "Nick", "Brandi", "Clare")
+chris, pete, *remaining_names = names
+print(remaining_names)        # ['Nick', 'Brandi', 'Clare']
+~~~
+
+- Can do extended unpacking instead of slicing as well
+
+~~~Python
+numbers = [10, 50, 20, 30, 40, 60, 70]
+start = numbers[0:-1]
+last = numbers[-1]
+#or
+numbers = [10, 50, 20, 30, 40, 60, 70]
+*start, final = numbers
+print(start)        # [10, 50, 20, 30, 40, 60]
+print(final)        # 70
+#and...
+numbers = [10, 50, 20, 30, 40, 60, 70]
+first, second, *middle, last = numbers
+print(first)        # 10
+print(second)       # 50
+print(middle)       # [20, 30, 40, 60]
+print(last)         # 70
+~~~
+
+- You cannot use multiple *variables in an assignment
+
+## Closures
+
+- Variables that  are used within the inner function but are not local to it are known as free variables
+  - Free variables are bound to the objects that were assigned those variables when closure was created - even after the outer function finished execution
+
+~~~Python
+def create_greeting():
+    greeting = 'Hello'
+
+    def display_greeting():
+        print(greeting)
+
+    return display_greeting
+
+greet = create_greeting()
+greet()  # Output: Hello
+~~~
+
+- The crucial point here happens when create_greeting returns display_greeting
+- Usually, when a function completes execution, its local variables are discarded
+  - However, since display_greeting is a closure, it captures and retains a reference to the object assigned to the greeting variable from the create_greeting environment
+  - Thus when `greet` is called, it still has access to `greeting`
+- Python uses a mechnism called a cell to store the values of variables that are used by closures
+  - You can access the memory address of this cell object (an intermediary object) using the `__closure__` property 
+
+~~~Python
+def create_greeting():
+    greeting = 'Hello'
+    print(hex(id(greeting))) # 0x1010114b0
+
+    def display_greeting():
+        print(greeting)
+
+    return display_greeting
+
+greet = create_greeting()
+print(greet.__closure__)
+# (<cell at 0x100feb070: str object at 0x1010114b0>,)
+~~~
+
+- The second print the first value is the memory address of the cell object and the second value is the address of the string object this cell references
+- Python does a "double-hop" to get the value:
+  - First hop: When the closure tries to access `greeting`, it first looks in its own local scope
+  - Second hop: if not found, it then looks in the environment that was active when the closure was created (a cell, which contains variables that are referenced by closures)
+- **Closures consist of an associated extended environment of the non-local variables it references (free variables)**
+  - These free variables are bound to the context in which the closure was created, not the closure itself
+
+### Partial function application (PFA)
+
+- Involves the process of fixing a number of arguments to a function: closures are easy way to do this
+
+~~~Python
+def adder(x):
+    def add(y):
+        return x + y
+    return add
+
+add1 = adder(1)
+add2 = adder(2)
+add3 = adder(3)
+
+print(add1(10))     # prints 11, since it remembers x as 1
+print(add2(10))     # prints 12, since it remembers x as 2
+print(add3(10))     # prints 13, since it remembers x as 3
+~~~
+
+- When `adder` is called with an argument, it returns a new function `add` that "remembers" the value of `x`
+- Each closure is a distinct instance with its own enclosed environment
+- PFA benefits:
+  1. Ease of use: by setting some arguments of a function in advance, it streamlines the function for end users who then have fewer parameters to worry about
+  2. Enhanced Reusability: it enables the generation of specific-use functions from a broader fu nction without the necessity for duplication of code
+  3. Improved readability: by decomposing complex functions with multiple parameters into simpler function calls with fewer parameters, it enhances readability and intent of the code
+- Can also use `functools.partial` to acheive the same effect as the closure example above
+
+~~~Python
+from functools import partial
+
+def add(x, y):
+    return x + y
+
+add1 = partial(add, 1)
+print(add1(5))  # Outputs: 6
+~~~
+
+- Must be careful with lambda functions
+
+~~~Python
+adders = []
+for n in range(1, 4):
+    adders.append(lambda x: n + x)
+~~~
+
+- In the above, all 3 lambda functions are binded to `n=3` because closures have a late binding nature
+  - `n` is bound at the time the function is called, not when it is created
+- Can fix this by passing it as a defualt value:
+
+~~~Python
+adders = []
+for n in range(1, 4):
+    adders.append(lambda x, n=n: n + x)
+
+add1, add2, add3 = adders
+
+print(add1(10))  # Output: 11
+print(add2(10))  # Output: 12
+print(add3(10))  # Output: 13
+~~~
+
+- The defualt trick works because you are performing an assignment which is remembered instead
+- Without `n=n` `n` is taken "by reference" instead of "by value"
+
+~~~Python
+def adder(n):
+    def add(x):
+        return n + x
+
+    return add
+
+adders = [adder(n) for n in range(1, 4)]
+
+add1, add2, add3 = adders
+
+print(add1(10))  # Output: 11
+print(add2(10))  # Output: 12
+print(add3(10))  # Output: 13
+~~~
+
+- Could also do the above to define an `adder` factory function that explicity captures the value of `n`
+- Factory function: describes a function that returns a new specilized function when called
+  - The last example of `adder` acts as a factory function since it is designed to create and return new functions each time it is called
+
+- Again: **A closure is a function that retains the bindings of the free variables that exist when the function is defined, allowing the function to access those variables even after their original scope has ended**
+
+## Decorators
+
+- A decorator is a function that accepts a function and returns a function. Can also accept a class and return a new class
+- Example of one that prints a message before and after it executes the original function:
+
+~~~Python
+def my_decorator(func):
+    def wrapper():
+        print("Before the function call")
+        func()
+        print("After the function call")
+
+    return wrapper
+
+def say_hello():
+    print("Hello!")
+
+decorated_hello = my_decorator(say_hello)
+decorated_hello()
+# Before the function call
+# Hello!
+# After the function call
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+~~~
+
+- Can use the wrapper to get the same thing
+- Example: `lru_cache` from `functools` for remembering ccalculated values
+  - `dataclass` wrapper for classes to add an initializer and other methods, simplifying it

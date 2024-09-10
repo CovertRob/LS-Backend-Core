@@ -264,3 +264,153 @@ def register(username, /, age, *, password):
 
 def print_message(*, message, level='INFO'):
     return f"[{level}] {message}"
+
+def greet_all(*names):
+    for name in names:
+        print(f"Hello, {name}.")
+
+# names = ["Chris", "Pete", "Nick"]
+# greet_all(names) # This doesn't work because *names turns the arguments into one tuple
+# Hello, Chris.
+# Hello, Pete.
+# Hello, Nick.
+
+# predict the output
+# a, b, c = (1, 2, 3)
+# print(a, b, c)
+
+# a, _, c = (1, 2, 3)
+# # 1, 2, 3
+
+# a, b = (1, 2, 3) # will raise an error
+
+# a, b, c, d, e = (1, 2, 3) # you get an error
+
+# a, *rest = [1, 2, 3, 4, 5] # rest will contain 2, 3, 4, 5
+
+# first, *middle, last = "hello"
+# print(f"First: {first}, Middle: {middle}, Last: {last}")
+# First: h, Middle: ['e', 'l', 'l'], Last: o
+
+# write a single line of code that swaps a and b
+# a = 1
+# b = 2
+# a, b = b, a
+# print(a, b)
+
+adders = []
+for n in range(1, 4):
+    adders.append(lambda x, n=n: n + x)
+
+# add1, add2, add3 = adders
+
+# print(add1(10))  # Output: 11
+# print(add2(10))  # Output: 12
+# print(add3(10))  # Output: 13
+
+# What does the following code print
+
+def make_greeting():
+    greeting = "Hello"
+
+    def greet_func(name, greet=None):
+        if not greet:
+            return f"{greeting} {name}!"
+
+        return f"{greet} {name}!"
+
+    return greet_func
+
+# greet_person = make_greeting()
+# print(greet_person("John", "Goodbye"))
+# print(greet_person("Jane"))
+# Goodbye John!
+# Hello Jane!
+
+# What does the following program print
+
+def make_counter():
+    def counter_func():
+        counter = 0
+        counter += 1
+        return counter
+
+    return counter_func
+
+# increment_counter = make_counter()
+# print(increment_counter()) # 1
+# print(increment_counter()) # 1
+
+# increment_counter = make_counter()
+# print(increment_counter()) # 1
+# print(increment_counter()) # 1
+# Closure plays no part in this execution
+
+# What will this code print
+from functools import partial
+
+def greet(name, greeting):
+    return f"{greeting}, {name}!"
+
+# say_hello_to = partial(greet, greeting="Hello")
+# print(say_hello_to(name="Alice"))  # What will this print?
+# Hello, Alice!
+# the functools module creates a new version of the greet function with the greeting argument pre-filled
+
+# Write a function named later that takes two arguments: a function, func, and an argument for that function, argument. The return value should be a new function that calls func with argument as its argument. Here's an example of how it might be used:
+
+def later(func, argument):
+    def inner():
+        return func(argument)
+    return inner
+
+def printer(message):
+    print(message)
+
+# print_warning = later(printer, "The system is shutting down!")
+# print_warning()  # The system is shutting down!
+
+# Write a function named later2 that takes two arguments: a function, func, and an argument for that function, first_arg. The return value should be a new function that takes an argument, second_arg. The new function should call the func with the arguments provided by first_arg and second_arg. Here's an example of how it might be used:
+
+def later2(func, first_arg):
+    def inner(second_arg):
+        return func(first_arg, second_arg)
+    return inner
+
+def notify(message, when):
+    print(f"{message} in {when} minutes!")
+
+# shutdown_warning = later2(notify, "The system is shutting down")
+# shutdown_warning(30) # The system is shutting down in 30 minutes!
+
+def my_decorator(func):
+    def wrapper():
+        print("Before the function call")
+        func()
+        print("After the function call")
+
+    return wrapper
+
+# decorated_hello = my_decorator(say_hello)
+# decorated_hello()
+# Before the function call
+# Hello!
+# After the function call
+
+@my_decorator
+def say_hello():
+    print("Hello!")
+
+# say_hello()
+
+from dataclasses import dataclass
+from pprint import pprint
+@dataclass
+class Square:
+    width: float
+
+    @property
+    def area(self):
+        return self.width**2
+    
+# pprint(Square.__dict__)
