@@ -441,7 +441,7 @@ greet()  # Output: Hello
   - However, since display_greeting is a closure, it captures and retains a reference to the object assigned to the greeting variable from the create_greeting environment
   - Thus when `greet` is called, it still has access to `greeting`
 - Python uses a mechnism called a cell to store the values of variables that are used by closures
-  - You can access the memory address of this cell object (an intermediary object) using the `__closure__` property 
+  - You can access the memory address of this cell object (an intermediary object) using the `__closure__` property
 
 ~~~Python
 def create_greeting():
@@ -582,3 +582,41 @@ def say_hello():
 - Can use the wrapper to get the same thing
 - Example: `lru_cache` from `functools` for remembering ccalculated values
   - `dataclass` wrapper for classes to add an initializer and other methods, simplifying it
+
+## Callables
+
+- Anything you can call - aka that can be used with () - is a callable in Python
+  - classes are callables
+  - Also some built in functions like `enumerate`
+
+- Duck typing for callables
+  - If something can be called like a function, it can be treated as a function even if it is a class or other type of object
+- Can define the `__call__` duner method to define callable behavior
+  - Example: in a custom class
+  - Any object that implements this dunder is a callable
+
+## Modules
+
+- Avoid wild card imorts to prevent namespace pollution
+- This happens since each module in Python operates in its own namespace -- a kind of container for variables, functions, and classes.
+- When you import names from a module traditionally (using import module_name), you maintain the separation of namespaces, which avoids name clashes
+  - Wildcard imports merge the imported module's namespace with your own, potentially overwriting existing names and leading to conflicts
+- Scripts vs  modules
+  - Script: A Python file meant to be run directly. It performs actions, prints output, and may use functions or classes defined within it or imported from other modules.
+  - Module: A Python file meant to be imported into other Python scripts or modules. It's a toolset of sorts, providing resources like functions, classes, and variables to enhance and extend the functionality of the script that imports it.
+- Can use the `__name__ == '__main__'` to run as script and module
+
+## Side Effects and Pure Functions
+
+- A function that performs any of the following is said to have side-effects:
+  1. It reassigns any non-local variable
+  2. It mutates the value of any object referened by a non-local variable
+  3. It reads from or writes to any data entity (files, network connections, etc) that is non-local to your program
+  4. It raises an exception
+  5. It calls another function that has any side effects that are not confined to the current function. For instance, you call a function that mutates an argument, but that argument is local to the calling function, then it isn't a side effect.
+- **It is more proper to ask if a specific function call has side effects**
+- **Unexpected function side effects are a major source of bugs**
+- Pure Functions:
+  1. Have no side effects
+  2. Given the same set of arguments, the function always returns the same value during the function's lifetime. This rule implies that the return value of a pure function depends solely on its arguments
+  

@@ -689,3 +689,8 @@ print(teacher.get_name())
 - Instance variables are not inherited
   - If a superclass defines an instance variable, an instance of a sublcass knows about it
   - A superclass can also reference the instance variables in its subclasses
+
+## Indirectin
+
+- refers to the ability to reference something indirectly
+- used in the case of objects representing abstract data types that encapsulate the actual values in a program

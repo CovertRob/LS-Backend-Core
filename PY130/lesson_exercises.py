@@ -414,3 +414,6 @@ class Square:
         return self.width**2
     
 # pprint(Square.__dict__)
+
+#list(map(lambda number: 2 * number, [1, 2, 3]))
+#print(list(map(lambda number: 2 * number, [1, 2, 3])))
