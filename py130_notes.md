@@ -619,4 +619,9 @@ def say_hello():
 - Pure Functions:
   1. Have no side effects
   2. Given the same set of arguments, the function always returns the same value during the function's lifetime. This rule implies that the return value of a pure function depends solely on its arguments
-  
+
+## Need to review further
+
+- Closures
+- Partial Function application
+- Decorators
