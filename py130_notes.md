@@ -278,7 +278,7 @@ with open('example.txt', 'r') as file:
 ~~~
 
 - Use the above convention to open a file and automatically close it (done by with after it reads it in)
-- `with` is known as a *context manager*: special kind of ocnstruct designed to allocate and release resources
+- `with` is known as a *context manager*: special kind of construct designed to allocate and release resources
 
 ~~~Python
 try:
@@ -464,6 +464,7 @@ print(greet.__closure__)
   - Second hop: if not found, it then looks in the environment that was active when the closure was created (a cell, which contains variables that are referenced by closures)
 - **Closures consist of an associated extended environment of the non-local variables it references (free variables)**
   - These free variables are bound to the context in which the closure was created, not the closure itself
+- **Closures are lexical. They are created based on the structure of a program, not on anything that happens at execution time.**
 
 ### Partial function application (PFA)
 
@@ -620,8 +621,97 @@ def say_hello():
   1. Have no side effects
   2. Given the same set of arguments, the function always returns the same value during the function's lifetime. This rule implies that the return value of a pure function depends solely on its arguments
 
-## Need to review further
+## Assertions
 
-- Closures
-- Partial Function application
-- Decorators
+- A programming statement that specifies a condition that must hold true at a certain point in a program
+- Scenarios:
+  1. Equality assertions: typically with `==` to verify return values
+  2. Boolean assertions: test truthiness
+  3. Comparison Assertions: use comparison operators to rest whether a value meets certain relational conditions
+  4. Containment assertions: verify item present in collection
+  5. Exception assertions: when expecting certain code to raise an exception due to erroneous inputs or states
+- `assert` raises an `AssertionError` if given condition is falsy
+- Syntax: `assert condition, message`
+  - condition is what you are testing
+  - `assert` is not a function or callable object, don't use parentheses
+
+~~~Python
+# Equality
+def add(a, b):
+    return a + b
+
+assert add(3, 4) == 7, "Add function failed"
+
+# Boolean
+is_active = True
+assert is_active, "Boolean check failed"
+
+# Comparison
+def get_max(a, b):
+    return max(a, b)
+
+assert get_max(10, 20) > 15, "Comparison check failed"
+
+#Containment
+numbers = [1, 2, 3]
+assert 2 in numbers, "Containment check failed"
+
+# Exceptions
+try:
+    x = 1 / 0
+    assert False, "Exception check failed, no exception raised"
+except ZeroDivisionError:
+    pass  # The assertion is passed implicitly if the exception is raised because it should never reach the statement
+~~~
+
+## Unittest
+
+- Test suite: the entier set of tests that accompanies your program or application
+- Test: describes a situation or context in which tests are run, can contain multiple assertions
+- Assertion: The verification step that confirms your program is producing the results you expect
+- 4 steps to writing tests (SEAT):
+  1. Set up the necessary objectgs
+  2. Execute the code against the object we're testing
+  3. Assert that the executed code did the right thing
+  4. Tear down and clean up any lingering artifacts
+
+~~~Python
+import unittest
+from car import Car
+
+class CarTest(unittest.TestCase):
+    def setUp(self):
+        self.car = Car()
+
+    def test_wheels(self):
+        self.assertEqual(4, self.car.wheels)
+
+    def test_car_exists(self):
+        self.assertTrue(self.car is not None)
+
+    def test_name_is_none(self):
+        self.assertIsNone(self.car.name)
+
+    def test_instance_of_car(self):
+        self.assertIsInstance(self.car, Car)
+
+    def test_includes_car(self):
+        arr = [1, 2, 3]
+        arr.append(self.car)
+        self.assertIn(self.car, arr)
+
+    def test_raise_initialize_with_arg(self):
+        with self.assertRaises(TypeError):
+            car = Car(name="Joey")
+
+    def test_set_name_raises(self):
+        self.assertRaises(ValueError, setattr, self.car, "name", 1234)
+
+if __name__ == "__main__":
+    unittest.main()
+~~~
+
+- Not included here but also an option to include a tearDown() method that will run after each test: helpful for cleaning up files or logging some information
+- setup() runs before each test
+- **`assertEqual` is testing for value equality, need to use `assertIs` for object equality**
+- Have to define `__eq__` method in our class to compare custom objects in tests

@@ -657,7 +657,7 @@ def longest_sentence(text):
 
 # Texts and tests omitted for brevity
 
-longest_sentence(long_text)
+# longest_sentence(long_text)
 # Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in liberty, and dedicated to the proposition that all men are created equal.
 #
 # The longest sentence has 30 words.
@@ -676,3 +676,8 @@ longest_sentence(long_text)
 # # To be or not to be!
 # #
 # # The longest sentence has 6 words.
+
+def greet(name, /, greeting):
+    print(f"{greeting}, {name}!")
+
+print(greet('Robby', 'yup'))
