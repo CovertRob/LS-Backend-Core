@@ -715,3 +715,7 @@ if __name__ == "__main__":
 - setup() runs before each test
 - **`assertEqual` is testing for value equality, need to use `assertIs` for object equality**
 - Have to define `__eq__` method in our class to compare custom objects in tests
+
+## Study Notes
+
+- Re-do roman numerals problem
