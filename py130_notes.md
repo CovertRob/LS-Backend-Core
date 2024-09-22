@@ -719,3 +719,21 @@ if __name__ == "__main__":
 ## Study Notes
 
 - Re-do roman numerals problem: first issue is I did not identify edge case of the subtraction/addition piece of roman numerals
+
+Stuff to work on / practice:
+
+- generators
+- work with files `with open...`
+- function defs:  pos-only and keyword only arguments
+- `__call__` method
+- lambdas
+- generators
+- callbacks
+  - map
+  - filter
+  - reduce
+- custom modules
+- unpacking
+  - `*args`
+  - `**kwargs`
+  
