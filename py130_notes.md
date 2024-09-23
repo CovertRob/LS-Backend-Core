@@ -592,7 +592,7 @@ def say_hello():
 
 - Duck typing for callables
   - If something can be called like a function, it can be treated as a function even if it is a class or other type of object
-- Can define the `__call__` duner method to define callable behavior
+- Can define the `__call__` dunder method to define callable behavior
   - Example: in a custom class
   - Any object that implements this dunder is a callable
 
