@@ -719,6 +719,7 @@ if __name__ == "__main__":
 ## Study Notes
 
 - Re-do roman numerals problem: first issue is I did not identify edge case of the subtraction/addition piece of roman numerals
+- Re-do beer song generator due to partial solution with bugs
 
 Stuff to work on / practice:
 
@@ -736,4 +737,5 @@ Stuff to work on / practice:
 - unpacking
   - `*args`
   - `**kwargs`
+- partial function application
   
