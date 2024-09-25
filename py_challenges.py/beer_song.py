@@ -57,6 +57,8 @@ class BeerSong:
 
     BEER_ONE_VERSE = "1 bottle of beer on the wall, 1 bottle of beer.\nTake it down and pass it around, no more bottles of beer on the wall.\n"
 
+    DEFAULT_VERSE = "X bottles of beer on the wall, X bottles of beer.\nTake one down and pass it around, X bottles of beer on the wall.\n"
+
     @classmethod
     def verse(cls, beers_verse):
         if beers_verse == 99:
@@ -65,12 +67,15 @@ class BeerSong:
             return cls.BEER_ZERO_VERSE
         if beers_verse == 1:
             return cls.BEER_ONE_VERSE
-        number_spots = re.finditer(r'(\d\d)', cls.BEER_VERSE, flags=re.M)
-        corrected_verse = copy(cls.BEER_VERSE)
+        number_spots = re.finditer(r'(X)', cls.DEFAULT_VERSE, flags=re.M)
+        corrected_verse = copy(cls.DEFAULT_VERSE)
+        
         for i in range(3):
             match = next(number_spots)
             if i == 2:
-                corrected_verse = corrected_verse[:match.start()] + str(beers_verse-1) + corrected_verse[match.end():]
+                corrected_verse = corrected_verse[:match.start()] + f"{beers_verse - 1}" + cls.DEFAULT_VERSE[match.end():]
+            elif i == 1:
+                corrected_verse = corrected_verse[:match.start()+1] + str(beers_verse) + corrected_verse[match.end():]
             else:    
                 corrected_verse = corrected_verse[:match.start()] + str(beers_verse) + corrected_verse[match.end():]
         return corrected_verse
