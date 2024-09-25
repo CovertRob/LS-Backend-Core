@@ -720,9 +720,11 @@ if __name__ == "__main__":
 
 - Re-do roman numerals problem: first issue is I did not identify edge case of the subtraction/addition piece of roman numerals
 - Re-do beer song generator due to partial solution with bugs
+- Note: don't use regex when trying to modify strings because the match span values won't match correctly unless you add in exactly the same amount of characters
 
 Stuff to work on / practice:
 
+- function factory
 - generators
 - work with files `with open...`
 - function defs:  pos-only and keyword only arguments
@@ -738,4 +740,49 @@ Stuff to work on / practice:
   - `*args`
   - `**kwargs`
 - partial function application
+
+## Full Study Guide
+
+### Python
+
+- First-Class and Higher-Order Functions
+- Generator Expressions
+- Lambda functions
+- File Handling
+- Function arguments and parameters: positional, keyword, positional-only, keyword-only, *args, **kwargs, default params
+- Closures
+- Partial function application
+- Decorators
+- Modules
+- Pure functions and side effects
+
+1. What is the difference between First-Class and Higher-Order Functions? What about First-Class citizens?
+2. What attributes do Higher-Order Functions have that make them unique? Include what callbacks are.
+3. Explain the concept of functions and methods as First-Class Objects and use a code example to demonstrate it.
+4. What is the difference between imperitive and declarative programming? Use a code example with a transformation or selection function to explain.
+5. What does using declaritive programming techniques with higher-order functions allow us to accomplish in Python with regards to OO design principles? think for_each
+6. Provide a code example of a function factory and what they are useful for.
+  
+### Testing
+
+- Testing terminology
+- Writing and ru nning tests with unittest framework
+- Utilizing assertions for testing equality and other conditions: `assertEqual`, `assertIs` etc.
+- SEAT appraoch
+- Understanding code coverage
+
+### Packaging Code
+
+- Project directory layout
+- Using `pip` for package installation and management
+- packaging projects
+
+### Precision of Language
+
+- All the following are treated as variables:
+  - Variables defined with `x = value`
+  - Function parameters
+  - Function names
+  - Class names
+- **Dictionary keys are NOT variables**
   
