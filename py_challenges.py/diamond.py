@@ -20,7 +20,7 @@ Examples / Test Cases:
 
 Data Structures:
 
-    1. Dictionary to hold space values with letters
+    1. Find the max width of the diamond to be created, each line must be this long
 
 Algorithm:
 
@@ -35,30 +35,27 @@ class Diamond:
 
     @classmethod
     def make_diamond(cls, letter):
+        if letter == 'A':
+            return "A\n"
         diamond = ""
-        alphabet = cls._generate_letter()
-        current = next(alphabet)
-        spaces = 3
-        while current <= letter:
-            
-            if current == 'A':
-                diamond += "A\n"
-            elif current == 'B':
-                diamond += "B B\n"
-            else: 
-                diamond += f"{current}{' ' * spaces}{current}\n"
-            spaces += 2
-            current = next(alphabet) 
-        return diamond
+        diamond_size = cls._get_diamond_size(letter)
 
-# Current issue: how do I correctly pad the beginning letters without knowing the end character length? Need to generate full characters ahead of time?
+        for char in cls.ALPHABET[:cls.ALPHABET.index(letter) + 1]:
+            if char == 'A':
+                diamond += 'A'.center(diamond_size)
+                diamond += '\n'
+            else:
+                letter_pad = cls._get_diamond_size(char)
+                diamond += f"{char}{(letter_pad - 2) * ' '}{char}".center(diamond_size)
+                if char != letter: diamond += "\n"
 
-# What about a list and then use '\n'.join() ?
+        return (diamond + ''.join(reversed('\n' + diamond[:diamond.index(letter)])))
 
-    @classmethod
-    def _generate_letter(cls):
-        for letter in cls.ALPHABET:
-            yield letter
-
-print(Diamond.make_diamond('E'))
-
+    # used to compute both max diamond size and individual letter pad size
+    @staticmethod
+    def _get_diamond_size(letter):
+        if letter == 'A':
+            return 1
+        if letter == 'B':
+            return 3
+        return (Diamond.ALPHABET.index(letter)) * 2 + 1
