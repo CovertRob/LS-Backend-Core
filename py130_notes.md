@@ -748,22 +748,36 @@ Stuff to work on / practice:
 ### Python
 
 - First-Class and Higher-Order Functions
+  1. What is the difference between First-Class and Higher-Order Functions? What about First-Class citizens?
+  2. What attributes do Higher-Order Functions have that make them unique? Include what callbacks are.
+  3. Explain the concept of functions and methods as First-Class Objects and use a code example to demonstrate it.
+  4. What is the difference between imperitive and declarative programming? Use a code example with a transformation or selection function to explain.
+  5. What does using declaritive programming techniques with higher-order functions allow us to accomplish in Python with regards to OO design principles? think for_each
+  6. Provide a code example of a function factory and what they are useful for.
 - Generator Expressions
+  1. What is a generator? Is it an iterable?
+  2. What is a generator expression?
+  3. Talk about single use with regards to generators. Give a code example.
+  4. Can you determine the length of a generator?
+  5. Provide a code example of a generator code function. What does the yield keyword do? explain each line of the function.
+  6. Explain the next() function with a code example.
+  7. Explain the use cases of generators
 - Lambda functions
+  1. Provide a code example of a lambda function utilizing iterable unpacking
+  2. What are the restrictions and cons of lambda functions?
 - File Handling
+  1. How does the open() function work? What modes are available?
+  2. Explain the various methods for reading a files contents. What are the shortfalls and advantages of them.
+  3. How do you write to a file? Difference between write and append?
+  4. Discuss closing a file and how to minimize this issue by using the with statement
+  5. What is a good practice with regards to error handling and files?
+
 - Function arguments and parameters: positional, keyword, positional-only, keyword-only, *args, **kwargs, default params
 - Closures
 - Partial function application
 - Decorators
 - Modules
 - Pure functions and side effects
-
-1. What is the difference between First-Class and Higher-Order Functions? What about First-Class citizens?
-2. What attributes do Higher-Order Functions have that make them unique? Include what callbacks are.
-3. Explain the concept of functions and methods as First-Class Objects and use a code example to demonstrate it.
-4. What is the difference between imperitive and declarative programming? Use a code example with a transformation or selection function to explain.
-5. What does using declaritive programming techniques with higher-order functions allow us to accomplish in Python with regards to OO design principles? think for_each
-6. Provide a code example of a function factory and what they are useful for.
   
 ### Testing
 
