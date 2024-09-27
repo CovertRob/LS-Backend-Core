@@ -466,6 +466,8 @@ print(greet.__closure__)
   - These free variables are bound to the context in which the closure was created, not the closure itself
 - **Closures are lexical. They are created based on the structure of a program, not on anything that happens at execution time.**
 
+- **closure** = "a closure is an function that remembers and has access to variables in the local scope in which it was created, even after the outer function has finished executing." (LS)  Closures are useful because they bundle a function with an *environment* that can be used to run the function.  "You can think of a closure as a function and an associated extended environment consisting of the non-local variables (**free variables**) it references."
+
 ### Partial function application (PFA)
 
 - Involves the process of fixing a number of arguments to a function: closures are easy way to do this
@@ -785,4 +787,207 @@ Stuff to work on / practice:
   - Function names
   - Class names
 - **Dictionary keys are NOT variables**
-  
+
+## SPOT session with deepak
+
+- List of steps for deploying code to answer the question
+
+Lexical Scope Rules:
+
+- **Rule 1**: Functions define new scopes. Variables declared in a function are local to that function and any nested functions. They cannot be accessed in the outer scope.
+- **Rule 2:** Variables assigned in a function initialize new local variables unless the variables are explicitly marked as `global` or `nonlocal`. I.e., the assignment is actually an initialization and new local variables are created.
+- **Rule 3**: Variables in the outer scope can be used in the inner scope provided the variable is not initialized in the local scope. If a new variable is initialized in the local scope, it will **shadow** variables with the same name in any outer scopes.
+- **Rule 4**: Peer scopes do not conflict.
+- **Rule 5**: Nested functions have their own scope.
+
+Lexical scope is the "region" or "area" of the code where a variable can be accessed. Lexical scope is determined by the actual layout of the code. Meaning, you can determine a variable's scope by simply examining the code. It can be broken down into inner and outer scope.
+
+- Closures are only created when the function is executed
+
+~~~Python
+
+def func():
+    a = 1
+
+    def another_func():
+        return a + 1
+
+    return another_func
+
+a = func()
+~~~
+
+- What is a cell? = A `cell` is an object that is used to implement closures. A `cell` is associated with **a single** free variable.
+  - aka for every free variable there will be an associated cell to access it
+  - a free variable that is a var that is accessed within the enlosing scope of a function
+  - closures use late binding
+
+~~~Python
+adders = []
+for n in range(1, 4):
+    adders.append(lambda x, n=n: n + x)
+
+
+add1, add2, add3 = adders
+
+print(add1(1))  # 4
+print(add2(1))  # 4
+print(add3(1))  # 4
+~~~
+
+- Late binding in affect above if you take away default value
+- using default variables breaks the closure
+
+### PFA
+
+- **Partial function application** (**PFA**) is a programming technique, where some of the arguments to a function are fixed and a new function is created which can be called with fewer arguments. The new function is called a **partially applied function**. It is a version of the original function with some arguments already set.
+
+~~~Python
+from functools import partial
+
+def add(x, y):
+    return x + y
+
+add_10 = partial(add, 10)       # `x` set to `10`
+print(add_10(20))               # 30
+
+
+def adder(x):
+    def add(y):
+        return x + y
+    return add
+
+add_10 = adder(10)              # `x` is set to `10`
+print(add_10(20))               # 30
+~~~
+
+- Be very familiar with the second form here: it uses a closure to return an adder function
+- Very important to know how to do these, NOT the functools partial module
+
+### Decorator usage
+
+- Know the two different ways of creating/using decorators
+
+~~~Python
+
+def my_decorator(func):
+
+    print(hex(id(func)))
+
+    def wrapper():
+        print('Before the function call')
+        func()
+        print('AFter the function call')
+
+    return wrapper
+
+def say_hello():
+    print('Hello!')
+
+decorated_hello = my_decorator(say_hello)
+print(decorated_hello.__closure__)
+
+
+
+# Steven's example:
+
+def explain_function(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}()")
+        print(f"Positional args = {args}")
+        print(f"Keyword args = {kwargs}")
+        x = func(*args, **kwargs)
+        print(f"Return value for {func.__name__}= {repr(x)}")
+        return x
+    return wrapper
+
+@explain_function
+def sort_string(string_to_sort:str, reverse=False):
+    string_to_sort = list(string_to_sort)
+    return ''.join(sorted(string_to_sort, reverse=reverse))
+
+my_string = 'The quick brown fox jumps over the lazy dog.'
+x = sort_string(my_string, reverse=True)
+print(x)
+~~~
+
+## Iterables
+
+iterator - an object that represents a stream of data
+    generator objects - gen expressions, and gen functions
+    map objects
+    filter objects
+     file objects
+iterable - is any object that can be converted into an iterator
+    `lists`, `tuples`, strings, ranges, etc.
+
+## Why is it important? (steven notes)
+
+I created this topic after [[LS 2024-09-18 SPOT w Deepak|a SPOT session with Deepak]] in which he told me "if there's one crucial idea I think you should take away from PY130, it's the definitions of 'iterator', 'iterable', and the difference between them."
+
+Why does he think it's important?  There are a lot of Python features that rely on iterators, and if you don't understand them fully, you're relying on something that you don't entirely understand.  These include things like generators and working with files.
+
+It should be noted that LS doesn't place the same emphasis on this topic.  In fact, they barely mention it.
+
+After researching the topic myself, I agree with Deepak.  In the words of the Python tutorial: **"The use of iterators pervades and unifies Python."**
+
+### What's the difference?
+
+- **iterator** = "an object that represents a stream of data" that is finite or infinite (6)   That is, it contains a single data point at a time and doesn't have a `__len__` property.  You can pass the object as an argument to `next()`.  Iterators include:
+  - **generator objects**: generator expressions and generator functions
+  - **map objects**: "returns an iterator" ([docs](https://docs.python.org/dev/library/functions.html#map))
+  - **filter objects**: "construct an iterator" ([docs](https://docs.python.org/dev/library/functions.html#filter))
+  - **text file objects**: "a byte-oriented datastream" ([docs](https://docs.python.org/dev/glossary.html#term-text-file))
+  - **enumerate objects**: "the `__next__` method of the iterator returned by `enumerate()` returns a tuple containing..." ([docs](https://docs.python.org/dev/library/functions.html#enumerate))
+- **iterable** = an object that can be converted into an iterator. (1)(2)(6)  If you look at the Python documentation for `for`, you'll find that Python *always* converts an iterable into an iterator in order to process each element (3)  This includes:
+  - lists
+  - strings
+  - tuples
+  - dicts
+  - range (?)
+- **generator** = a simplified syntax for quickly creating iterators (3)
+
+### Iterators
+
+When you access the elements of an iterable using a `for` statement, Python *creates an iterator* to enable the iteration through each element.
+
+From the [python.org tutorial](https://docs.python.org/3/tutorial/classes.html#iterators):
+> The use of iterators pervades and unifies Python. Behind the scenes, the `for` statement calls `iter()` on the container object. The function returns an iterator object that defines the method `__next__()` which accesses elements in the container one at a time. When there are no more elements, `__next__()` raises a `StopIteration` exception which tells the `for` loop to terminate. You can call the `__next__()` method using the `next()` built-in function
+
+More details:
+
+- **You can only go forward** in an iterator.  There's no way to access the previous element, reset the iterator, or make a copy of it.  Exception: a custom iterator class can have methods that enable those functionalities.  (6)
+- **Iterators *must* support the following two methods:** `__iter__` and `__next__`   (5)
+- **The `__next__` method** returns the next `yield` value of the iterator and raises a `StopIteration` exception when values are exhausted.  (SV interpretation)
+- **Broken iterator:** Once an iterator's `__next__` method raises `StopIteration`, it must continue to do so on subsequent calls.  If a `__next__` method fails to fulfil this requirement, it's considered broken! (5)
+- **Finite?** Although infinite iterators are possible, they must be used carefully to avoid infinite loops (6)
+
+If you can pass the object as an argument to `iter()`, it's an iterable! (6)
+
+The following two statements are equivalent (6):
+
+~~~Python
+for i in iter(obj):
+    print(i)
+
+for i in obj:
+    print(i)
+~~~
+
+### Generators (from steven)
+
+<https://docs.python.org/3/tutorial/classes.html#generators>
+
+- **Generators create iterators:** "Generators are a simple and powerful tool for creating iterators" (3)
+- **Automatic method creation:** "The `__iter__` and `__next__` methods are created automatically"
+- **Saving program state:** "Local variables and execution state are automactially saved between calls" thereby avoiding the need for the use of `self` when defining variable names
+- **Generators = generator functions:** The Python tutorial uses "generator" to refer to generator functions, and "generator expression" to refer to generator expressions.
+
+### Sources
+
+- (1) [[LS 2024-09-18 SPOT w Deepak|SPOT sesh w Deepak]]
+- (2) <https://stackoverflow.com/questions/9884132/what-are-iterator-iterable-and-iteration> accessed 2024-09-19
+- (3) Python.org [Tutorial](https://docs.python.org/3/tutorial/classes.html#iterators)
+- (4) Stackoverflow: [Diff btw iterator and Generator](https://stackoverflow.com/questions/2776829/difference-between-pythons-generators-and-iterators)
+- (5) Python Docs >  Standard Types > [Iterator Types](https://docs.python.org/dev/library/stdtypes.html#iterator-types)
+- (6) Python.org Howto > [Iterators](https://docs.python.org/dev/howto/functional.html#iterators)
