@@ -754,6 +754,7 @@ Stuff to work on / practice:
   4. What is the difference between imperitive and declarative programming? Use a code example with a transformation or selection function to explain.
   5. What does using declaritive programming techniques with higher-order functions allow us to accomplish in Python with regards to OO design principles? think for_each
   6. Provide a code example of a function factory and what they are useful for.
+  7. How do callables fit into functions and classes?
 - Generator Expressions
   1. What is a generator? Is it an iterable?
   2. What is a generator expression?
@@ -771,27 +772,60 @@ Stuff to work on / practice:
   3. How do you write to a file? Difference between write and append?
   4. Discuss closing a file and how to minimize this issue by using the with statement
   5. What is a good practice with regards to error handling and files?
-
 - Function arguments and parameters: positional, keyword, positional-only, keyword-only, *args, **kwargs, default params
+  1. Provide code examples to illustrate how you can specifically define what kind of arguments a function takes
+  2. How can you capture multiple positional and multiple keyword arguments? Describe the asterisk operator in this.
+  3. Describe the asterisk operator with regards to iterable unpacking. How does it relate to iterables? Is there a limit to unpacking objects?
+  4. Provide a code exampel of extended unpacking. What are the limitations? What about with dictionaries?
+  5. What is the difference when using the asterisk operator to unpack vs in a function call? When is a list created and not a tuple?
 - Closures
+  1. What is the definition of a closure?
+  2. How do the scope rules of Python apply to creating closures?
+  3. What object is created to manage the free variables within a functions scope? How can you access them?
+  4. Provide a code example demonstrating late binding.
 - Partial function application
+  1. What are the two ways in which partial function application is done in Python?
+  2. Provide a code example of partial function application utilizing closure and explain each step of the function execution.
+  3. What is the difference between a factory function and a partial function? Provide a code example.
 - Decorators
+  1. What is the definition of a decorator? What are their purpose?
+  2. Discuss the advantages that decorators can provide? Discuss the study of is_prime and lru_cache.
+  3. Can decorators be used with only functions? Discuss the differing behavior.
+  4. Provide a code example describing the execution behavior of stacked decorators. How does the wrapping differ in defined functions?
 - Modules
+  1. What is a module object?
+  2. How does the from keyword work with regards to imports?
+  3. What global variable within modules defines its behavior? What is the difference between a script and a module?
+  4. Discuss naming conflicts with regards to imports. What about wildcard imports and namespace pollution?
 - Pure functions and side effects
+  1. What actions are said to be a side effect? provide a code example for each.
+  2. Discuss a major source of bugs in programs and how it related to side effects.
+  3. What is the definition of a pure function? Where does lifetime come into play?
+  4. Review practice problems on course module.
   
 ### Testing
 
 - Testing terminology
-- Writing and ru nning tests with unittest framework
+  1. Define the following: test suite, test, assertion
+- Writing and running tests with unittest framework
+  1. Provide a code example for setting up a basic unit test and describe each of the steps.
+  2. What are the various outputs you can receive when running tests?
 - Utilizing assertions for testing equality and other conditions: `assertEqual`, `assertIs` etc.
+  1. Provide code example of the common assertions available.
+  2. What are the two different ways to utilize errors in assertions? How is the with keyword used?
+  3. Give code examples of testing equality vs testing values. Why is defining `__eq__` important?
 - SEAT appraoch
+  1. Define and describe SEAT
 - Understanding code coverage
+  1. What program is used to get code coverage?
+  2. What is code coverage useful for with regards to testing?
 
 ### Packaging Code
 
 - Project directory layout
 - Using `pip` for package installation and management
 - packaging projects
+  1. Describe the layout of what a project looks like and the steps taken to package it. How do you then deliver it to PyPi?
 
 ### Precision of Language
 
@@ -900,8 +934,6 @@ def say_hello():
 
 decorated_hello = my_decorator(say_hello)
 print(decorated_hello.__closure__)
-
-
 
 # Steven's example:
 
