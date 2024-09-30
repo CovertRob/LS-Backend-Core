@@ -711,10 +711,10 @@ def is_prime(n):
     return True
 
 # The first function call
-is_prime(73729261)
+# is_prime(73729261)
 # The function ran in 2.1655370840016985 seconds
 
 # The second function call
-is_prime(73729261)
+# is_prime(73729261)
 # The function ran in 8.330098353326321e-07 seconds
 
