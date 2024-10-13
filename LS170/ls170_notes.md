@@ -87,3 +87,53 @@
 - Statefulness can be simulated through techniques which use session IDs, cookies, and AJAX.
 
 - HTTP is inherently unsecure. Security can be increased by using HTTPS, enforcing Same-origin policy, and using techniques to prevent Session Hijacking and Cross-site Scripting.
+
+## Working with HTTP
+
+- HTTP is a text-based protocol. HTTP Request and Responses involve sending text between the client and server
+
+- In order for the protocol to work, the Request and Response must be structurd in such a way that both the client and the server can understand them
+
+- With HTTP/1.1, the end of the headers is indicated by an empty line.
+
+- The Content-Length header can be used to indicate the size of the body. This can help determine where the HTTP message should end.
+
+## Transport Layer Security (TLS)
+
+- HTTP Requests and Responses are transferred in plain text; as such they are essentially insecure
+
+- We can use the Transport Layer Security (TLS) Protocol to add security to HTTP communications
+
+- TLS encryption allows us to encode messages so that they can only be read by those with an authorized means of decoding the message
+
+- TLS encryption uses a combination of Symmetric Key Encryption and Asymmetric Key Encryption. Encryption of the initial key exchange is performed asymmetrically, and subsuquent communications are symmetrically encrypted
+
+- The TLS handshake is the process by which a client and a server exchange encryption keys
+
+- The TLS handshake must be performed before security data exhange can begin; it involves several round-trips of latency and therefore has an impact on performance
+
+- A cipher suite is the agreed set of algorithms used by the client and server during the secure message exchange
+
+- TLS authentication is a means of verifying the identity of a participant in a message exhange
+
+- TLS authentication is implemented through the use of Digital Certificates
+
+- Certificates are signed by a Certificate Authority, and word on the basis of a Chain of Trust which leads to one of a small group of highly trusted Root CAs.
+
+- The server's certificate is sent during the TLD handshake process
+
+- TLS integrity provides a means of checkking whether a message has been altered or interfered with in transit
+
+- TLS integrity is implemented through the use of a Message Authentication Code (MAC)\
+
+## Evolution of Network Technologies
+
+- HTTP has changed considerably over the years, and is continuing to change
+
+- Many of the changes to HTTP are focused on imporving performance in response to the ever increasing demands of modern networked applications
+
+- Latency has a big immpact on the performance of networked applications. As developers and software engineeers we need to be aware of this impact, and try to mitigate against it through the use of various optimizations
+
+- In building networked applications, there are tools and techniques avaialble to us that work around or go beyond the limitations of basic HTTP request-response functionality
+
+- For certain use cases a peer-to-peer architecture may be more appropriate than a client-server architecture
