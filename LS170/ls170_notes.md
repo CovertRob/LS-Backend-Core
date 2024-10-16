@@ -137,3 +137,79 @@
 - In building networked applications, there are tools and techniques avaialble to us that work around or go beyond the limitations of basic HTTP request-response functionality
 
 - For certain use cases a peer-to-peer architecture may be more appropriate than a client-server architecture
+
+## Written Test Study Guide
+
+### Internet
+
+- Have a broad understanding of what the internet is and how it works
+  1. What makes up the entirety of the internet put together?
+  2. What are the networks called that make up the internet?
+  3. What are the pieces of equipment that enable the network communication? At which part do they work in?
+  4. In your own words, provide a definition for what protocols are. Why were they developed and still developed today?
+  5. What are some common protocols and the things they address for the internet?
+  6. What aspects of communication do protocols address and how does this lead to protocol grouping?
+  7. What are the layers of the OSI model?
+  8. What are the layers of the TCP/IP model?
+  9. How do OSI/TCPIP models differ from each other in how they approach defining the internets layers.
+  10. What are the components of a PDU? How does a PDU fit into the previously mentioned models?
+
+- Understand the characteristics of the physical network, such as latency and bandwidth
+  1. Define latency in your own words
+  2. Define bandwidth in your own words
+  3. What are the different mediums at the physical layer for transporting information and what do they transport?
+  4. What are the different elements of latency?
+  5. How do network hops fit into the elements of latency?
+  6. How does bandwidth vary across a physical network?
+
+- Have a basic understanding of how lower level protocols operate
+  1. What layers are responsible for lower level protcols?
+  2. What does an ethernet PDU accomplish?
+  3. What are the three most important parts of an ethernet frame?
+  4. What allows us to accomplish device addressing within a network? What is another name for this?
+  5. How does a hub and a switch utilize MAC address differently?
+  6. Why does using MAC addresses not scale well? Are they physical or logical? Flat or hierarchical?
+
+- Know what an IP address is and what a port number is
+  1. What layer do IP addresses belong in for both models? What does this enable for the internet?
+  2. What are the two primary features of the internet protocol?
+  3. What makes up the protocol data unit of the IP protocol?
+  4. What is usually the data payload of an IP packet?
+  5. Describe what it means for IP addresses to be logical in nature. How does hierarchy work? Subnetting?
+  6. What is the difference between IPV4 and IPV6?
+  7. What is a port and what are some common example ranges?
+  8. What is a communication end point? Another name for this?
+  9. Talk about the importance of sockets and their involvement in the different kinds of communication.
+  10. What is multiplexing and demultiplexing?
+
+- Have an understanding of how DNS works
+  1. What is the purpose of the Domain Name System? What is it?
+  2. Describe the request response cycle with regards to a DNS request. How does the hierarchy work?
+
+- Understand the client-server model of web interactions, and the role of HTTP as a protocol within that model
+
+### TCP & UDP
+
+- Have a clear understanding of the TCP and UDP protocols, their similarities and differences
+- Have a broad understanding of the three-way handshake and its purpose
+- Have a broad understanding of flow control and congestion avoidance
+
+### URLs
+
+- Be able to identify the components of a URL, including query strings
+- Be able to construct a valid URL
+- Have an understanding of what URL encoding is and when it might be used
+
+### HTTp and the Request/Response Cycle
+
+- Be able to explain what HTTP requests and responses are, and identify the components of each
+- Be able to describe the HTTP request/response cycle
+- Be able to explain what status codes are, and provide examples of different status code types
+- Understand what is meant by 'state' in the context of the web, and be able to explain some techniques that are used to simulate state
+- Explain the difference between `GET` and `POST`, and know whento choose each
+- Have a basic understanding of the asynchronous nature of AJAX, and the kinds of features that it enables for web apps
+
+### Security
+
+- Have an understanind of the various security risks that can affect HTTP, and be able to outline measures that can be used to mitigate against these risks
+- Be aware of the different services that TLS can provide, and have a broad understanding of each of those services
