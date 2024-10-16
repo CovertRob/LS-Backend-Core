@@ -187,16 +187,43 @@
   2. Describe the request response cycle with regards to a DNS request. How does the hierarchy work?
 
 - Understand the client-server model of web interactions, and the role of HTTP as a protocol within that model
+    1. What protocol enables the web and its various applications to interact with eachother?
+    2. What layer does HTTP belong to? What markup language does HTTP primarily interact with?
+    3. Describe how the client-server model interation works with regards to HTTP and accessing resources. How is state involved? What application element usually serves as the client? How is the server found for the client?
 
 ### TCP & UDP
 
 - Have a clear understanding of the TCP and UDP protocols, their similarities and differences
+    1. What are the key characteristics of TCP? Mention reliability, data recovery, data abstraction and encapsulation, performance, connection type
+    2. What are TCP segments? What is contained within their data payload?
+    3. Describe the 3 most important header fields in a TCP segment.
+    4. Discuss latency and head-of-line blocking. How do TCP and UDP handle these differently?
+    5. What is the PDU for UDP?
+    6. Describe UDP connection type and describe it by what it doesn't do.
+    7. How does UDP relate to all the charcteristics of TCP in the first question?
+    8. Describe the idea of using UDP as a template to build upon.
 - Have a broad understanding of the three-way handshake and its purpose
+    1. What does the three-way handshake relate to in regards to connection type?
+    2. What flags play a role in the handshake?
+    3. Provide an overview of the three-way handshake using a client-server interaction model
+    4. How does latency interact with TCP?
+    5. Does UDP have a handshake? Why not?
+
 - Have a broad understanding of flow control and congestion avoidance
+    1. Why are flow control and congestion avoidance major topics with regards to TCP?
+    2. What is flow control and how is it implemented in TCP?
+    3. What is network congestion and how is it implementd in TCP?
+    4. Is this implementd in UDP?
 
 ### URLs
 
 - Be able to identify the components of a URL, including query strings
+    1. Provide an example of a URL and describe each of the 2 required components. What are the other 3 optional component?
+    2. What is the default port used for normal HTTP requests?
+    3. Provide a query string example consisting of 3 different parts. What characters are special in a URL?
+    4. What type of HTTP requests most commonly use query strings?
+    5. What are the limitations to query strings?
+    6. What is URL encoding and what are the cases requring its use?
 - Be able to construct a valid URL
 - Have an understanding of what URL encoding is and when it might be used
 
@@ -206,7 +233,7 @@
 - Be able to describe the HTTP request/response cycle
 - Be able to explain what status codes are, and provide examples of different status code types
 - Understand what is meant by 'state' in the context of the web, and be able to explain some techniques that are used to simulate state
-- Explain the difference between `GET` and `POST`, and know whento choose each
+- Explain the difference between `GET` and `POST`, and know when to choose each
 - Have a basic understanding of the asynchronous nature of AJAX, and the kinds of features that it enables for web apps
 
 ### Security
