@@ -144,15 +144,38 @@
 
 - Have a broad understanding of what the internet is and how it works
   1. What makes up the entirety of the internet put together?
+  The internet, also called the world-wide web, is made up of a bunch of interconnected networks. These networks are able to talk to each other and share resources across eachother.
   2. What are the networks called that make up the internet?
+  The networks that make up the internet are local area networks and inter-connected networks. Local area networks that talk to other local area networks are what combine to create the inter-connectedness that makes up what we know as the internet.
   3. What are the pieces of equipment that enable the network communication? At which part do they work in?
+  The two primary pieces of equipment that enable network communcations are routers and switches. Switches primarly work within a local area network by directing network traffic to a specific device using a routing table which contains the MAC addresses of the devices in the LAN. A router on the other hand utilizes IP address ranges to direct traffic and is what enables LANs to talk to other LANs.
   4. In your own words, provide a definition for what protocols are. Why were they developed and still developed today?
+  Protocols are an agreed upon standardization for the way in which to conduct a certain process. This could include data transfer between network or the encryption of that data. Protocols define how these processes are conducted and enable it to be reproduced across multiple different networks by multiple different machines and still be able to talk to each other. Protocols were developed to address specific problems with regards to the web and its communication needs. They are still developed today to continue iterating on the improvment of previous designs and to address new problems with the web as technology develops and new needs arise.
   5. What are some common protocols and the things they address for the internet?
+  Some common protocols are as follows: Ethernet, HTTP, TCP, UDP, TLS, IP
   6. What aspects of communication do protocols address and how does this lead to protocol grouping?
+  Different types of protocols address different aspects of how networks communicate with each other. These lead us into groupings where certain protocols deal with syntactical rules and govern structure of messages and others deal with the flow and order of messages, aka message transfer rules. TCP and UDP address the flow and order but in different ways. HTTP defines the structure of said messages. You add a combination of these protocols up to create an overall network communication system. Which ones you choose is up to the programmer based on what kind of system you are making.
   7. What are the layers of the OSI model?
+  The Open Systems Interconnection model from top to bottom are as follows: (7 in total)
+    - Application
+    - Presentation
+    - Session
+    - Transport
+    - Network
+    - Data Link
+    - Physical
   8. What are the layers of the TCP/IP model?
-  9. How do OSI/TCPIP models differ from each other in how they approach defining the internets layers.
+    - Application
+    - Transport
+    - Internet
+    - Link
+  9. How do OSI/TCPIP models differ from each other in how they approach defining the internets layers?
+  The TCP/IP suite divides the layers by the scope of communcations within each layer. At the top is the application within a local area network, as it expands out to other networks is where the transport, internet, and link come into play. The OSI model divides the layers in terms of function that each layer provides for LANs and the internet as a whole. Putting multiple OSI models together is what makes up the internet.
+  10. How do the two models relate to eachother?
+  The TCP/IP application layer mostly maps to the top three layers of the OSI model: application, presentation, and session. The TCP/IP transport layer mostly maps to the fourth OSI layer, transport. The second TCP/IP layer, internet, mostly maps to the third layer of the OSI model, network. The first layer of TCP/IP, link, maps to the bottom two OSI layers, data link and physical.
   10. What are the components of a PDU? How does a PDU fit into the previously mentioned models?
+  A protocol data unit is an amount or block of data transferred over a network. Each protocl has a different anme for its PDUs. However, the idea of encapsulation remains the same across all PDUs. The data from one layer is encapsulated within a data unit of the layer below it. The basic concept of each PDU consists of a header, a data payload (the layer above), and in some cases a trailer or footer which contain meta data specific to that protocols PDU. For example: *(Ethernet Frame ( IP Packet ( TCP segment (HTTP R/R))))*. This break down of encapsulating PDU's allows us to remain a high level of abstraction at the application level of the models where many various protocols are used depending on our system design.
+  11. Describe both models in full detail with the protcols that belong in each layer.
 
 - Understand the characteristics of the physical network, such as latency and bandwidth
   1. Define latency in your own words
@@ -230,13 +253,46 @@
 ### HTTp and the Request/Response Cycle
 
 - Be able to explain what HTTP requests and responses are, and identify the components of each
+  1. What is an HTTP method?
+  2. What are the most common HTTP methods?
+  3. What is an HTTP GET request used for and what is an HTTP POST request used for?
+  4. How do headers apply to requests and responses?
+  5. What does a request consist of?
+  6. What does a response consist of?
+  7. What are some common request headers?
+  8. What are some common response headers?
+
 - Be able to describe the HTTP request/response cycle
+  1. Describe the HTTP request/response cycle with the following steps: client, server process, server send, client process
+
 - Be able to explain what status codes are, and provide examples of different status code types
+  1. What is a status code in regards to a response?
+  2. What are the most common codes and their meaning?
 - Understand what is meant by 'state' in the context of the web, and be able to explain some techniques that are used to simulate state
+  1. What is state and what makes the web stateless? Think HTTP and the server.
+  2. What are the three primary approaches to emulate statefullness?
+  3. How is a session identifier used to emulate state?
+  4. Where do cookies belong in regards to managing state and session? Are they included in the request response cycle?
+  5. What does AJAX stand for? What does it enable? How are callbacks involved?
 - Explain the difference between `GET` and `POST`, and know when to choose each
+  1. Provide three examples of each and when you would use them.
 - Have a basic understanding of the asynchronous nature of AJAX, and the kinds of features that it enables for web apps
+  1. How does AJAX slightly alter the request response cycle that you see?
 
 ### Security
 
-- Have an understanind of the various security risks that can affect HTTP, and be able to outline measures that can be used to mitigate against these risks
+- Have an understanding of the various security risks that can affect HTTP, and be able to outline measures that can be used to mitigate against these risks
+  1. Why is HTTP inherintly unsecure? What is packet sniffing? What can hackers use to identify you?
+  2. What cryptographic protocol does HTTPS use? What about certificates?
+  3. What is the definition of origin in context of same-origin policy? What does this policy restrict?
+  4. What is CORS? How does it guard against session hi-jacking? Other ways to prevent session hi-jacking?
+  5. What are the concerns of cross-site scripting? Methods for preventing it? What is escaping?
 - Be aware of the different services that TLS can provide, and have a broad understanding of each of those services
+  1. What are the three services that TLS provides and their definitions?
+  2. What is symmetric and asymmetric key encryption? How are each used in the TLS handshake?
+  3. What are the 4 steps to the TLS handshake?
+  4. What is a cipher suite?
+  5. How are certificates and public keys utilized in the handshake?
+  6. Describe what certificate authorities are and the chain of trust
+  7. What layer does TLS operate in with regards to HTTP and TCP/UDP?
+  8. What is a MAC? What is it used for? What is it similar to in other PDUs? What does it accomplish for integrity?
