@@ -157,18 +157,18 @@
   Different types of protocols address different aspects of how networks communicate with each other. These lead us into groupings where certain protocols deal with syntactical rules and govern structure of messages and others deal with the flow and order of messages, aka message transfer rules. TCP and UDP address the flow and order but in different ways. HTTP defines the structure of said messages. You add a combination of these protocols up to create an overall network communication system. Which ones you choose is up to the programmer based on what kind of system you are making.
   7. What are the layers of the OSI model?
   The Open Systems Interconnection model from top to bottom are as follows: (7 in total)
-    - Application
-    - Presentation
-    - Session
-    - Transport
-    - Network
-    - Data Link
-    - Physical
+  - Application
+  - Presentation
+  - Session
+  - Transport
+  - Network
+  - Data Link
+  - Physical
   8. What are the layers of the TCP/IP model?
-    - Application
-    - Transport
-    - Internet
-    - Link
+  - Application
+  - Transport
+  - Internet
+  - Link
   9. How do OSI/TCPIP models differ from each other in how they approach defining the internets layers?
   The TCP/IP suite divides the layers by the scope of communcations within each layer. At the top is the application within a local area network, as it expands out to other networks is where the transport, internet, and link come into play. The OSI model divides the layers in terms of function that each layer provides for LANs and the internet as a whole. Putting multiple OSI models together is what makes up the internet.
   10. How do the two models relate to eachother?
@@ -176,43 +176,84 @@
   10. What are the components of a PDU? How does a PDU fit into the previously mentioned models?
   A protocol data unit is an amount or block of data transferred over a network. Each protocl has a different anme for its PDUs. However, the idea of encapsulation remains the same across all PDUs. The data from one layer is encapsulated within a data unit of the layer below it. The basic concept of each PDU consists of a header, a data payload (the layer above), and in some cases a trailer or footer which contain meta data specific to that protocols PDU. For example: *(Ethernet Frame ( IP Packet ( TCP segment (HTTP R/R))))*. This break down of encapsulating PDU's allows us to remain a high level of abstraction at the application level of the models where many various protocols are used depending on our system design.
   11. Describe both models in full detail with the protcols that belong in each layer.
+  The OSI model:
+    7. Application: high level resource sharing protocols - HTTP, FTP, SMTP
+    6. Presentation: translation of data between networking service and an application, character encoding, data compression, encryption/decryption - *format of data, TLS is encapsulated by TCP*
+    5. Session: managing communication sessions, back and forth transmissions between nodes - *User authentication and connection, a session connection is separate from the transport connection, a session can have multiple transport connections and transport connections can be reused after a session close*
+    4. Transport (Segment/Datagram): reliable data transmission of data segments - *TCP/UDP*
+    3. Network (Packet): Structuring and managing multi-node network, addressing, routing, and traffic control - *Internet Protocol*
+    2. Data Link (Frame): Transmission of data frames between two nodes connected by physical layer - *Ethernet protocol*
+    1. Physical (Bit, signal): Transmission and reception of raw bit streams over a physical medium - *Electricity, light, RF*
+  
+  The TCP/IP model:
+    4. Application: HTTP, FPT, SMTP, TLS handshake takes place after the TCP handshake
+    3. Transport:TCP/UDP
+    2. Internet: Internet protocol
+    1. Link: Ethernet, MAC addressing
 
 - Understand the characteristics of the physical network, such as latency and bandwidth
   1. Define latency in your own words
+  Latency is how long it takes a piece of data to be transmitted from one point to another point. It also includes the processing time at all the intermediate hops along the way from the start point to the end point. 
   2. Define bandwidth in your own words
+  Bandwidth is the amount of data that can be transmitted along the network without having reliability and transmission issues causes by issues such as bottlenecking. Bandwidth is constrained by both transmission protocols and the physical implementation of the network. It also varies across various points of the network.
   3. What are the different mediums at the physical layer for transporting information and what do they transport?
+  The information is transmitted as bits, which is binary data. This transmission is carried by signals in the form of electrical signals, light signals, or radio waves. This is generally coax cables, fiber optic cables, and Wi-Fi.
   4. What are the different elements of latency?
+  The different elements of latency are propagation delay, transmission delay, processing delay, and queing delay. Propagation delay is a function of distance and speed for the amount of time it takes the signal to travel from sender to receiver. Transmission delay involves all of the various hops on the various wires, cables, switches, routers etc that the signal travels between from sender to final receiver. All these things add up to a transmission delay. Processing delay is the time it takes to translate the data between different elements at each stage of its transmission. Queuing delay is the time a device buffers incoming data when there is too much data at once. This is synonomous to traffic on a road. Add all of these up and you get latency.
   5. How do network hops fit into the elements of latency?
+  Network hops are the various nodes of the network path that the data needs to take to get from the sender to the receiver its being directed to. The amount of hops will widely vary.
   6. How does bandwidth vary across a physical network?
+  Bandwidth at the core of a network, such as in a data center server, will be very different than at the edge of the network, such as in a home office network.
 
 - Have a basic understanding of how lower level protocols operate
   1. What layers are responsible for lower level protcols?
+  The OSI model places lower level protocols in layer 2, the data link layer. In the TCP/IP model, lower level protcols take place in layer 1, the link layer. These layers govern identifying the device on the network to send data to and moving that data to it.
   2. What does an ethernet PDU accomplish?
+  An ethernet protocol data unit is the frame. It encapsulates data from the network/internet layers which are internet protocol packets. The ethernet protocol is the last, or lowest, protocol at which encapsulation takes place. The ethernet frame adds logical structure to the binary data being transmitted so that it can be understood on both ends.
   3. What are the three most important parts of an ethernet frame?
+  An ethernet frame structures the binary data by using various fields of data that are specific length bytes and appear in a set order. The key fields are the Source and Destination MAC address and the data payload. 
   4. What allows us to accomplish device addressing within a network? What is another name for this?
+  A common way we accomplish device addressing within a network is by having all devices with a network identification card assigned a permanent Media Access Control address. This address is a physical address assigned to the devices network card and allows switches to identify devices on the network.
   5. How does a hub and a switch utilize MAC address differently?
+  A hub sends data received to every device on the network that is connected to it. Each receiving device would check if its MAC address matches the destination MAC address in the ethernet frame to see if it is the intended recipient. Switches however, use a routing table with ethernet port numbers assigned to specific device MAC addresses. The switch checks the destination address for us and forwards it to the correct receipient based on said table.
   6. Why does using MAC addresses not scale well? Are they physical or logical? Flat or hierarchical?
+  MAC addressing does not scale well past a local are network level because it is not feasibly to have a database with all the MAC addresses everywhere. Also, since the addresses stay with their physical device, it would be near impossible to track when they move networks, such as laptops. MAC addresses are not logical in nature. They do not follow a pattern that can be broken down into sub-components. This makes them flat and not hierarchical in nature like IP addresses in the Internet protocol are.
 
 - Know what an IP address is and what a port number is
   1. What layer do IP addresses belong in for both models? What does this enable for the internet?
+  In the OSI model, IP addresses belong to the Internet protocol which is a part of the network layer. In the TCP/IP model, they belong in the internet layer. The internet protocol and IP addresses enables the internet to easily direct traffic based on the hierarchical set of rules that IP addresses follow. They are also logical in nature, meaning they are not tied to specific devices. This allows networks to assign IP addresses as devices join a network.
   2. What are the two primary features of the internet protocol?
+  The two primary features are routing capability via IP addressing and encapsulation of data into packets. The modularity that IP addressing provides through creating logical subnetworks makes it very powerful and easy to route data.
   3. What makes up the protocol data unit of the IP protocol?
+  The PDU for the internet protocl is the packet.A packet is comprised of a data payload and various headers. The headers are split into logical fields determined by set size and order within the packet. Some of the headers include Version, source address, and destination address.
   4. What is usually the data payload of an IP packet?
+  The data payload of an IP packet is from the transport layers in both models which consists of either a TCP segment or UDP datagram.
   5. Describe what it means for IP addresses to be logical in nature. How does hierarchy work? Subnetting?
-  6. What is the difference between IPV4 and IPV6?
+  The idea that IP addresses are logical in nature means that they are abstracted away from the physical hardware. IP addresses can be changed or reassigned based on network configurations and protocols. The idea of hierarchy is where a network is split into logical subnetworks where each have their own range of IP addresses that devices are allowed to be assigned if they try to join that specific subnetwork. The hierarchical nature is split into two parts, the network and host portion of the IP address.
+  6. What is the difference between IPV4 and IPV6? 
+  IPV4 addresses are 32 bits in length divided into four sections of eight bits. This allows for a range of numbers from 0 to 255. IPV6 on the other hand utilizes 128 bit length that are separated into 8 16-bit hexadecimals. This expansion allows for a lot more address space.
   7. What is a port and what are some common example ranges?
+  A port is used on a network device to identify a process (application) that is running on a host. A common example is a web browser which by default runs on port 80, which is the port that HTTP requests are communicated through. 0-1023 are the ranges for well known ports such as HTTP, FPT, SMTP etc.
   8. What is a communication end point? Another name for this?
+  A communication endpoint can be thought of as the combination of an IP address and the port number for a process. This communication endpoint is commonly refered to as a socket. The format for this endpoint follows the format: `XXX.XXX.XXX.XXX:Port`
   9. Talk about the importance of sockets and their involvement in the different kinds of communication.
+  In general, a socket is a mechanism for communication between both local processes and networked processes. How these sockets are implemented on a code level is what determines their involvement in the communication of said network devices. Sockets can be treated as objects and are what allow us to create the kind of communcation styled system we want. Whether that is connection orientd or connectionless is up to our implementation.
   10. What is multiplexing and demultiplexing?
+  Multiplexing is the idea of transmitting multiple signals over a single channel. Demultiplexing is the reverse process where the multiple signals are decoded on the receiving side. At the transport layer of our models the protocols there utilize assigned ports to accomplish this. This takes place on both the client and server sides.
 
 - Have an understanding of how DNS works
   1. What is the purpose of the Domain Name System? What is it?
+  The domain name system (DNS) is a distributed database across the world-wide web that allows users to access websites by their domain name instead of their IP address. The DNS maps the domain name to its IP address, encapsulating it so that it is more user friendly for users to type in a name of a website instead of IP addresses. 
   2. Describe the request response cycle with regards to a DNS request. How does the hierarchy work?
+  A user first types in a domain name in their web browser. When they hit enter to go to the website, the browser first checks if the domain is in its cache of domains on device. If it is not, it then reaches out to the DNS. The DNS follows a hierarchy where not all IP addresses are contained in one database. If one DNS datbase does not contain the mapping that we are looking for, the request is forwarded to the next DNS database. Once the request reaches the server that contains the information we are looking for, it returns a response with that domains IP address for our web browser to make the connection.
 
 - Understand the client-server model of web interactions, and the role of HTTP as a protocol within that model
     1. What protocol enables the web and its various applications to interact with eachother?
+    The Hyper Text Transfer Protocol (HTTP) enables web applications to interact with each other. This protocol enables clients to make requests to servers, and those servers to then issue responses back with the requested information to be rendered by the browser.
     2. What layer does HTTP belong to? What markup language does HTTP primarily interact with?
+    HTTP belongs in the application layer in both the web models. It is the transfer protocol for Hypertext Markup Language (HTML) and its various other elements that aid in rendering a put together web page.
     3. Describe how the client-server model interation works with regards to HTTP and accessing resources. How is state involved? What application element usually serves as the client? How is the server found for the client?
+    The client-server model of web interaction is what defines the two sides that make up the wordl-wide web. On the client side you have a user interacting with a machine which contains various running applications. Each time these applications need to get resources from the internet to build what the user is asking for, such as images, videos, web pages, and various files, it reaches out to a server. Servers are a specialized computer that retrieve and send back the resources the user's applications are asking for. HTTP is the protocol with which the web browser makes these requests to the server and is also how the server sends its response and resources back to the user's application. This client-server interaction is also stateless. Meaning that each HTTP request/response pair is completely independent.
 
 ### TCP & UDP
 
@@ -250,7 +291,7 @@
 - Be able to construct a valid URL
 - Have an understanding of what URL encoding is and when it might be used
 
-### HTTp and the Request/Response Cycle
+### HTTP and the Request/Response Cycle
 
 - Be able to explain what HTTP requests and responses are, and identify the components of each
   1. What is an HTTP method?
@@ -296,3 +337,10 @@
   6. Describe what certificate authorities are and the chain of trust
   7. What layer does TLS operate in with regards to HTTP and TCP/UDP?
   8. What is a MAC? What is it used for? What is it similar to in other PDUs? What does it accomplish for integrity?
+
+
+### Questions
+
+1. Where does TLS belong in the model architecture?
+2. Transmission delay vs processing delay? Basically the same thing?
+3. 
