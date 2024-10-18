@@ -259,25 +259,36 @@
 
 - Have a clear understanding of the TCP and UDP protocols, their similarities and differences
     1. What are the key characteristics of TCP? Mention reliability, data recovery, data abstraction and encapsulation, performance, connection type
+    The key characteristics of the Transport Control Protocol (TCP) are to provide a means to reliably transport data over an inherently unreliable connection. The protocol is an abstraction of reliable network communication on top of an unreliable channel. TCP allows for reliability through the re-transmission of lost or corrupted data through its connection oriented transmission protocol. This abstraction of the underlying channel is what ensures applications are guranteed reliable data. However, this amount of complexity can lead to performance issues since it can involve multiple RTT's and repeat transmissions and processing.
     2. What are TCP segments? What is contained within their data payload?
+    The abstraction created by TCP in which its characteristics are implemented through is known as a TCP segment. In the context of the web and a web browser, a TCP segment's data payload would be an HTTP request. Other fields include source and destination port headers. For implementing reliability important headers are the checksum and sequence number.
     3. Describe the 3 most important header fields in a TCP segment.
+    For reliability purposes these are the checksum, sequence number, and acknowledgement number. Checksum provides a means for the receiver to perform error detection. The sequence number and acknowledgement number allows for in-order delivery, handling data loss and duplication.
     4. Discuss latency and head-of-line blocking. How do TCP and UDP handle these differently?
+    Due to the intensive overhead in establishing and maintaining the TCP connection inherent with the three-way handshake it implements, latency can become an issue. The various characteristics it implements for reliable data transfer also contribute to its latency causing. A major one is head-of-line blocking. TCP messages have a sequence number that enable in-order message delivery. If a segment is lost or corrupted and needs to be re-transmitted, this can block the rest of the line of data from being processed. It tries to prevent this trhough various congestion avoidance feedback mechanisms.
     5. What is the PDU for UDP?
+    The PDU for the User Datagram Protocol is called a datagram. The header has four fields: Source Port, Destination port, UDP length, and a checksum field. The UDP datagram is extremely simple by design.
     6. Describe UDP connection type and describe it by what it doesn't do.
+    The UDP connection is a connectionless oriented one. It does not guarantee message delivery or delivery order, provides no built-in congestion avoidance or flow-control, and has no connection state tracking. 
     7. How does UDP relate to all the charcteristics of TCP in the first question?
+    UDP provides multiplexing on the same channel using port numbers in the same way that TCP does. It also provides a checksum for error detection similar to how TCP does. However, UDP has no other built-in methods for reliability, error detection, or data recovery. It uses the same idea of abstracting the data transmission ontop of an unreliable channel, but UDPs abstraction is built more for performance and latency prevention in mind. It encapsulates the same kind of data from the layer above, but it does so in a connectionless manner.
     8. Describe the idea of using UDP as a template to build upon.
+    Due to the way in which the UDP transmission abstraction is implemented, or rather the lack of implementation in comparision to TCP, it is a prime choice for developers that want to build specific protocol characteristics on top of it for their specific application and its needs. Use cases for this are applications that need to prioritize low latency and do not have data loss prevention as their primary concern.
 - Have a broad understanding of the three-way handshake and its purpose
     1. What does the three-way handshake relate to in regards to connection type?
+    The three way handshake is the implementation of a connection oriented protocol. 
     2. What flags play a role in the handshake?
+    The flags that are used in the handshake are the `SYN` and `ACK` flags. Note that this is different than the four-way handshake that takes place for terminating connections.
     3. Provide an overview of the three-way handshake using a client-server interaction model
-    4. How does latency interact with TCP?
-    5. Does UDP have a handshake? Why not?
+    In the three-way handshake you have a sender and a receiver. The client is the sender and the server is the receiver. The client sends a TCP segment with the `SYN` flag set to 1, upon receiving it, the server sends back a `SYN ACK` message, which is a TCP segment with the `SYN` and `ACK` flags both set to 1. Once the client receives the sever's `SYN ACK` message, the client sends another `ACK` segment to the server. Once the client sends the last `ACK` message, it can start sending data because this last TCP segment is used to synchronize the segments.
+    4. Does UDP have a handshake? Why not?
+    UDP does not have a handshake. Applications using UDP can start sending data without waiting for a connection to be established with the server.
 
 - Have a broad understanding of flow control and congestion avoidance
     1. Why are flow control and congestion avoidance major topics with regards to TCP?
-    2. What is flow control and how is it implemented in TCP?
-    3. What is network congestion and how is it implementd in TCP?
-    4. Is this implementd in UDP?
+    Flow control is the means by which the TCP protocol prevents the sender from overwhelming the receiver with too much data at once. This data flow amount is modulated by the WINDOW field of the TCP segment header. This is different than congestion avoidnce, which is a limitation of the physical underlying network to process and transmit data. Data loss can happen when at a network hop the router's buffer is full and data packets are dropped. TCP uses this data loss as a feedback mechanism to avoid congestion and reduce/increase transmission window limits as needed.
+    2. Is this implementd in UDP?
+    Flow control and congestion avoidance are not native to the base UDP protocol. However, it is choice that a developer can make to implement.
 
 ### URLs
 
