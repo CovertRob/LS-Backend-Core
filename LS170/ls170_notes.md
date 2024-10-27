@@ -294,64 +294,125 @@
 
 - Be able to identify the components of a URL, including query strings
     1. Provide an example of a URL and describe each of the 2 required components. What are the other 3 optional component?
+    The two required components of a URL are the scheme and the host. The scheme is for example `https://` at the beginning of the URL. It describes what kind of protocol is to be used. The second part, the host, is for example `substack.com`. The 3 optional components following the domain name are the path, port number, and query string(s). The port number, `:80` for example, is only required if you want to use a port other than the browsers default. The path, `/path`, is the path to the resource on the host that you are requesting from. Query strings, for example `?source=queue`, are made up of query parameters and are used to pass data to the server.
     2. What is the default port used for normal HTTP requests?
+    Port 80 is the default port for HTTP requests. Therefore, unless another port is specifically specified in the URL, 80 is the one being used. It's assumed to be a part of the URL. 
     3. Provide a query string example consisting of 3 different parts. What characters are special in a URL?
+    A query string example could be `?utm_mediu=web&utm_source=subscribe-widget&utm_content=150305722`. In this example, there are three different query parameter name/value pairs. The `?` is a reserved characters in URL's that mark the start of the query string. The `&` is another reserved character that adds additional parameters to the query string. Query strings are post commonly used with HTTP GET requests and are passed via plain text.
     4. What type of HTTP requests most commonly use query strings?
+    GET requests most commonly use query strings to pass values to the server that it uses as additional information in order to generate the response the user is requesting. They can be used with POST requests but are not common.
     5. What are the limitations to query strings?
-    6. What is URL encoding and what are the cases requring its use?
+    Query strings have a maximum length that is dependent on the browser you are using. They are visible in plain text in the URL so passing sensitive data is not recommended. Also, if you want to use spaces and special characters as part of the query parameters, you have to use URL encoding.
 - Be able to construct a valid URL
 - Have an understanding of what URL encoding is and when it might be used
+    1. What is URL encoding and what are the cases requring its use?
+    URLs are designed to only accept characters that are a part of the ASCII character set. Characters that are not in this set or reserved characters that have special purposes in the URL must be encoded with a `%` symbol and two hexadecimal digits that represent the UTF-8 character equivalent of the ASCII character you want to use. A common one to use is `%20` for spaces. Therefore, to use any of the extended ASCII characters, unsafe characters such as special characters for markup languages and scripting, and reserved characters for URLs, you have to use encoding.
 
 ### HTTP and the Request/Response Cycle
 
 - Be able to explain what HTTP requests and responses are, and identify the components of each
   1. What is an HTTP method?
+  An HTTP method is the kind of request communication that takes place between a client and a server. It is what tells the server what kind of action we want to perform on the a resource.
   2. What are the most common HTTP methods?
+  The most common HTTP methods are the GET and POST requests.
   3. What is an HTTP GET request used for and what is an HTTP POST request used for?
+  An HTTP GET request is used to to retrieve a webpage and the resources associated with that webpage. GET requests are commonly issues when you click a link or when navigating via the address bar of the browser. POST requests are used to send or submit data to the server. POST requesta are the preferred method for doing this because it allows us to send larger data files and keep them secure. A common use for POST is when you submit a web form such as a username and password.
   4. How do headers apply to requests and responses?
+  Request methods and server responses have additional headers that can be attached to the request/response it sends. These headers are metadata that help the client or server identify information about said communication and the resource associated with it.
   5. What does a request consist of?
+  The fields of an HTTP request are the request line, headers, and optional body. Headers that are required depend on what version of HTTP is in use. Below is an example of a minimal HTTP GET request. The `HOST` header is required in `HTTP/1.1`.
+  ~~~vb
+  GET / HTTP/1.1
+  Host: www.example.com
+  ~~~
   6. What does a response consist of?
+  The fields of an HTTP response are the status code, optional headers, and optional message body. The status line contains the HTTP version, status code, and an optional reason phrase. An example of this is `HTTP/1.1 200 OK`.
   7. What are some common request headers?
+  Common request headers headers are the host, accept-language, user-agent, and connection headers.
   8. What are some common response headers?
+  Common response headers are content-encoding, server, location, and content-type. These headers can have subtle effects on the data being returned in the response and can even have workflow consequences as in the case of a location response header. A more complex response would like like the below.
+
+  ~~~HTML
+  HTTP/1.1 200 OK
+  Content-Type: text/html; charset=UTF-8
+  Content-Length: 150
+
+  <html>
+    <head><title>Minimal Page</title></head>
+    <body><p>Hello, World!</p></body>
+  </html>
+  ~~~
 
 - Be able to describe the HTTP request/response cycle
   1. Describe the HTTP request/response cycle with the following steps: client, server process, server send, client process
-
+  The HTTP request/response cycle is the cycle in which communication takes place between a web browser and a server. It starts off with the client sending an HTTP request to a server that is hosting a resource we are requesting. The server receives this request and processes a response by performing some action, for example accessing a database to retrieve files. The server then sends an HTTP response back, indicating in the response if the request was successful, failed, or requires further action. The client receives this and processes it based on the information in the response. For example, it would render and display `HTML` contained in the response.
 - Be able to explain what status codes are, and provide examples of different status code types
   1. What is a status code in regards to a response?
+  A status code is contained in the status line which is the first part of an HTTP response. It indicates whether the HTTP request the client sent was processed correctly, failed, or requires additional actions. 
   2. What are the most common codes and their meaning?
+  The most common codes are 200, 302, 404, and 500. 200 has an associated message of OK and means the HTTP request was handled successfully. A code of 302 has an associated message of Found and means the requested resource has changed temporarily and usuually results in a redirect to another URL. 404 is Not Found and means the requested resource cannot be found by the server. This usually gets displayed on an error page by the browser. 500 is an Internal Server Error and is a generic code that gets passed back when something on the backend software side of the server encounters an issue with the request.
 - Understand what is meant by 'state' in the context of the web, and be able to explain some techniques that are used to simulate state
   1. What is state and what makes the web stateless? Think HTTP and the server.
+  State is the idea of maintaining a continuous session while a person is using a web browser on a website. In the context of HTTP request/response cycle, this means that each time we interact with an element on the web page, we don't have to completely reload the web page each timme. The web is inherently stateless because the HTTP request/response cycle is a stateless process. Each cycle has no relation to the one before or after it.
   2. What are the three primary approaches to emulate statefullness?
+  The client-server interaction model uses three primary approaches to emulate statefulness, they are session ID's, cookies, and AJAX.
   3. How is a session identifier used to emulate state?
+  Session identifiers are used by the server to identify the HTTP request/responses that belong to the same client. It is able to use this session identifier to store and associate data that belongs to that client and emulate a stateful experience. An example of this is keeping a user logged in throughout their session. The client attaches this session identifier to each HTTP request so the server can emulate the state.
   4. Where do cookies belong in regards to managing state and session? Are they included in the request response cycle?
+  Cookies are cached session data on the client's browser. They store information sent by the server used to identify the browser and session throughout the session interaction. The session ID discussed earlier is sent to the browser and stored in a cookie. This cookie is what the browser sends in the form of a HTTP request header each request.
   5. What does AJAX stand for? What does it enable? How are callbacks involved?
+  AJAX stands for asynchronous javascript and XML. It allows the browser to issue HTTP requests and process the responses without a full page refresh each time. It utilizes a callback to process the respone and update the webpage without interrutping the user's stateful experience.
 - Explain the difference between `GET` and `POST`, and know when to choose each
   1. Provide three examples of each and when you would use them.
+  An HTTP GET request is used when the client is requesting a resource from the server. A HTTP POST request is used when the client is sending data to the server to be logged, stored, or used for further on operations. Examples of HTTP GET requests include clicking a URL link, opening an image, and playing an audio file. Exammples of an HTTP POST request are entering a username/password, leaving a comment on a message board, and uploading a file.
 - Have a basic understanding of the asynchronous nature of AJAX, and the kinds of features that it enables for web apps
   1. How does AJAX slightly alter the request response cycle that you see?
+  The asynchronous nature of AJAX means that multiple HTTP request/responses can happen at the same time and it does not impact the webpage that you are seeing in its entirety. This allows web apps to not have to be completely refreshed each time it needs to be updated. This enables improved UX through dynamic content loading, real-time data updates, and even better error handling. It does not modify the  HTTP request/response cycle but rather modulates it such as to emulate a stateful and smooth UX on the client side.
 
 ### Security
 
 - Have an understanding of the various security risks that can affect HTTP, and be able to outline measures that can be used to mitigate against these risks
   1. Why is HTTP inherintly unsecure? What is packet sniffing? What can hackers use to identify you?
+  HTTP is inherently unsecure because the headers and information passed using the protocol are via plane text strings. Additinally, hackers can use hacking techniques such as packet sniffing to intercept your HTTP request/response cycle traffic and steal your session ID to gain access to your session. 
   2. What cryptographic protocol does HTTPS use? What about certificates?
+  HTTPS uses TLS as the cryptographic protocol. TLS utilizes symmetric and asymmetric encryption techniques with the aid of certificates to encrypt the HTTP traffic before it is sent out on the network.
   3. What is the definition of origin in context of same-origin policy? What does this policy restrict?
+  The same-origin policy defines same-origin as another resource occurring on the same combination of scheme, host, and port. This policy restricts cross-origin requests where other resources are being requested programatically. This helps restrict interaction with potentially malicious resources.
   4. What is CORS? How does it guard against session hi-jacking? Other ways to prevent session hi-jacking?
+  CORS stands for cross-origin resource sharing. It adds on additional HTTP headers that allow servers to interaction with cross-origin resources.
   5. What are the concerns of cross-site scripting? Methods for preventing it? What is escaping?
+Cross-site scripting happens when a user inputs HTML or JS that ends up being processed by the server and displayed directly on the websiste. If user inputs are not properly sanitized, this can allow a malicious acter to hijack user sessions and mess with the server. One way to prevent this is to escape HTML and JS with ASCII characters which displays the code as a character, preventing it from being processed as code.
 - Be aware of the different services that TLS can provide, and have a broad understanding of each of those services
   1. What are the three services that TLS provides and their definitions?
+  The Transport Layer Security protocol provides for Encryption, Authentication and Integrity. Encryption means to turn the plain text strings we intend to transport via an HTTP request and response into a cipher text that cannot be interpreted without the proper decryption keys. This allows us to securely pass sensitive data back and forth. Authentication is the ability to verify the identity of the party we are exchanging secure data with is who they say they are. This is done through the use of certificates and digital signatures. Integrity is the ability to verify that the message sent has not been tampered with in transit. This is accomplished through the use of Message Authentication Codes (MAC).
   2. What is symmetric and asymmetric key encryption? How are each used in the TLS handshake?
+  Symmetric encryption is when a shared key system is utilized. Both parties have acces to the same encryption key to send messages back and forth to each other. Asymmetric encryption is when pairs of public and private keys are used. This enables messages to be encrypted by anothers public key which can only be decrypted by their private key. 
   3. What are the 4 steps to the TLS handshake?
+  To securely exchange messages in the HTTP request/response cycle, we need to encrypt both the request and the response. The easiest way to do that is through symmetric encryption. To exchange the keys necessary, we will use asymmetric encryption. This is what makes up the TLS handshake. The handshake begins immediately after the TCP `ACK` message by sending a `ClientHello` message. Step 2 is the server sends a `ServerHello` message and includes its certificate with a `ServerHelloDone` marker. Step 3 is the exchange of the symmetric key and switch to using the encryption key. Step 4 is the server sending a message with a `Finished` flag after the client does the same.
   4. What is a cipher suite?
+  A cipher suite is a pre-agreed upon set of encryption algorithms that depend on the TLS version being used by the client and server. Different algorithms are used for the different parts of the TLS protocol. Each of these choices must be the same for the handhsake to be successful. This is why an agreement on cipher suite to be used is a part of the TLS handshake.
   5. How are certificates and public keys utilized in the handshake?
+  For the asymmetric encryption portion.
   6. Describe what certificate authorities are and the chain of trust
+  Certificate authorities verify the party requesting the certificate is who they say they are and they digitally sign the certificate being issues. This continues up a chain of certificates and those issueing them until you get to a root CA authority, which signs their own certificate. This creates a chain of trust that we can rely upon to know that the certificates people are using are genuine. 
   7. What layer does TLS operate in with regards to HTTP and TCP/UDP?
+  In the OSI model session layer, between HTTP and TCP.
   8. What is a MAC? What is it used for? What is it similar to in other PDUs? What does it accomplish for integrity?
+  Message authentication code. It is similar to the checksum field used in the TCP protocl to verify data completeness. For TLS, it ensures the data has not been tampered with or faked while in transit to the destination.
 
 
 ### Questions
 
-1. Where does TLS belong in the model architecture?
+1. Where does TLS belong in the model architecture? Between HTTP and TCP/UDP
 2. Transmission delay vs processing delay? Basically the same thing?
-3. 
+3. Why do you need an IP address and a MAC address to delivery something to a device? Can't juse use IP address?
+4. Tell me everything that happens when you type google.com into a web browser.
+  - DNS to IP 
+  - HTTP to that IP
+
+### Video Notes
+
+- Data moves through networks upon three tables: MAC address table, ARP table/cache, routing table
+  - MAC address table = switchport to MAC address
+  - ARP table = IP address to MAC
+  - Routing table = IP network to Interface or Next Router
