@@ -35,8 +35,12 @@ def chapters_matching(query):
     for index, name in enumerate(g.contents, start=1):
         with open(f"book_viewer/data/chp{index}.txt", "r") as file:
             chapter_content = file.read()
-        if query.lower() in chapter_content.lower():
-            results.append({'number': index, 'name': name})
+        matches = {}
+        for para_index, paragraph in enumerate(chapter_content.split("\n\n")):
+            if query.lower() in paragraph.lower():
+                matches[para_index] = paragraph
+        if matches:
+            results.append({'number': index, 'name': name.strip(), 'paragraphs': matches})
 
     return results
 
@@ -48,17 +52,15 @@ def search():
     
 @app.template_filter('in_paragraphs')
 def in_paragraphs(chp_content):
-    paragraphs = chp_content.split("\n\n")
-    print(paragraphs)
-    modified_content = '<p>'
-    for paragraph in paragraphs:
-        modified_content += (paragraph + '</p>')
-    
-    return modified_content
+    return chp_content.split("\n\n")
 
 @app.errorhandler(404)
 def page_not_found(_error):
     return redirect("/")
+
+@app.template_filter('highlight')
+def highlight(text, term):
+    return text.replace(term, f'<strong>{term}</strong>')
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
