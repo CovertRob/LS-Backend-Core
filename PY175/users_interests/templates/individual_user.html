@@ -1,0 +1,19 @@
+{% extends "common_display.html" %}
+<head>
+    <meta charset="utf-8">
+    <title>{{ person }}</title>
+  </head>
+{% block content %}
+    <h1>{{ person }}</h1>
+    <ul>
+        <h2>Email</h2>
+            <li>{{ email }}</li>
+        <h2>Interests</h2>
+            <li>{{ interests | list_interests }}</li>
+    </ul>
+{% endblock %}
+
+
+
+
+

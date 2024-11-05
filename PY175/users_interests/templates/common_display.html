@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Users</title>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    <div id="footer">
+        <footer>
+            <p>There are {{ num_users }} users with {{ num_interests }} interests</p>
+            <p> </p>
+          </footer>
+          <ul>
+            {% for user in users %}
+                {% if user != person %}
+                <li>
+                <a href="{{ url_for('individual_user', name=user) }}">{{ user }} </a>
+                  </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+  </body>
+</html>
