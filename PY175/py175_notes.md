@@ -58,3 +58,5 @@ colors:
 - You can nest variables in the jinja templates. Meaning you can have a template with variables and have another template extend that one and then pass all the needed variables as kwargs to one `render_template` call in the parent route call and all the variables will render
 
 - Use UUIDs to identify things across systems and platforms - like in the todo list application
+
+- By convention, we use render_template to handle errors that redisplay the same page, and redirect to handle success. We can also use redirect for errors that display a new page rather than re-displaying the original page. Pay attention to the arguments for render_template and redirect: render_template uses the name of a view template, but redirect needs a path, so we use url_for function.
