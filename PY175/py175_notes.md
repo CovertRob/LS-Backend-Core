@@ -56,3 +56,5 @@ colors:
 ~~~
 
 - You can nest variables in the jinja templates. Meaning you can have a template with variables and have another template extend that one and then pass all the needed variables as kwargs to one `render_template` call in the parent route call and all the variables will render
+
+- Use UUIDs to identify things across systems and platforms - like in the todo list application
