@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, session, request, flash
 from uuid import uuid4
-from todos.utils import error_for_list_title
+from todos.utils import error_for_list_title, find_list_by_id
+from werkzeug.exceptions import NotFound
 
 
 app = Flask(__name__)
@@ -36,6 +37,19 @@ def create_list():
 @app.route("/lists/new")
 def add_todo():
     return render_template('new_list.html')
+
+@app.route("/lists/<list_id>", methods=["GET"])
+def get_todo_list(list_id):
+    lists = session['lists']
+    todo_list = find_list_by_id(lists, list_id)
+    if todo_list:
+        return render_template("list.html", lst=todo_list)
+    raise NotFound(description="List not Found")
+
+# @app.errorhandler(404)
+# def todo_list_not_found(_error):
+#     return redirect(url_for("/lists"))
+    
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
