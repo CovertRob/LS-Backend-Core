@@ -3,6 +3,7 @@ from uuid import uuid4
 from todos.utils import error_for_list_title, find_list_by_id, error_for_todo_title, find_todo_by_id, delete_todo_by_id, todos_remaining, is_list_completed, sort_items, is_todo_completed
 from werkzeug.exceptions import NotFound
 from functools import wraps
+import os
 
 
 app = Flask(__name__)
@@ -146,4 +147,7 @@ def list_utilities_processor():
     return dict(todos_remaining = todos_remaining, is_list_completed=is_list_completed)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5003)
+    if os.environ.get('FLASK_ENV') == 'production':
+        app.run(debug=False)
+    else:
+        app.run(debug=True, port=5003)
