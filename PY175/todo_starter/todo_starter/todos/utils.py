@@ -1,3 +1,4 @@
+
 def error_for_list_title(title, lists):
     if any(lst['title'] == title for lst in lists):
         return "The title must be unique."
@@ -29,3 +30,28 @@ Deletes a todo item from a todo list by re-assigning the list of todo items exce
 def delete_todo_by_id(lst, todo_id):
     lst['todos'] = [todo for todo in lst['todos'] if todo['id'] != todo_id]
     return None
+
+def delete_list_by_id(session_lists, lst_id):
+    lst_to_delete = find_list_by_id(session_lists, lst_id)
+    session_lists.remove(lst_to_delete)
+    return None
+
+def todos_remaining(lst):
+    return sum(1 for todo in lst['todos'] if not todo['completed'])
+
+def is_list_completed(lst):
+    return len(lst['todos']) > 0 and todos_remaining(lst) == 0
+
+def is_todo_completed(todo):
+    return todo['completed']
+
+
+def sort_items(items, select_completed):
+    sorted_items = sorted(items, key=lambda item: item['title'].lower())
+
+    incomplete_items = [item for item in sorted_items
+                        if not select_completed(item)]
+    complete_items = [item for item in sorted_items
+                      if select_completed(item)]
+
+    return incomplete_items + complete_items

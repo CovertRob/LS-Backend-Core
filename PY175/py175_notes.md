@@ -60,3 +60,7 @@ colors:
 - Use UUIDs to identify things across systems and platforms - like in the todo list application
 
 - By convention, we use render_template to handle errors that redisplay the same page, and redirect to handle success. We can also use redirect for errors that display a new page rather than re-displaying the original page. Pay attention to the arguments for render_template and redirect: render_template uses the name of a view template, but redirect needs a path, so we use url_for function.
+
+- When using decorators with route function, we have to include view parameters that come from the URL link even though we aren't expicitly using them in our function because Flask has to pass that variable into the function
+
+- Go back and review decorators
