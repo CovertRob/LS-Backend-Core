@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<form action="/new" method="post">
+  <label for="new_file">Add a new document:</label>
+    <div class="form">
+      <input type="text" name="new_file">
+      <button type="submit">Create</button>
+  </div>
+  </form>
+{% endblock %}

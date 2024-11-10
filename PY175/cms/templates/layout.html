@@ -3,6 +3,7 @@
   <head>
     <title>{{ title }}</title>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/app.css') }}">
   </head>
   <body>
     <header>
@@ -12,7 +13,7 @@
     {% if messages %}
       {% for category, message in messages %}
         <div class="flash {{ category }}">
-          <p>{{ message }}</p>
+          <p class="message">{{ message }}</p>
         </div>
       {% endfor %}
     {% endif %}
