@@ -64,3 +64,9 @@ colors:
 - When using decorators with route function, we have to include view parameters that come from the URL link even though we aren't expicitly using them in our function because Flask has to pass that variable into the function
 
 - Go back and review decorators
+
+- `os.path.abspath(os.path.dirname(__file__))` is pythonic for determining file paths in a program
+  - The `__file__` dunder variable is the path to the current script/file being run
+
+- You can't serve a file with a route function and then use that file in another route function because Flask sets it to a direct pass through mode, dissallowing you to modify the sequence while it is in a response
+  - RuntimeError: Attempted implicit sequence conversion but the response object is in direct passthrough mode. : When I tried
