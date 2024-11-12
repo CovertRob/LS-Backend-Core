@@ -3,9 +3,19 @@ import os
 from markdown import markdown
 from functools import wraps
 import yaml
+import bcrypt
 
 app = Flask(__name__)
 app.secret_key = 'secret'
+
+def valid_credentials(username, password):
+    credentials = load_user_credentials()
+
+    if username in credentials:
+        stored_password = credentials[username].encode('utf-8')
+        return bcrypt.checkpw(password.encode('utf-8'), stored_password)
+    else:
+        return False
 
 def load_user_credentials():
     filename = 'users.yaml'
@@ -127,10 +137,8 @@ def show_signin_form():
 def signin():
     username = request.form.get('username')
     password = request.form.get('password')
-
-    credentials = load_user_credentials()
     
-    if username in credentials and credentials[username] == password:
+    if valid_credentials(username, password):
         session['username'] = username
         flash("Welcome!")
         return redirect(url_for('index'))
