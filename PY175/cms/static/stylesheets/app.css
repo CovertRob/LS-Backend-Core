@@ -8,7 +8,11 @@ body {
     background: #FFFF99;
   }
 
-  .form {
-    display: block;
-    
-}
+  form.inline {
+    display: inline;
+  }
+
+  .user-status {
+    font-style: italic;
+    font-size: 0.9em;
+  }
