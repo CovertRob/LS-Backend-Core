@@ -155,3 +155,10 @@ ALTER TABLE all_users DROP COLUMN enabled;
 - Deleting a table is much the same as dropping a database:
   - `DROP TABLE all_users;`
   - Both `DROP COLUMN` and `DROP TABLE` are not reversible
+
+### Data and DML
+
+- DML (data minipulation language) is a sub-language of SQL which incorporates the various key words, claues and syntax used to write Data Minupulation Statements.
+  - Used for accessing and manipulating data in the database
+  - `INSERT, SELECT, UPDATE, DELETE`
+- *CRUD* - create, read, update, delete, analogous to the above operations
