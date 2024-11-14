@@ -121,3 +121,37 @@ ALTER TABLE table_name
       constraint_clause;
 ~~~
 
+- To remove a constraint:
+
+~~~SQL
+ALTER TABLE table_name
+      DROP CONSTRAINT constraint_name;
+~~~
+
+- If we wanted to remove the default clause that appears when we set the `id serial` column:
+
+~~~SQL
+ALTER TABLE all_users
+      ALTER COLUMN id
+      DROP DEFAULT;
+~~~
+
+- Adding a column for last login example:
+  - `NOW` is a SQL function, it provides the current date and time when it is called. There are many such functions in postgres
+
+~~~SQL
+ALTER TABLE all_users
+      ADD COLUMN last_login timestamp
+                 NOT NULL
+                 DEFAULT NOW();
+~~~
+
+- Removing a column:
+
+~~~SQL
+ALTER TABLE all_users DROP COLUMN enabled;
+~~~
+
+- Deleting a table is much the same as dropping a database:
+  - `DROP TABLE all_users;`
+  - Both `DROP COLUMN` and `DROP TABLE` are not reversible
