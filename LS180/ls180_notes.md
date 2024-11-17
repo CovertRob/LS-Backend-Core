@@ -162,3 +162,142 @@ ALTER TABLE all_users DROP COLUMN enabled;
   - Used for accessing and manipulating data in the database
   - `INSERT, SELECT, UPDATE, DELETE`
 - *CRUD* - create, read, update, delete, analogous to the above operations
+
+- General `INSERT` statement:
+  - Required: table name, names of columns, values we are storing
+  - Must specifcy a value for each column we name, if no column specified for data insertion then a null or default value will be added to the record you wish to store instead
+
+~~~SQL
+INSERT INTO table_name
+            (column1_name, column2_name,...)
+     VALUES (data_for_column1, data_for_column2, ...);
+
+INSERT INTO users (full_name)
+           VALUES ('Jane Smith'), ('Harry Potter');
+~~~
+
+- Return value: `INSERT 0 1` - 0 is the `oid` tag and `1` is the count of rows inserted
+- Often rely on the `DEFAULT` constraint when inserting data for certain columns
+- Remember that database indexes come into play when `UNIQUE` constraint is applied
+
+- Can add `CHECK` constraints to ensure values are not something when insertin data:
+- `ALTER TABLE users ADD CHECK (full_name <> '');`
+  - `<>` is an operator is SQL representing 'not equal'
+  - If no name specified for our check constraint, it's fine to leave the naming up to postgres
+  - NOTE: must escape quote marks with another quote mark, strings are marked by single `''` in postgres
+
+- More examples:
+
+~~~SQL
+INSERT INTO celebrities (first_name, last_name, occupation, date_of_birth, deceased)
+              VALUES ('Bruce', 'Springsteen', 'Singer, Songwriter', '1949-09-23', false);
+
+INSERT INTO countries (name, capital, population)
+             VALUES ('USA', 'Washington D.C.', 325365189),
+                    ('Germany', 'Berlin', 82349400),
+                    ('Japan', 'Tokyo', 126672000);
+
+ALTER TABLE celebrities
+  ALTER COLUMN last_name DROP NOT NULL;
+
+INSERT INTO orders (customer_name, customer_email, customer_loyalty_points, burger, side, drink, burger_cost, side_cost, drink_cost)
+            VALUES ('James Bergman', 'james1998@email.com', 28, 'LS Chicken Burger', 'Fries', 'Cola', 4.50, 0.99, 1.50),
+                   ('Natasha O''Shea', 'natasha@osheafamily.com', 18, 'LS Cheeseburger', 'Fries', NULL, 3.50, 0.99, DEFAULT),
+                   ('Natasha O''Shea', 'natasha@osheafamily.com', 42, 'LS Double Deluxe Burger', 'Onion Rings', 'Chocolate Shake', 6.00, 1.50, 2.00),
+                   ('Aaron Muller', NULL, 10, 'LS Burger', NULL, NULL, 3.00, DEFAULT, DEFAULT);
+~~~
+
+- Generally want to avoid boolean columns from having `null` values because it creates three possible states
+  - If default set for boolean column and there is not a null constraint set, postgres will still allow null to be inserted
+
+### Select Query Syntax
+
+- `SELECT` statement syntax:
+
+~~~SQL
+SELECT column_name, ...
+  FROM table_name
+  WHERE condition;
+~~~
+
+- In a query response:
+  - The order of columns in the response is the order that the column names are specified in our query, rather than the 'natural' order of the table columns
+  - The number of rows returned are the rows that match the WHERE condition
+- Statements consist of identifiers and keywords
+  - Identifiers: identify tables or columns within a table
+  - Keywords: such as `SELECT` and `FROM` tell postgres to do something specific
+  - Can double quote "" identifiers to escape them if they are the same as identifiers, such as `year`
+
+- SQL allows returning sorted data by adding the `ORDER BY column_name` clause to a query
+
+~~~SQL
+SELECT column_name, ...
+       FROM table_name
+       WHERE condition
+       ORDER BY column_name;
+~~~
+
+- When using `ORDER BY`
+  - `False` comes before `True` in ascending order
+  - Use keywords `ASC` or `DESC` to specify sort direction, default is `ASC`
+  - Can fine tune by having comma-separated expression in the `ORDER BY` clause
+
+~~~SQL
+SELECT full_name, enabled FROM users
+ORDER BY enabled DESC, id DESC;
+~~~
+
+### Operators
+
+- Comparison, Logical, and String matching
+  - Not all, just common ones in postgres
+- `<, >, <=, >=, =, <>`
+
+- Comparison predicates - behave like operators but with special syntax
+  - `BETWEEN`, `NOT BETWEEN`, `IS DISTINCT FROM`, `IS NOT DISTINCT FROM`
+  - `IS NULL`, `IS NOT NULL`
+  - When identifying `NULL` values we must use the `IS NULL` comparison predicate
+
+`SELECT * FROM my_table WHERE my_column IS NULL;`
+
+- Three logical operators are `AND` `OR`, `NOT`
+
+~~~SQL
+SELECT * FROM users
+         WHERE full_name = 'Harry Potter'
+            OR enabled = 'false';
+~~~
+
+- Substring matching usually done using `LIKE` or case-insensitive `ILIKE` operator
+  - In our example, trying to find only last names when we only have a full_name column
+  - Below, `%` is a wildcard character for string matching
+  - Underscore, `_` is also a string wildcard but only for ONE character
+  - Can only use `SIMILAR TO` which compares the target column to a Regex pattern
+~~~SQL
+SELECT * FROM users WHERE full_name LIKE '%Smith';
+SELECT * FROM users WHERE full_name LIKE '%SMITH';
+SELECT * FROM users WHERE full_name ILIKE '%SMITH';
+~~~
+
+- Having multiple `ORDER BY` clauses doesn't affect every row, only if rows are equal does it move onto the next clause
+
+- Remember to include matching for `NULL` if it is allowed
+  - Good example for why you should always attach a `NOT NULL` constaint to boolean columns
+
+~~~SQL
+SELECT first_name, last_name
+FROM celebrities
+WHERE deceased != true
+OR deceased IS NULL;
+
+SELECT first_name, last_name
+FROM celebrities
+WHERE occupation LIKE '%Singer%';
+
+SELECT first_name, last_name
+FROM celebrities
+WHERE (occupation LIKE '%Actor%' OR occupation LIKE '%Actress%')
+AND occupation LIKE '%Singer%';
+~~~
+
+- Note in the above that `AND` has a higher operator precedence in SQL than `OR`
