@@ -100,7 +100,7 @@ ALTER TABLE all_users
     ALTER COLUMN full_name TYPE varchar(25);
 ~~~
 
-- With constraints, instead of changing them, we usually add them to or remove th em from the column definition
+- With constraints, instead of changing them, we usually add them to or remove them from the column definition
   - There is an `ALTER CONSTRAINT` clause used to change certain aspects of Foreign Key constraints but usually just adding/removing
 - There are table and column restraints: syntax in commands differs but function the same
   - `NOT NULL` column constraint
@@ -111,6 +111,21 @@ ALTER TABLE all_users
 ALTER TABLE table_name
       ALTER COLUMN column_name
       SET NOT NULL;
+~~~
+
+
+- Shorthand for adding `CHECK` constraints:
+
+~~~SQL
+ALTER TABLE birds ADD CONSTRAINT check_age CHECK (age > 0);
+ALTER TABLE birds ADD CHECK (age > 0);
+~~~
+
+- For adding to a specific column you can also use `ALTER COLUMN`:
+
+~~~SQL
+ALTER TABLE table_name
+ALTER COLUMN column_name SET CONSTRAINT constraint_definition;
 ~~~
 
 - To add any other constraint to an EXISTING table, must use this syntax:
@@ -155,6 +170,12 @@ ALTER TABLE all_users DROP COLUMN enabled;
 - Deleting a table is much the same as dropping a database:
   - `DROP TABLE all_users;`
   - Both `DROP COLUMN` and `DROP TABLE` are not reversible
+
+- Can also do this to avoid an error:
+
+~~~SQL
+DROP TABLE IF EXISTS birds;
+~~~
 
 ### Data and DML
 
@@ -301,3 +322,440 @@ AND occupation LIKE '%Singer%';
 ~~~
 
 - Note in the above that `AND` has a higher operator precedence in SQL than `OR`
+
+### Limit and Offset
+
+- `LIMIT` and `OFFSET` are the base on which pagination is built
+
+~~~SQL
+SELECT * FROM users LIMIT 1 OFFSET 1;
+~~~
+
+- The above limits the return to 1 row and will skip the first row
+
+- Commonly used in development when testing queries as well
+
+### Distinct Clause
+
+`SELECT DISTINCT full_name FROM users;`
+
+- Use the above to filter out duplicates when selecting
+
+- Using `DISTINCT in conjunction with functions is helpful
+
+`SELECT count(DISTINCT full_name) FROM users;`
+
+### Functions
+
+- Common groups - String, date/time, aggregate
+- Examples:
+
+~~~SQL
+SELECT length(full_name) FROM users;
+
+SELECT trim(leading ' ' from full_name) FROM users;
+
+SELECT full_name, date_part('year', last_login) FROM users;
+
+SELECT full_name, age(last_login) FROM users;
+~~~
+
+- Aggregate functions perform aggregation - compute a single result from a set of input values
+- Examples:
+
+~~~SQL
+SELECT count(id) FROM users;
+
+SELECT sum(id) FROM users;
+
+SELECT min(last_login) FROM users;
+
+SELECT max(last_login) FROM users;
+
+SELECT avg(id) FROM users;
+~~~
+
+- `GROUP BY` allows us to split up groups when using functions
+  - When using aggregate function, if you include columns in the column list alongside the function, those those columns must also be included in a `GROUP BY` clause
+
+~~~SQL
+SELECT enabled, count(id) FROM users GROUP BY enabled;
+~~~
+
+### Updating Data
+
+- `UPDATE` statement syntax
+  - The `WHERE` clause is optional, wihtout it postgres will update every row inthe table
+  - Best to test target rows using the clause in a `SELECT` statement first
+
+~~~SQL
+UPDATE table_name
+SET column_name = value, ...
+WHERE expression;
+~~~
+
+- `DELETE` statement syntax
+
+~~~SQL
+DELETE FROM table_name WHERE expression;
+~~~
+
+- With update, you can update one or more columns within one or more rows using a set clause, but with delete you can only delete one or more entire rows and not particular pieces of data
+
+- Can set things to null with an `UPDATE` statement to achieve the same thing:
+
+~~~SQL
+UPDATE table_name SET column_name1 = NULL
+WHERE expression;
+~~~
+
+- Note that although in PostgreSQL boolean values display as t or f in the results of a SELECT query, t and f are not valid literal boolean values unless used in single quote marks: 't', 'f'. Other acceptable literals are true or false without quote marks; or 't', 'true', 'y', 'yes', 'on', '1' with quote marks for true, and 'f', 'false', 'n', 'no', 'off', '0' with quote marks for false.
+
+### Normalization
+
+- The process of splitting up data to remove duplication and improve data integrity is known as normalization
+  - The mechanism for carrying out normalization is arranging data in multiple tables and defining relationships between them
+  - Zooming out and looking at these possible relationships is where database design comes into play
+
+- Database design involves defining **entities** to represent different sorts of data and designing **relationships** between those entities
+  - Entities represent real word objects or a set of data that we want to model within our database
+  - Create Entity Relationship Diagram (ERD)
+
+### Keys
+
+- Keys are a special type of constraint used to establish realtionships and uniqueness - used to identify a specific row in the current table or refer to a specific row in another table
+  - Primary Keys and Foreign Keys
+
+- Primary key: a unique identifier for a row of data
+  - Setting a column as `NOT NULL` and `UNIQUE` such as ID basically makes it a primary key, just not officially set yet
+  - Each table can only have one primary key - using `ID` is common practice
+- Foreign Key: associates a row in one table to a row in another table - you set a column in one table as a Foreign Key and have that column reference another table's Primary Key column
+
+~~~SQL
+FOREIGN KEY (fk_col_name)
+REFERENCES target_table_name (pk_col_name);
+~~~
+
+- Referential Integrity guarantees that a given foreign key value references an existing record in the target table, if it doesn't, an error occurs
+
+### Relationship Types
+
+- One-to-One: exists when a particular entity instance exists in one table and it can have only one associated entity instance in another table
+
+~~~SQL
+/*
+one-to-one: User has one address
+*/
+
+CREATE TABLE addresses (
+  user_id int, -- Both a primary and foreign key
+  street varchar(30) NOT NULL,
+  city varchar(30) NOT NULL,
+  state varchar(30) NOT NULL,
+  PRIMARY KEY (user_id),
+  FOREIGN KEY (user_id)
+      REFERENCES users (id)
+      ON DELETE CASCADE
+);
+~~~
+
+- Modality of the relationship determines whether you can or cannot add data without a relationship being present
+
+- Must set `ON DELETE` clauses to delete associated rows when you delete another row otherwise postgres throws an error
+  - Various options include `SET NULL`, `CASCADE`, and `SET DEFAULT`
+
+- One-to-Many
+
+~~~SQL
+CREATE TABLE books (
+  id serial,
+  title varchar(100) NOT NULL,
+  author varchar(100) NOT NULL,
+  published_date timestamp NOT NULL,
+  isbn char(12),
+  PRIMARY KEY (id),
+  UNIQUE (isbn)
+);
+
+/*
+ one-to-many: Book has many reviews
+*/
+
+CREATE TABLE reviews (
+  id serial,
+  book_id integer NOT NULL,
+  reviewer_name varchar(255),
+  content varchar(255),
+  rating integer,
+  published_date timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (book_id)
+      REFERENCES books(id)
+      ON DELETE CASCADE
+);
+~~~
+
+- Note that the foreign key book_id has a NOT NULL constraint. In general, foreign keys in one-to-many relationships should not allow NULL. In this case, it makes no sense to have a review that isn't tied to a book.
+
+- Many-to-Many
+
+- There isn't a way to implement a many-to-many relationship between two tables directly. Instead, we break apart this many-to-many relationship into two one-to-many relationships using a third, cross-reference, table (also known as a join table). This table holds the relationship between the two entities, by having two FOREIGN KEYs, each of which references the PRIMARY KEY of one of the tables for which we want to create this relationship.
+
+~~~SQL
+CREATE TABLE checkouts (
+  id serial,
+  user_id int NOT NULL,
+  book_id int NOT NULL,
+  checkout_date timestamp,
+  return_date timestamp,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+                        ON DELETE CASCADE,
+  FOREIGN KEY (book_id) REFERENCES books(id)
+                        ON DELETE CASCADE
+);
+~~~
+
+- Should not allow `NULL` values in many-to-many relationships as well
+
+- Think of many-to-many as combining two one-to-many relationships
+
+- Adding foreign key syntax
+
+~~~SQL
+ALTER TABLE table_name
+      ADD FOREIGN KEY (column_name)
+      REFERENCES other_table(other_table_primary_key);
+~~~
+
+- Only use the `ON DELETE CASCADE` statement in one-to-one relationships
+
+- Refer to LS burger example in book for creating a many-to-many setup
+
+### Joins
+
+- JOINs are clauses in SQL statements that link two tables together
+
+- Syntax:
+  - Statement after `ON` is the *join condition* - defines logic by which a row in one table is joined to a row in another table
+    - Commonly done by using primary key of one table and foreign key of the table we want to join it with
+
+~~~SQL
+SELECT table_nameN.column_name, ...
+       FROM table_name1
+       join_type JOIN table_name2
+                 ON join_condition;
+~~~
+
+- To join one table to another need following info:
+  - Name of the first table to join
+  - Type of join to use
+  - Name of second table to join
+  - Join condition
+
+- The join statement produces what is known as a transient join table - the `SELECT column_list FROM` statement is then executed for this transient table
+  - Note that this idea of transient tables is only a mental model
+
+- Types of Joins
+  - `INNER` - returns a result set that contains the common elements of the tables (an intersection where they match on the joined condition)
+  - `LEFT` - AKA LEFT OUTER JOIN takes all rows from left table and joins it with a second table. Null values are used to represent missing values from the second table
+  - `RIGHT` - AKA RIGHT OUTER JOIN, same thing as above but with the table roles switched
+  - `FULL` - combination of right and left joins
+  - `CROSS` - AKA cartesian join, contains every possible combination of rows from the tables that have been joined - has no ON clause becuase of this - mathematically this is the cross product of a set
+  - To join multiple tables together there must be a logical relationship between the tables involved
+  - Multiple joins act on the transient table created by the join before it
+
+- Can use aliasing to reduce syntax length:
+  - We can even use a shorthand for aliasing by leaving out the AS keyword entirely. FROM users u and FROM users AS u are equivalent SQL clauses.
+
+~~~SQL
+SELECT u.full_name, b.title, c.checkout_date
+       FROM users AS u
+       INNER JOIN checkouts AS c
+           ON u.id = c.user_id
+       INNER JOIN books AS b
+           ON b.id = c.book_id;
+~~~
+
+- Can use aliasing for greater context:
+
+~~~SQL
+SELECT count(id) AS "Number of Books Checked Out"
+       FROM checkouts;
+~~~
+
+### Subqueries
+
+- Nesting `SELECT` statements and using them in other `SELECT` statements is known as a subquery
+
+~~~SQL
+SELECT u.full_name FROM users u
+       WHERE u.id NOT IN (
+           SELECT c.user_id FROM checkouts c
+       );
+~~~
+
+- General rule of thumb, JOINs are faster to run than subqueries
+
+
+### More Examples
+
+~~~SQL
+
+CREATE TABLE airlines (
+  id serial PRIMARY KEY,
+  airline_name varchar(30),
+  country varchar(50),
+  iata_code char(2),
+  icao_code char(3),
+  website varchar(40),
+  CHECK (length(iata_code) = 2),
+  CHECK (length(icao_code) = 3)
+);
+ALTER TABLE airlines
+  ALTER COLUMN airline_name SET NOT NULL;
+~~~
+
+~~~SQL
+  CREATE TABLE airlines (
+  id serial PRIMARY KEY,
+  airline_name varchar(30) NOT NULL,
+  country varchar(50),
+  iata_code varchar(2) CHECK (length(iata_code) = 2),
+  icao_code varchar(3) CHECK (length(icao_code) = 3),
+  website varchar(40)
+);
+~~~
+
+~~~SQL
+CREATE TABLE airlines (
+  id serial PRIMARY KEY,
+  airline_name varchar(30) NOT NULL,
+  country varchar(50),
+  iata_code char(2),
+  icao_code char(3),
+  website varchar(40)
+);
+ALTER TABLE airlines
+  ADD CHECK (length(iata_code) = 2),
+  ADD CHECK (length(icao_code) = 3);
+~~~
+
+~~~SQL
+CREATE TABLE airlines (
+  id serial PRIMARY KEY,
+  airline_name varchar(30) NOT NULL,
+  country varchar(50)
+);
+ALTER TABLE airlines
+  ADD COLUMN iata_code char(2),
+  ADD COLUMN icao_code char(3),
+  ADD COLUMN website varchar(40),
+  ADD CHECK (length(iata_code) = 2),
+  ADD CHECK (length(icao_code) = 3);
+~~~
+
+- All 4 of the above accomplish the same thing
+
+## Scheme, Data, and SQL
+
+### SQL
+
+- SQL is a special purpose language since it is typically only used to interact with relational databases
+
+- The three sublanguages of SQL are DDL, DML, DCL - Data definition language, data manipulation language, data control language
+
+- Various string escaping:
+  - 'canoe'
+  - 'a long road'
+  - 'weren''t'
+  - '"No way!"'
+
+- The `||` operator is used to conatenate strings
+
+- You can do math in SQL
+  - `trunc()` truncates a value to a default decimal place of 0 or a specified precision
+
+~~~SQL
+sql-course=# SELECT trunc(4 * pi() * 26.3 ^ 2);
+ trunc
+-------
+  8692
+(1 row)
+~~~
+
+- SQL consists of 3 different sublanguages. One of these sublanguges is called the Data Control Language (DCL) component of SQL. It is used to control access to a database, it is responsible for defining the rights and roles to indvidual users. Common statements include `GRANT` and `REVOKE`
+- Another sublanguage is called the Data Manipulation Language (DML). It is used to manipulate the data that is present inside of the database to do things like create, read, update, and delete data. Such actiions include working with statements like `INSERT`, `UPDATE`, `SELECT`, `DELETE`. 
+- Another sublanguge is called the Data Definition Language (DDL). This sub-language is used to define the schema and relations of the tables present in the database. This includes creating, modifying, and deleting databases and tables. Put together, this describes how the data is structured. Common statements include `CREATE`, `ALTER`, and `DROP`.
+
+- `SELECT` statements query (read) data in a database. Since it manipulates the data and not the structure of the data, it is part of the DML sublanguage.
+
+- `CREATE TABLE` statements create and define the structure of new tables in the database. This structure defines how the data is stored. It describes the data and its attributes through data definitions. Since this involves the creation of a table structure, this is part of the DDL.
+
+- `ALTER TABLE` statements change the definitions of the table that define what kinds of data is stored and its attributes. THerefore, it is a part of the DDL. Modifies the characteristics and attributes of a table. No manipulation of data takes place.
+
+- `INSERT INTO` statements write data to tables for storage. Since they directly interact with data manipulation, this is part of the DML. Adds new rows of data in a database. Manipulates data and not the structure of it.
+
+- `\d things` is a `psql` meta-command and is therefore not a part of any SQL sub-language
+
+- `DELETE FROM` is part of the DML becuase it deletes specific rows of data in a database, manipulating the data and not the structure of the data.
+
+- `DROP DATABASE` is considered a part of the DDL because its main purpose is to operate on data definitions. The deletion of data is merely a side effect.
+
+- `CREATE SEQUENCE` statements modify the characteristics and attributes of a database by adding a sequence object to the database structure. It therefore manipulates the data definitions and not data directly, therefore it is a part of the DDL. (Sequence is a special kind of database object that generates a series of unique numbers)
+
+### Null
+
+- `Null` in Postgres cannot be evaluated to a truthy value when comparing two `Null` values as you can in other programming languages
+  - When a `Null` value appears to either side of any ordinary comparison operator, the operator will return `NULL` instead of true or false. 
+  - Postgres displays `NULL` values as empty
+  - **Must use the `IS NULL` or `IS NOT NULL` constructs in postgres**
+
+### Data Types
+
+[text](https://www.postgresql.org/docs/current/datatype.html)
+
+- `varchar(n)` stores up to `n` characters while `text` can store an unlimited number of characters (up to Postgres max)
+
+- `integer` vs `decimal` vs `real` - integer values are non-fractional numbers. Real are floating point numbers that can include fractional values. Decimal values can contain non-floating point fractional values with a limited precision
+
+- 2147483647 is the max for an `integer` value
+
+- `timestamp` includes a date and time of day, while `date` only includes the date (no time)
+
+- You cannot store a timezone in `timestamp`, must use `timestamp with time zone` (`timestamptz`)
+
+- **If both values are integers, postgres defaults to integer division which truncates the decimal** - remember when dealing with fraction and division
+
+### Loading Database Dumps
+
+- `$ psql -d my_database < file_to_import.sql` to pipe
+
+- Or you can import a SQL file using the `\i` meta-command
+
+### Select stuff
+
+~~~SQL
+SELECT title, extract("year" from current_date) - "year" AS age
+  FROM films
+  ORDER BY age ASC;
+
+EXTRACT(field FROM source)
+~~~
+
+- The PostgreSQL EXTRACT function retrieves specific components of a date, time, or interval value. It is a versatile function useful for breaking down timestamps into meaningful parts, such as year, month, day, hour, or even epoch seconds.
+
+- Keep this example in mind for using `GROUP BY`
+
+~~~SQL
+SELECT state, COUNT(id) FROM people GROUP BY state ORDER BY count DESC LIMIT 10;
+~~~
+
+~~~SQL
+SELECT substr(email, strpos(email, '@') + 1) as domain,
+         COUNT(id)
+  FROM people
+  GROUP BY domain
+  ORDER BY count DESC;
+~~~
+
