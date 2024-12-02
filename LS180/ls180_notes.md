@@ -801,6 +801,20 @@ COPY weather (date, low, high, rainfall) FROM stdin;
 \.
 ~~~
 
+- Weird example for retrieving data based on films decades. Uses integer division to get the decades
+
+~~~SQL
+SELECT year / 10 * 10 as decade, ROUND(AVG(duration)) as average_duration
+  FROM films GROUP BY decade ORDER BY decade;
+~~~
+
+- Funky example for grouping by multiple different things at once:
+
+~~~SQL
+SELECT year / 10 * 10 AS decade, genre, string_agg(title, ', ') AS films
+  FROM films GROUP BY decade, genre ORDER BY decade, genre;
+~~~
+
 - **If you have a default value that violates a constraint you add you will still get an error**
 
 ### Keys
@@ -834,5 +848,24 @@ CREATE TABLE colors (
   - The next value of a sequence is accessed using `nextval` - kind of like `next` with generators in python
   - Once a number is returned by `nextval` for a standard sequence, it will not be returned again, regardless of whether the value was stored in a row or not
     - For example, if we run `SELECT nextval('colors_id_seq');` separately, it will skip that number next time we go to submit data into the table
-  
+
+- Database development conventions:
+  - All tables should have a primary key column called `id`
+  - The `id` column should automatically be set to a unique values as new rows are inserted into the table
+  - The `id` column will often be an integer, but there are other data types (such as UUIDs) that can provide specific benefits
+    - UUID's are universally unique identifiers and are usually large hexadecimal strings representing large numbers
+
+- You can customize your sequences such as even only like below
+
+~~~SQL
+CREATE SEQUENCE even_counter INCREMENT BY 2 MINVALUE 2;
+~~~
+
+- You cannot add multiple primary keys to a table
+- You can still drop the primary key later on:
+
+~~~SQL
+ALTER TABLE films DROP CONSTRAINT films_pkey;
+~~~
+
 
