@@ -115,6 +115,7 @@ ALTER TABLE table_name
 
 
 - Shorthand for adding `CHECK` constraints:
+  - Must include the parentheses around the `CHECK` clause otherwise you get a syntax error
 
 ~~~SQL
 ALTER TABLE birds ADD CONSTRAINT check_age CHECK (age > 0);
@@ -122,6 +123,7 @@ ALTER TABLE birds ADD CHECK (age > 0);
 ~~~
 
 - For adding to a specific column you can also use `ALTER COLUMN`:
+  - The `SET CONSTRAINT` syntax is used to modify as existing constraint, not to add a new one. Cannot use this syntax to add for example a `UNIQUE` constraint to a column
 
 ~~~SQL
 ALTER TABLE table_name
@@ -134,6 +136,9 @@ ALTER COLUMN column_name SET CONSTRAINT constraint_definition;
 ALTER TABLE table_name
       ADD [ CONSTRAINT constraint_name ]
       constraint_clause;
+
+ALTER TABLE films ADD CONSTRAINT director_name
+    CHECK (length(director) >= 3 AND position(' ' in director) > 0);
 ~~~
 
 - To remove a constraint:
@@ -758,4 +763,76 @@ SELECT substr(email, strpos(email, '@') + 1) as domain,
   GROUP BY domain
   ORDER BY count DESC;
 ~~~
+
+~~~SQL
+SELECT date, ROUND((low + high) / 2, 1) AS average FROM temperatures 
+WHERE extract(day from date) >= 2 AND extract(day from date) <= 8;
+
+/* OR */
+
+SELECT date, ROUND((high + low) / 2.0, 1) as average
+  FROM temperatures
+ WHERE date BETWEEN '2016-03-02' AND '2016-03-08';
+-- Can also cast here
+((high + low) / 2.0)::decimal(3,1).
+~~~
+
+- Use the below command to produce a SQL dump file
+
+~~~bash
+pg_dump -d sql-course -t weather --inserts > dump.sql
+~~~
+
+- If you leave off the `--inserts` flag it will default to using a `COPY FROM stdin` statement istead of multiple insert statements
+  - Data will be in tab deliminated rows instead
+  - It is more efficient on large data sets
+
+~~~SQL
+COPY weather (date, low, high, rainfall) FROM stdin;
+2016-03-07  29  32  0.000
+2016-03-08  23  31  0.000
+2016-03-09  17  28  0.000
+2016-03-01  34  43  0.117
+2016-03-02  32  44  0.117
+2016-03-03  31  47  0.156
+2016-03-04  33  42  0.078
+2016-03-05  39  46  0.273
+2016-03-06  32  43  0.078
+\.
+~~~
+
+- **If you have a default value that violates a constraint you add you will still get an error**
+
+### Keys
+
+- SQL databases provide keys that uniquely identify a single row in a database table: Natura Keys and Surrogate Keys
+
+- Natural Key - an existing value in a dataset that can be used to uniquely identify each row of data in that dataset
+  - Most values are not good canidates (phone numbers and email addresses change for example)
+  - Can use more than one existing value together as a **composite key**
+
+- Surrogate Keys - value that is created solely for the purpose of identifying a row of data in a database table
+  - Common one is an auto-incrementing integer
+  - Common nomenclature is id (short for identifier)
+
+- The actual interpretation of `SERIAL`
+
+~~~SQL
+-- This statement:
+CREATE TABLE colors (id serial, name text);
+
+-- is actually interpreted as if it were this one:
+CREATE SEQUENCE colors_id_seq;
+CREATE TABLE colors (
+    id integer NOT NULL DEFAULT nextval('colors_id_seq'),
+    name text
+);
+~~~
+
+- Sequence - special kind of relation that generates a series of numbers
+  - Remembers the last number it generated so it generates numbers in a predetermined sequence automatically
+  - The next value of a sequence is accessed using `nextval` - kind of like `next` with generators in python
+  - Once a number is returned by `nextval` for a standard sequence, it will not be returned again, regardless of whether the value was stored in a row or not
+    - For example, if we run `SELECT nextval('colors_id_seq');` separately, it will skip that number next time we go to submit data into the table
+  
 
