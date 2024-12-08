@@ -817,6 +817,8 @@ SELECT year / 10 * 10 AS decade, genre, string_agg(title, ', ') AS films
 
 - **If you have a default value that violates a constraint you add you will still get an error**
 
+- **PostgreSQL uses 1-based indexing for string functions, so the first character in the string is at position 1.**
+
 ### Keys
 
 - SQL databases provide keys that uniquely identify a single row in a database table: Natura Keys and Surrogate Keys
@@ -868,4 +870,78 @@ CREATE SEQUENCE even_counter INCREMENT BY 2 MINVALUE 2;
 ALTER TABLE films DROP CONSTRAINT films_pkey;
 ~~~
 
+### Query Execution
 
+1. Rows are collected into a virtual table. Creates new temporary tables using data from all the tables listed in the query's `FROM` clause. Different from the transient tables in joins.
+
+2. Rows are filtered using WHERE conditions
+
+3. Rows are divided into groups
+
+4. Groups are filtered using HAVING conditions. Similar to `WHERE` conditions but are applied to the values that are used to create groups and not individual rows. A column that is mentioned in a `HAVING` clause should appear in a `GROUP BY` cclause and/or an aggregate function. Both `GROUP BY` and aggregate functions perform grouping, and the `HAVING` clause is used to filter that aggregated/grouped data
+
+5. Computer values to return using select list
+
+6. Sort results as defined in an `ORDER BY` clause otherwise defualt is the order of rows in the tables
+
+7. Limit results based on `LIMIT` or `OFFSET` clauses to adjust which rows in the result set are returned
+
+### Aliasing
+
+- Use aliases for columns that would otherwise create collisions when conducting joins and to clarify data
+
+- If you alias a table, postgres expects you to use that alias everywhere in the query, even if its before the alias definition
+  - You don't want to alias table names unless required
+
+### Enumeration
+
+- Enumerated (enum) types are data types that comprise a static, ordered set of values. They are equivalent to the enum types supported in a number of programming languages. An example of an enum type might be the days of the week, or a set of status values for a piece of data.
+
+- Existing values cannot be removed from an enum type, nor can the sort ordering of such values be changed, short of dropping and re-creating the enum type.
+
+- Enums are also case and space sensitive
+
+- Syntax is as follows:
+
+~~~SQL
+ALTER TABLE stars
+DROP CONSTRAINT stars_spectral_type_check;
+
+CREATE TYPE spectral_type_enum AS ENUM ('O', 'B', 'A', 'F', 'G', 'K', 'M');
+
+ALTER TABLE stars
+ALTER COLUMN spectral_type TYPE spectral_type_enum
+                           USING spectral_type::spectral_type_enum;
+~~~
+
+### Schema Diagrams
+
+- conceptual scheme are high level desings focused on identifying entities and their relationships
+
+- physical schema are low level database-specific design focused on implementation
+
+### Database diagrams
+
+- Cardinality - the number of objects on each side of the relationship
+
+- Modality - indicates if the relationship is required or optional
+  - if required there must be an instance of the relationship
+  - usually 1 for required and 0 for optional
+  - Not usually seen in the schema of a database but probably certain constraints in the table to enforce the relationships
+
+- Most common notation is crows foot notation
+
+- **one to one relationships are very rare and usually indicates that those entities should be in the same table together**
+
+### Practice
+
+- More complex joins:
+
+~~~SQL
+SELECT e.name, COUNT(t.id) AS popularity
+  FROM events AS e
+  LEFT OUTER JOIN tickets AS t
+    ON t.event_id = e.id
+  GROUP BY e.id
+  ORDER BY popularity DESC;
+~~~
