@@ -945,3 +945,343 @@ SELECT e.name, COUNT(t.id) AS popularity
   GROUP BY e.id
   ORDER BY popularity DESC;
 ~~~
+
+- **Foreign key constraints do not prevent null values from being added**
+
+- You can have a situation where it would be easy to make the database inconsistent, which means that it contains more than one answer for a given question. If this occurred, it would be known as an update anomaly.
+  - There are also insertion and deletion anomaly's
+
+- Normalization is the process of designing schema that minimize or eliminate the possible occurrence of the three anomalies
+  - Best not to think in terms of how much space to store data when thinking about normalization
+  - Sometimes desirable to have data dupicated for retrieval operations
+
+- When we list multiple tables within a SELECT statement's FROM clause, the database will return every possible combination of rows from the listed tables. 
+
+- Like wtf is this:
+
+~~~SQL
+SELECT calls.when, calls.duration, contacts.first_name FROM calls INNER JOIN contacts ON calls.contact_id = contacts.id WHERE (contacts.first_name || ' ' || contacts.last_name) != 'William Swift';  
+~~~
+
+- Many to many join statement:
+
+~~~SQL
+SELECT books.id, books.author, string_agg(categories.name, ', ') AS categories
+  FROM books
+    INNER JOIN books_categories ON books.id = books_categories.book_id
+    INNER JOIN categories ON books_categories.category_id = categories.id
+  GROUP BY books.id ORDER BY books.id;
+~~~
+
+- Another many to many, I actually got this one:
+
+~~~SQL
+SELECT categories.name, count(books.id) as book_count, string_agg(books.title, ', ') AS book_titles
+  FROM books
+    INNER JOIN books_categories ON books.id = books_categories.book_id
+    INNER JOIN categories ON books_categories.category_id = categories.id
+  GROUP BY categories.name ORDER BY categories.name;
+~~~
+
+- Turning a database into a m-m one
+
+~~~SQL
+CREATE TABLE directors_films (
+  id serial PRIMARY KEY,
+  director_id integer REFERENCES directors (id) ON DELETE CASCADE,
+  film_id integer REFERENCES films (id) ON DELETE CASCADE,
+  UNIQUE(director_id, film_id)
+);
+~~~
+
+- Keep this in mind, if you are only determining one side of the m-m relationship, you only need one join clause
+
+~~~SQL
+SELECT directors.name AS director, COUNT(directors_films.film_id) AS films
+  FROM directors
+    INNER JOIN directors_films ON directors.id = directors_films.director_id
+  GROUP BY directors.id
+  ORDER BY films DESC, directors.name ASC;
+~~~
+
+- Take note of special notation:
+
+~~~SQL
+SELECT customers.* FROM customers
+INNER JOIN customers_services
+        ON customer_id = customers.id;
+~~~
+
+### SQL Query Execution Order
+
+1. FROM Clause
+- Identifies the primary table(s) to be used in the query
+- Establishes the starting point for data retrieval
+- Determines the initial dataset before any filtering or joining
+
+2. JOIN Clause
+- Combines rows from two or more tables based on a related column
+- Merges data from multiple sources
+- Determines how different tables are connected and integrated
+
+3. WHERE Clause
+- Filters individual rows before any grouping occurs
+- Applies conditions to raw, non-aggregated data
+- Reduces the dataset based on specific row-level criteria
+- Runs before any grouping or aggregation
+
+4. GROUP BY Clause
+- Organizes rows into groups
+- Prepares data for aggregate functions
+- Combines rows that have the same values in specified columns
+- Enables calculation of aggregate values for each group
+
+5. HAVING Clause
+- Filters groups after grouping and aggregation
+- Applies conditions to aggregated data
+- Used with aggregate functions like COUNT(), SUM(), AVG()
+- Reduces groups based on aggregate values
+
+6. SELECT Clause
+- Specifies which columns to retrieve
+- Can include calculations, transformations
+- Determines the final output columns
+- Runs after all previous clauses have processed the data
+
+7. ORDER BY Clause
+- Sorts the final result set
+- Arranges rows based on specified column(s)
+- Can sort in ascending (ASC) or descending (DESC) order
+- Applied as the very last operation in the query
+
+8. LIMIT/OFFSET Clause (not in all SQL implementations)
+- Restricts the number of rows returned
+- Can skip a specified number of rows
+- Useful for pagination or sampling data
+
+**Key Takeaways**
+- Each clause processes data in a specific sequence
+- Earlier clauses reduce and transform the dataset
+- Later clauses work with the results of earlier clauses
+- Understanding this order helps in writing efficient and correct SQL queries
+
+### Summary
+
+- Relational databases are called relational because they persist data in a set of relations, or, as they are more commonly called, tables
+
+- A relationship is a connection between entity instances, or rows of data, usually resulting from what those rows of data represent
+
+- The three levels of schema are conceptual, logical, and physical
+
+- The three types relationships are one-to-one, one-to-many, and many-to-many
+
+- A conceptual schema is a high level desing focused on identifying entities and their relationshiips
+
+- A physical schema is a low level database specific design focused on implementation
+
+- Cardinality is the number of objects on each side of the Relationship
+
+- Modality of a relationship indicates if that relationship is required or not
+
+- Data has referential integrity if it requires all references to be valid. That is, if a value in a column references a value in another column (usually in another table), then that value must exist in the referenced column
+
+### Indexing
+
+- Format for creating an index:
+
+~~~SQL
+CREATE INDEX index_name ON table_name (field_name);
+~~~
+
+### Subquery Expressions
+
+- There are specific reserved words to be used with subqueries to rest them
+  - `EXISTS` - checks whether any rows at all are returned by the nested query. If at least one row is returned then the result is 'true', otherwise it is 'false'
+  - `IN` - compares evaluated expression to every row in the subquery result. If a row equal to the evaluated expression is found, then the result of `IN` is 'true', otherwise 'false'
+  - `NOT IN` - similar to `IN` but evaluates the opposite condition
+  - `ANY`/`SOME` - can be used interchangeably. Used along with an operator (`=, <, >`, etc.). The result is 'true' if any true result is obtained when the expression to the left of the operator is evaluated using that operator against the results of the nested query. When used with `=` equivalent to `IN` 
+  - `ALL` - also used with operator. True only if all of the results are true when the expression to the left of the operator is evaluated using that operator against the results of the nested query. With `<>` and `!=` equivalent to `NOT IN`
+
+- **Sub-queries and how they are executed depend on the type of subquery**
+  - Sometimes the subquery is executed for each row evaluated for the outer query and sometimes it only needs to be executed once for the outer query. This execution variation depends on what is being queried.
+    - Scalar or Single-Value Subqueries: returns exactly one row with one column, used in the surrounding value expression
+    - Correlated Subqueries
+    - Independent (Uncorrelated Subqueries)
+    - In the From clause (Derived Tables)
+  - You can use attributes from the outer query in the inner query expression.
+
+~~~SQL
+ SELECT name FROM bidders
+WHERE EXISTS (SELECT 1 FROM bids WHERE bids.bidder_id = bidders.id);
+~~~
+
+- Here's a in the From clause example:
+
+~~~SQL
+SELECT MAX(bid_counts.count) FROM
+  (SELECT COUNT(bidder_id) FROM bids GROUP BY bidder_id) AS bid_counts;
+~~~
+
+- Scalar sub-query example:
+
+~~~SQL
+SELECT name,
+       (SELECT COUNT(item_id) FROM bids WHERE item_id = items.id)
+FROM items;
+~~~
+
+### Row Constructors
+
+- You can create `ROW` constructors to represent rows and then compare them using operators.
+
+- It's an expression that builds a row value (also calledl composite value) using values for its member fields
+  - When created, it is of an anonymous record type but can be cast to a named composite type
+
+~~~SQL
+SELECT id FROM items
+WHERE ROW('Painting', 100.00, 250.00) =
+  ROW(name, initial_price, sales_price);
+~~~
+
+### Explain & Analyze
+
+- When using `ANALYZE`, the sql statement gets executed so be careful when using it on statements that alter data or schema
+
+~~~SQL
+EXPLAIN SELECT name FROM bidders
+WHERE EXISTS (SELECT 1 FROM bids WHERE bids.bidder_id = bidders.id);
+                                QUERY PLAN
+--------------------------------------------------------------------------
+ Hash Join  (cost=33.38..62.84 rows=635 width=32)
+   Hash Cond: (bidders.id = bids.bidder_id)
+   ->  Seq Scan on bidders  (cost=0.00..22.70 rows=1270 width=36)
+   ->  Hash  (cost=30.88..30.88 rows=200 width=4)
+         ->  HashAggregate  (cost=28.88..30.88 rows=200 width=4)
+               Group Key: bids.bidder_id
+               ->  Seq Scan on bids  (cost=0.00..25.10 rows=1510 width=4)
+(7 rows)
+~~~
+
+- `EXPLAIN is no tin the SQL standard but it is implemented in other RDBMS as well
+
+- Nested node's in the explain output represents one child of the one above it. That means that nested nodes were operations necessary to allow the parent node (operation) to run its course
+
+- Units used for describing the estimated start up and total costs are arbitrary units used by Postgres internally to create the query plan
+
+## Exam Study Guide
+
+- About 20 questions, 2.5 hours
+
+### SQL
+
+- Identify the different types of `JOIN` statements and explain their differences
+  - `INNER JOIN` - the defualt join method if a specific join method is not specified. It only includes what matched between both tables based on the `ON` clause in the join table. Rows that do not meet the `ON` clause match criteria are not included in the final join table.
+  - `LEFT OUTER JOIN` - It includes what matches between both tables based on the `ON` clause but also includes the rows from the left table, which is the table specififed in the `FROM` clause prior to the `JOIN` keyword, that did not meet the `ON` clause match criteria. This enables all data from the left table, regardless of match criteria, to be included in the join table. 
+  - `RIGHT OUTER JOIN` - Operates the same as `LEFT OUTER JOIN` except the inclusion of non-matching rows is drawn from the right table, the one specified in the `JOIN` clause.
+  - `FULL JOIN` - This is similar to both `LEFT` and `RIGHT` outer join statements except that it combines the two. In the final join table all rows from the left and right tables, regardless of if the row met matching criteria or not, are included.
+  - `CROSS JOIN` - Cross join is different from any of the other clauses as it creates a join table that consists of all possible row combinations of the tables being joined. This is often utilized for testing purposes and not real world query scenarios. This also does not use an `ON` clause as one is not needed to create all permutations of the tables.
+
+- Name and define the three sublanguages of SQL and be able to classify different statements by sublanguage
+  - Data Definition Language (DDL) - provides the functions `CREATE`, `ALTER`, and `DROP` to manage databases, tables in the database, and the schema that define their structure. The definitions controled by the DDL define what kind of data and the relationships that will be present. DDL also provides the ability for more advanced controls such as specifying primary and foreign keys, adding contraints and checks, and creating indexes.
+  - Data Manipulation Language (DML) - provides the functions to `INSERT`, `UPDATE`, `SELECT`, and `DELETE` data in the tables defined in the database. The schema defined in the table along with the DML is how data is interacted with through things such read and write query actions.
+  - Data Control Language (DCL) - provides the functions `GRANT` and `REVOKE` to specify user controls and permissions in the database and among its tables.
+
+- Write SQL statements using `SELECT, INSERT, UPDATE, DELETE, CREATE/ALTER/DROP TABLE, ADD/ALTER/DROP COLUMN`
+  - Refer to LSBOT thread for exercise
+
+- Understand how to use `GROUP BY, ORDER BY, WHERE, and HAVING
+  - SQL Query execution order
+    - `FROM` Clause
+      - identifies primary tables to be used in query
+      - establishes starting point for data retrieval
+      - Determines initial dataset before any filtering or joining
+    - `JOIN` clause
+      - combines rows from two or more tables based on related column, merges data from multiple sources
+    - `WHERE` clause
+      - Filters individual rows before any grouping occurs by applying conditions to row non-aggregated data
+      - Reduces dataset based on row level criteria
+      - Runs before any grouping or aggregation (functions such as sum, count, avg etc...)
+    - `GROUP BY` clause
+      - Organizes rows into groups and prepares data for aggregate functions by combining rows that have same values in specified columns
+      - This enables calculation of aggregate values for each group
+    - `HAVING` clause
+      - Filters groups after grouping and aggregation by applying the condition to aggregated data
+      - Used with aggregate functions like count, sum, avg
+      - Reduces groups based on aggregate values
+    - `SELECT` clause
+      - specifies columns to retrieve and can include calculations and transformations
+      - Determines final output columns
+      - RUns after all previous columns ahve processed the data
+    - `ORDER BY` clause
+      - Sorts the final result set by arranging rows based on specified columns
+      - Can do ASC or DESC order and is applied as the very last operation in a query
+    - `LIMIT/OFFST` clause
+      - Restricts the number of rows returned and can be used to skip specified number
+      - Useful for pagination of sampling data
+
+- Understand how to create and remove constraints, including `CHECK` constraints
+
+- Be familiar with using subqueries and join tables
+
+### PostgreSQL
+
+- Descrbie what a sequence is and what they are used for
+
+- Create an auto-incrementing column
+
+- Define a default value for a column
+
+- Be able to describe what a primary, foreign, natural, and surrogate keys are
+
+- Create and remove `CHECK` constraints from a column
+
+- Create and remove foreign key constraints from a column
+
+### Database Diagrams
+
+- Talk about the different levels of schema
+
+- Define cardinality and modality
+
+- Be able to draw database diagrams using crow's foot notation
+
+## Random Notes
+
+### Views
+
+- Making liberal use of views is a key aspect of good SQL database design. Views allow you to encapsulate the details of the structure of your tables, which might change as your application evolves, behind consistent interfaces.
+  - Suppose the combined listing of weather records and city location is of particular interest to your application, but you do not want to type the query each time you need it. You can create a view over the query, which gives a name to the query that you can refer to like an ordinary table
+
+- views are an important feature in SQL and database management, as they can help improve query performance, simplify complex joins, and provide an additional layer of security by restricting direct access to base tables.
+
+### Date's
+
+- Subtracting two `Date` types results in a differnce of the days between the two dates
+
+### Correlated Subquery
+
+- While performing an advanced sub-query, I gained some insight into how correlated sub-queries are processed and the sub-query relates to the main query. Consider the below query and LSBOT response for the question: Create a report showing each author's name, the number of their books in the library, and the number of times their books have been borrowed
+
+~~~SQL
+SELECT authors.name, (SELECT COUNT(DISTINCT loans.book_id) FROM loans JOIN books ON loans.book_id = books.id WHERE books.author_id = authors.id) AS num_books_borrowed, (SELECT COUNT(*) FROM books WHERE books.author_id = authors.id) AS number_of_books FROM authors;
+~~~
+
+
+I'm glad you asked about this clause. It's an important part of the query that ensures we're getting the correct data for each author. Let's break it down:
+The clause WHERE books.author_id = authors.id is crucial because:
+1. It correlates the subquery with the main query.
+2. It ensures that we're only counting books or loans for the specific author we're currently processing in the main query.
+Without this clause, each subquery would return results for all authors, not just the one we're currently looking at in the outer query.
+Let's look at an example to illustrate:
+Imagine we have two authors in our database:
+1. J.K. Rowling (id: 1)
+2. George Orwell (id: 2)
+And we have these books:
+- Harry Potter (author_id: 1)
+- 1984 (author_id: 2)
+- Animal Farm (author_id: 2)
+When our main query is processing J.K. Rowling (id: 1), we want the subquery to only count her books. The WHERE books.author_id = authors.id clause ensures this by saying "only count books where the author_id matches the id of the author we're currently processing in the main query".
+Without this clause, both subqueries would count all books for all authors every time, giving incorrect results.
+This technique is called a correlated subquery, where the subquery depends on the outer query for its values. It's a powerful way to relate the subquery to each row being processed in the main query.
+
+
