@@ -123,7 +123,7 @@ ALTER TABLE birds ADD CHECK (age > 0);
 ~~~
 
 - For adding to a specific column you can also use `ALTER COLUMN`:
-  - The `SET CONSTRAINT` syntax is used to modify as existing constraint, not to add a new one. Cannot use this syntax to add for example a `UNIQUE` constraint to a column
+  - The `SET CONSTRAINT` syntax is used to modify an existing constraint, not to add a new one. Cannot use this syntax to add for example a `UNIQUE` constraint to a column
 
 ~~~SQL
 ALTER TABLE table_name
@@ -1220,30 +1220,42 @@ WHERE EXISTS (SELECT 1 FROM bids WHERE bids.bidder_id = bidders.id);
       - Useful for pagination of sampling data
 
 - Understand how to create and remove constraints, including `CHECK` constraints
+  - Reviewed
 
 - Be familiar with using subqueries and join tables
+  - Reviewed
 
 ### PostgreSQL
 
-- Descrbie what a sequence is and what they are used for
+- Describe what a sequence is and what they are used for
+  - Sequences are used to generate unique values that follow a defined pattern. They are commonly used to generate sequences of ordered numbers that aid in identifying rows of information. Sequences are often used to generate surrogate keys in tables because of these properties. The `nextval` function is used to call the next value from the sequence.
 
 - Create an auto-incrementing column
+  - Use the serial function or create a new sequence
 
 - Define a default value for a column
+  - Reviewed
 
 - Be able to describe what a primary, foreign, natural, and surrogate keys are
+  - Primary keys are the column in a table that is used to uniquely identify each row of information within that table. The primary key column creates the conditions needed for the table to then be referenced by foreign keys in other tables. The foreign keys are set columns in tables that refer back to another table's primary key that creates a relationship between the two tables. Through the implementation of foreign key relationships among tables is how you create one-to-one, one-to-many, and many-to-many relationships. 
+  - Natural and surrogate keys define what kind of underlying information makes up the primary or foreign key. Natural keys occur from information that is present in the table from the information source being input into it. They have meaning within the domain of data. For example, usernames for a system might contain the user's full name. These could be used as natural keys for the tables primary keys. Issues with uniqueness and edge cases however is why surrogate keys are more commonly used. Surrogate keys are unique values created for the sole purpose of unqiuely pairing to and identifying rows of information. Common ways to create surrogatge keys is via serial sequences.
 
 - Create and remove `CHECK` constraints from a column
+  - Reviewed
 
 - Create and remove foreign key constraints from a column
+  - Reviewed
 
 ### Database Diagrams
 
 - Talk about the different levels of schema
+  - Conceptual, logical, physical
 
 - Define cardinality and modality
+  - Cardinality number of objects on each side of the relationship, modality if the relationship is required or not
 
 - Be able to draw database diagrams using crow's foot notation
+  - Remember 0 or 1 for modality
 
 ## Random Notes
 
@@ -1284,4 +1296,62 @@ When our main query is processing J.K. Rowling (id: 1), we want the subquery to 
 Without this clause, both subqueries would count all books for all authors every time, giving incorrect results.
 This technique is called a correlated subquery, where the subquery depends on the outer query for its values. It's a powerful way to relate the subquery to each row being processed in the main query.
 
+### Grouping
 
+- Important example for grouping when using the count function:
+  - The `COUNT(loans.id)` works because of the grouping by books.id
+
+~~~SQL
+SELECT books.title,
+        books.id AS book_id,
+        COUNT(loans.id) AS times_borrowed,
+        ROUND(COUNT(loans.id)::numeric / (SELECT COUNT(*)::numeric FROM loans) * 100, 2) AS borrow_percentage
+        FROM books LEFT OUTER JOIN loans
+        ON books.id = loans.book_id
+        GROUP BY books.id, books.title
+        ORDER BY times_borrowed DESC;
+~~~
+
+### Stored Procedures
+
+- Can create procedures, functions, and triggers for them to automatically execute things in databases: like auto-incrementing available_copies for a book loan database
+
+~~~SQL
+CREATE OR REPLACE PROCEDURE update_available_copies(
+    book_id_param INT,
+    is_borrowed BOOLEAN
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF is_borrowed THEN
+        -- Decrease available copies when borrowed
+        UPDATE books
+        SET available_copies = available_copies - 1
+        WHERE id = book_id_param;
+    ELSE
+        -- Increase available copies when returned
+        UPDATE books
+        SET available_copies = available_copies + 1
+        WHERE id = book_id_param;
+    END IF;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION loan_trigger_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        CALL update_available_copies(NEW.book_id, true);
+    ELSIF TG_OP = 'DELETE' THEN
+        CALL update_available_copies(OLD.book_id, false);
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER loan_trigger
+AFTER INSERT OR DELETE ON loans
+FOR EACH ROW
+EXECUTE FUNCTION loan_trigger_function();
+~~~
