@@ -1355,3 +1355,9 @@ AFTER INSERT OR DELETE ON loans
 FOR EACH ROW
 EXECUTE FUNCTION loan_trigger_function();
 ~~~
+
+
+## Interview Prep
+
+- When would a foreign key refer to another column in the same table
+  - Hierarchical relationships or parent-child relationships
