@@ -149,7 +149,7 @@ def update_list(lst, list_id):
     if error:
         flash(error, "error")
         return render_template('edit_list.html', lst=lst, title=title)
-    g.storage.update_list_by_id(list_id, lst)
+    g.storage.update_list_by_id(list_id, title)
     flash("The list has been updated.", "success")
     return redirect(url_for('show_list', list_id=list_id))
 
