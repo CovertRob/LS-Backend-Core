@@ -24,7 +24,15 @@ class DatabasePersistence:
         return lst
 
     def all_lists(self):
-        query = "SELECT * FROM lists"
+        query = """
+            SELECT lists.*,
+                    COUNT(todos.id) AS todos_count,
+                    COUNT(NULLIF(todos.completed, True)) AS todos_remaining
+            FROM lists
+            LEFT JOIN todos ON todos.list_id = lists.id
+            GROUP BY lists.id
+            ORDER BY lists.title
+        """
         logger.info("Executing query: %s", query)
         with self._database_connect() as conn:
             with conn.cursor(cursor_factory=DictCursor) as cursor:
@@ -32,10 +40,6 @@ class DatabasePersistence:
                 results = cursor.fetchall()
         
         lists = [dict(result) for result in results]
-        for lst in lists:
-            todos = self._find_todos_for_list(lst['id'])
-            lst.setdefault('todos', todos)
-
         return lists
 
     def create_new_list(self, title):
@@ -106,7 +110,7 @@ class DatabasePersistence:
             connection = psycopg2.connect(os.environ['DATABASE_URL'])
         else:
             connection = psycopg2.connect(dbname='todos')
-            
+
         try:
             with connection:
                 yield connection
