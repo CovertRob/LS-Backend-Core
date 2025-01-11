@@ -2,6 +2,7 @@ import psycopg2
 from psycopg2.extras import DictCursor
 from contextlib import contextmanager
 import logging
+import os
 
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
@@ -101,7 +102,11 @@ class DatabasePersistence:
 
     @contextmanager
     def _database_connect(self):
-        connection = psycopg2.connect(dbname='todos')
+        if os.environ.get('FLASK_ENV') == 'production':
+            connection = psycopg2.connect(os.environ['DATABASE_URL'])
+        else:
+            connection = psycopg2.connect(dbname='todos')
+            
         try:
             with connection:
                 yield connection
